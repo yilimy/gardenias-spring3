@@ -3,6 +3,7 @@ package com.example.boot3.source;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -51,5 +52,14 @@ public class SourceTest {
             }
         }
         return field;
+    }
+
+    /**
+     * spring容器中启动的核心之一就是refresh()处理方法，这个方法是由 AbstractApplicationContext 抽象类提供的
+     * @see AbstractApplicationContext#refresh()
+     */
+    @Test
+    public void refreshTest() {
+
     }
 }
