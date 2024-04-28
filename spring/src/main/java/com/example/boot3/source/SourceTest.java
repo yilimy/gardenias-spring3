@@ -97,7 +97,20 @@ public class SourceTest {
      *     核心步骤如下：
      *     1. 判断在当前BeanFactory中是否存在有指定的MessageSource实例，如果存在，会根据判断来决定是否要进行父资源的结构配置（层次的资源管理）
      *     2. 如果现在没有发现MessageSource对象实例的存在，那么就会进行新的MessageSource接口子类实例化，同时将其保存在BeanFactory之中，保存类型为单例
-     *
+     * <p>
+     *     finishBeanFactoryInitialization(beanFactory);
+     *     所有的非延迟操作的bean实例，都在这里注册，帮助beanFactory完成所有bean对象实例的管理
+     *     1. 初始化conversionService，数据转型的服务支持（配置文件注册的属性）
+     *     2. 是否包含有内嵌的事件解析器，注册解析器
+     *     3. 在进行java动态代理织入的时候一般会考虑LTW的设计问题，在此处解决LTW的注册问题
+     *     4. 清除临时类加载器，一些专属的程序类，需要使用专属的临时类加载器才能加载，加载完毕后就不用了，没必要保存
+     *     5. 缓存所有的bean定义信息
+     *     6. 实例化剩余的单例bean
+     *     finishRefresh();
+     *     1. 清空资源缓存
+     *     2. 初始化生命周期处理
+     *     3. 生命周期处理刷新
+     *     4. 发布一个容器事件处理
      * @see AbstractApplicationContext#refresh()
      * @see AbstractRefreshableApplicationContext#refreshBeanFactory()
      */
