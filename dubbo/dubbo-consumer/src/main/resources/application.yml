@@ -1,6 +1,6 @@
 dubbo:
   application:
-    name: dubbo-provider
+    name: dubbo-consumer
   protocol:
     # 协议
     name: dubbo

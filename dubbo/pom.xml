@@ -23,7 +23,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
 <!--        <dubbo.version>3.2.0-beta.4</dubbo.version>-->
-        <dubbo.version>3.1.5</dubbo.version>
+<!--        <dubbo.version>3.1.5</dubbo.version>-->
+        <dubbo.version>3.0.2</dubbo.version>
+        <curator.version>2.12.0</curator.version>
+        <hutool.version>5.0.7</hutool.version>
     </properties>
 
     <dependencies>
@@ -55,6 +58,25 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+            <!--
+                dubbo 2.6以前引入的zookeeper版本是com.101tec:zkclient
+                dubbo 2.6及以后的版本引入的curator操作zookeeper：org.apache.curator:curator-framework:2.12.0
+            -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.apache.dubbo</groupId>-->
