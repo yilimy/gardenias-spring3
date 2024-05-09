@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans.xsd
+                    http://www.springframework.org/schema/context
+                    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                    http://www.springframework.org/schema/aop
+                    http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 启用上下文注解的方式进行配置  -->
+    <context:annotation-config/>
+    <!-- 配置扫描包  -->
+    <context:component-scan base-package="com.example.boot3.aop.service"/>
+    <bean id="serviceAdvice" class="com.example.boot3.aop.advice.ServiceAdvice"/>
+    <!-- 默认JDK代理，CgLib代理：proxy-target-class=true  -->
+    <aop:config proxy-target-class="false">
+        <!-- 定义了一个切面，通过 messagePoint(pointcut-ref) 进行引用 -->
+        <!-- 添加了 and args(msg) 之后，切面就能拿到方法参数 -->
+        <aop:pointcut id="messagePoint"
+                      expression="execution(public * com.example..service..*.*(..)) and args(msg)"/>
+        <!-- 当前进行AOP操作的类  -->
+        <aop:aspect ref="serviceAdvice">
+            <!-- ref是引用的意思  -->
+            <aop:before method="beforeHandle" pointcut-ref="messagePoint"/>
+            <!-- 如果不想引用，可以指定表达式，使用 pointcut  -->
+            <aop:after method="afterHandle"
+                       pointcut="execution(public * com.example..service..*.*(..)) and args(msg)"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
