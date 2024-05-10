@@ -1,7 +1,6 @@
 package com.example.boot3.aop.advice;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aopalliance.aop.Advice;
 
 /**
  * AOP的早先实现与现在是有区别的
@@ -31,5 +30,13 @@ public class ServiceAdvice {
      */
     public void afterHandle(String msg) {
         log.info("启用业务功能后置处理, 方法的参数:{}", msg);
+    }
+
+    public void afterReturningHandle(String value) {
+        log.info("启用业务功能后置返回通知, value:{}", value);
+    }
+
+    public void afterThrowHandle(Exception e) {
+        log.info("启用业务功能后置异常处理, 异常信息:{}", e.getMessage());
     }
 }
