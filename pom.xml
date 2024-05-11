@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>3.0.2</spring-boot.version>
-        <hutool.version>5.0.7</hutool.version>
+        <hutool.version>5.8.25</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -87,6 +87,7 @@
     <modules>
         <module>spring</module>
         <module>dubbo</module>
+        <module>mybatis</module>
     </modules>
 
 </project>
