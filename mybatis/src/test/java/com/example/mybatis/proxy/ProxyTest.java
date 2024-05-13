@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class ProxyTest {
 
+    /**
+     * 测试：获取一个集合
+     */
     @Test
     public void mapperProxyTest() {
         UserMapper userMapper = MapperProxyFactory.getMapper(UserMapper.class);
@@ -19,5 +22,15 @@ public class ProxyTest {
         System.out.println(userList);
         userList = userMapper.getUserByNameAndAge("Jack", 18);
         System.out.println(userList);
+    }
+
+    /**
+     * 测试：获取单个对象
+     */
+    @Test
+    public void mapperProxyGetSingleTest() {
+        UserMapper userMapper = MapperProxyFactory.getMapper(UserMapper.class);
+        User user = userMapper.getUserById(1);
+        System.out.println(user);
     }
 }

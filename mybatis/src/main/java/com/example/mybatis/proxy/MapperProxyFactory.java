@@ -2,16 +2,15 @@ package com.example.mybatis.proxy;
 
 import com.example.mybatis.annotation.Param;
 import com.example.mybatis.annotation.Select;
-import com.example.mybatis.po.User;
-import copy.org.apache.ibatis.type.JdbcType;
+import copy.org.apache.ibatis.parsing.GenericTokenParser;
+import copy.org.apache.ibatis.parsing.ParameterMapping;
+import copy.org.apache.ibatis.parsing.ParameterMappingTokenHandler;
 import copy.org.apache.ibatis.type.TypeHandler;
 import copy.org.apache.ibatis.type.TypeHandlerRegistry;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import copy.org.apache.ibatis.parsing.GenericTokenParser;
-import copy.org.apache.ibatis.parsing.ParameterMapping;
-import copy.org.apache.ibatis.parsing.ParameterMappingTokenHandler;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
@@ -22,9 +21,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -124,7 +126,6 @@ public class MapperProxyFactory {
                     }
                     statement.execute();
                     // 解析结果
-                    List<Object> list = new ArrayList<>();
                     Class<?> resultType = null;
                     Type genericReturnType = method.getGenericReturnType();
                     if (genericReturnType instanceof Class<?>) {
@@ -135,6 +136,7 @@ public class MapperProxyFactory {
                         Type[] actualTypeArguments = ((ParameterizedType) genericReturnType).getActualTypeArguments();
                         resultType = (Class<?>) actualTypeArguments[0];
                     }
+                    assert Objects.nonNull(resultType) : "没有找到返回结果类型";
                     // 映射结果
                     ResultSet resultSet = statement.getResultSet();
                     // 获取到返回的数据库字段
@@ -144,17 +146,44 @@ public class MapperProxyFactory {
                         // JDBC里的角标起始值为1
                         columnList.add(metaData.getColumnName(i + 1));
                     }
-                    //TODO 建立数据库字段和方法名之间的映射关系
-                    Object obj = resultType.getDeclaredConstructor().newInstance();
-                    User user = null;
-                    while (resultSet.next()) {
-                        user = new User();
-                        user.setId(resultSet.getInt("id"));
-                        user.setName(resultSet.getString("name"));
-                        user.setAge(resultSet.getInt("age"));
-                        list.add(user);
+                    // 建立返回结果类型的方法名（对应字段名）和方法对象的映射
+                    Map<String, Method> setterMethodMapping = new HashMap<>();
+                    for (Method declaredMethod : resultType.getDeclaredMethods()) {
+                        String name = declaredMethod.getName();
+                        if (name.startsWith("set")) {
+                            String propertyName = name.substring(3);
+                            // 首字母小写
+                            propertyName = propertyName.substring(0, 1).toLowerCase(Locale.ROOT) + propertyName.substring(1);
+                            setterMethodMapping.put(propertyName, declaredMethod);
+                        }
                     }
-                    return list;
+                    // 数据库查询结果转成java对象
+                    List<Object> list = new ArrayList<>();
+                    while (resultSet.next()) {
+                        Object obj = resultType.getDeclaredConstructor().newInstance();
+                        for (String column : columnList) {
+                            Method doResultSetMethod = setterMethodMapping.get(column);
+                            /*
+                             * 根据set方法的参数类型，获取TypeHandler
+                             */
+                            Class<?> setterType = doResultSetMethod.getParameters()[0].getType();
+                            Object result = ((TypeHandler<Object>)typeHandlerRegistry.getTypeHandler(setterType))
+                                    .getResult(resultSet, column);
+                            doResultSetMethod.invoke(obj, result);
+                            list.add(obj);
+                        }
+                    }
+                    connection.close();
+                    /*
+                     * isAssignableFrom是用来判断子类和父类的关系的，或者接口的实现类和接口的关系的，
+                     * 默认所有的类的终极父类都是Object。
+                     * 如果A.isAssignableFrom(B)结果是true，证明B可以转换成为A,也就是A可以由B转换而来。
+                     */
+                    if (Collection.class.isAssignableFrom(method.getReturnType())) {
+                        return list;
+                    } else {
+                        return list.isEmpty() ? null : list.get(0);
+                    }
                 }));
         return (T) proxyInstance;
     }

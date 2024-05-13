@@ -17,5 +17,6 @@ public interface UserMapper {
     @Select("select * from user where name = #{name} and age = #{age}")
     List<User> getUserByNameAndAge(@Param("name") String name, @Param("age") Integer age);
 
-    User getUserById(Integer id);
+    @Select("select * from user where id = #{id}")
+    User getUserById(@Param("id") Integer id);
 }
