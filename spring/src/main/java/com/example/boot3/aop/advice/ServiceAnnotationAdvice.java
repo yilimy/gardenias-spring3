@@ -23,8 +23,8 @@ import java.util.Arrays;
 // 需要明确的告诉spring容器，这是一个aop的程序类
 @Aspect
 // 此时进行的是aop的代理，用Component也行，被spring扫描到容器就行
-@Configuration
-//@Component
+//@Configuration
+@Component
 public class ServiceAnnotationAdvice {
 
     // 定义一个公共的切面

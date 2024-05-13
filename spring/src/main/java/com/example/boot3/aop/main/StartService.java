@@ -1,4 +1,4 @@
-package com.example.boot3.aop;
+package com.example.boot3.aop.main;
 
 import cn.hutool.core.util.RandomUtil;
 import com.example.boot3.aop.factory.ServiceFactory;
