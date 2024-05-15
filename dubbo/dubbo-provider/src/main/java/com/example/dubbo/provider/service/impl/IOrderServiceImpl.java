@@ -3,7 +3,7 @@ package com.example.dubbo.provider.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.example.dubbo.inter.bean.CommonResult;
 import com.example.dubbo.inter.bean.Orders;
-import com.example.dubbo.provider.service.IOrderService;
+import com.example.dubbo.inter.service.IOrderService;
 
 /**
  * 订单的业务层

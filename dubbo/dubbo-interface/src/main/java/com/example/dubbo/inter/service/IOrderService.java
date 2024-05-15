@@ -1,4 +1,4 @@
-package com.example.dubbo.provider.service;
+package com.example.dubbo.inter.service;
 
 import com.example.dubbo.inter.bean.CommonResult;
 import com.example.dubbo.inter.bean.Orders;
