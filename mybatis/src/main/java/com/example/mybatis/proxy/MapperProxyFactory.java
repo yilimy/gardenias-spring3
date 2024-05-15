@@ -182,6 +182,9 @@ public class MapperProxyFactory {
                     if (Collection.class.isAssignableFrom(method.getReturnType())) {
                         return list;
                     } else {
+                        if (list.size() > 1) {
+                            throw new RuntimeException("查询得到多个结果");
+                        }
                         return list.isEmpty() ? null : list.get(0);
                     }
                 }));

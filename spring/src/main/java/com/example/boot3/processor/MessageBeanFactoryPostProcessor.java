@@ -1,6 +1,7 @@
 package com.example.boot3.processor;
 
 import com.example.boot3.bean.MessageChannel;
+import com.example.boot3.test.BeanDefinitionTest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
 /**
+ * 测试：{@link BeanDefinitionTest#beanFactoryProcessorTest()} 等
  * @author caimeng
  * @date 2024/4/11 11:30
  */
