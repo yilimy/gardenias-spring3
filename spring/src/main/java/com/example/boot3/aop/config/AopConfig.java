@@ -1,5 +1,7 @@
 package com.example.boot3.aop.config;
 
+import org.springframework.aop.TargetSource;
+import org.springframework.aop.framework.autoproxy.AbstractAutoProxyCreator;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
@@ -15,4 +17,12 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 // 设置扫描路径
 @ComponentScan({"com.example.boot3.aop.service", "com.example.boot3.aop.advice"})
 public class AopConfig {
+
+    /**
+     * 创建代理的核心方法 {@link AbstractAutoProxyCreator#createProxy(Class, String, Object[], TargetSource)}
+     * 工厂设计的核心本质只有一个：创建对象实例
+     */
+    public void createProxy() {
+
+    }
 }
