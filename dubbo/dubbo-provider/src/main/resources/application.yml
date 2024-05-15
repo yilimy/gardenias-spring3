@@ -1,3 +1,21 @@
+#spring:
+#  # io.dubbo.springboot的配置
+#  dubbo:
+#    application:
+#      name: dubbo-provider
+#    # 配置注册中心
+#    registry:
+#      address: zookeeper://127.0.0.1
+#      port: 2181
+#      # 注册到zk的超时时间
+#      timeout: 10000
+#    protocol:
+#      # 协议
+#      name: dubbo
+#      port: -1
+#    # 指定dubbo包扫描路径
+#    scan: com.example.dubbo.provider.service
+
 dubbo:
   application:
     name: dubbo-provider

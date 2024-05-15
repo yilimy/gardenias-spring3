@@ -2,13 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.example</groupId>
-        <artifactId>SpringBoot3Demo</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.2</version>
+        <relativePath/>
     </parent>
-
+    <groupId>com.example</groupId>
     <artifactId>dubbo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>dubbo</name>
     <modules>
@@ -22,19 +23,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <skipTests>true</skipTests>
-<!--        <dubbo.version>3.2.0-beta.4</dubbo.version>-->
-<!--        <dubbo.version>3.1.5</dubbo.version>-->
-        <dubbo.version>3.0.2</dubbo.version>
+        <dubbo.version>3.2.9</dubbo.version>
         <curator.version>2.12.0</curator.version>
-        <hutool.version>5.0.7</hutool.version>
+        <spring-boot.version>3.0.2</spring-boot.version>
+        <hutool.version>5.8.25</hutool.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -49,56 +44,67 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <version>3.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dubbo.springboot</groupId>
+                <artifactId>spring-boot-starter-dubbo</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.101tec</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo-spring-boot-starter</artifactId>
+                <artifactId>dubbo</artifactId>
                 <version>${dubbo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.22.0-CR2</version>
             </dependency>
             <!--
                 dubbo 2.6以前引入的zookeeper版本是com.101tec:zkclient
                 dubbo 2.6及以后的版本引入的curator操作zookeeper：org.apache.curator:curator-framework:2.12.0
             -->
-            <dependency>
-                <groupId>org.apache.curator</groupId>
-                <artifactId>curator-framework</artifactId>
-                <version>${curator.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.apache.curator</groupId>-->
+<!--                <artifactId>curator-framework</artifactId>-->
+<!--                <version>${curator.version}</version>-->
+<!--            </dependency>-->
+<!--            <dependency>-->
+<!--                <groupId>org.apache.curator</groupId>-->
+<!--                <artifactId>curator-recipes</artifactId>-->
+<!--                <version>${curator.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo-bom</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--            <dependency>-->
-<!--                <groupId>org.apache.dubbo</groupId>-->
-<!--                <artifactId>dubbo-dependencies-zookeeper-curator5</artifactId>-->
-<!--                <version>${dubbo.version}</version>-->
-<!--                <type>pom</type>-->
-<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
     <repositories>
-        <repository>
-            <id>repo1</id>
-            <name>repo1</name>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
 <!--        <repository>-->
 <!--            <id>aliyun</id>-->
 <!--            <url>https://maven.aliyun.com/repository/central</url>-->
@@ -109,11 +115,23 @@
 <!--                <enabled>true</enabled>-->
 <!--            </snapshots>-->
 <!--        </repository>-->
-<!--        <repository>-->
-<!--            <id>aliyun</id>-->
-<!--            <name>aliyun</name>-->
-<!--            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>-->
-<!--        </repository>-->
+        <!-- Dubbo 09 配置开发环境 href="https://www.bilibili.com/video/BV17w4m127wj?p=9&vd_source=ae63e735dcccc0734ec3b3b043a159f9" -->
+        <repository>
+            <id>aliyun</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>repo1</id>
+            <name>repo1</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
 <!--        <repository>-->
 <!--            <id>ali</id>-->
 <!--            <name>ali</name>-->

@@ -1,8 +1,8 @@
 package com.example.dubbo.provider.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.example.dubbo.inter.bean.UserAddress;
 import com.example.dubbo.inter.service.UserService;
-import org.apache.dubbo.config.annotation.DubboService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author caimeng
  * @date 2024/4/29 10:46
  */
-@DubboService
+@Service
 public class UserServiceImpl implements UserService {
     @Override
     public List<UserAddress> getUserAddressList(String userId) {
