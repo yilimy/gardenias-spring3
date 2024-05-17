@@ -8,7 +8,7 @@
     </parent>
     <artifactId>mybatis</artifactId>
 
-    <name>Maven</name>
+    <name>mybatis</name>
     <url>http://maven.apache.org/</url>
     <inceptionYear>2001</inceptionYear>
 
@@ -25,6 +25,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.13.2</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -43,14 +44,7 @@
         </dependency>
     </dependencies>
     <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>3.8.1</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
+
     </dependencyManagement>
 
 </project>

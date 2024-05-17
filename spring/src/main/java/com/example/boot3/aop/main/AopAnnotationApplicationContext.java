@@ -1,6 +1,5 @@
 package com.example.boot3.aop.main;
 
-import com.example.boot3.aop.config.AopConfig;
 import com.example.boot3.aop.config.AopConfig4ExposeProxy;
 import com.example.boot3.aop.service.IMessageService;
 import lombok.extern.slf4j.Slf4j;

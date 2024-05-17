@@ -41,4 +41,8 @@ public class Orders implements Serializable {
      * 支付类型 1- 微信; 2 - 支付宝
      */
     private Integer payMethod;
+    /**
+     * 版本号
+     */
+    private String version;
 }

@@ -41,8 +41,9 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>3.8.1</version>
-                <scope>test</scope>
+                <version>4.13.2</version>
+                <!-- 有些测试类直接写在main包中了 -->
+<!--                <scope>test</scope>-->
             </dependency>
         </dependencies>
     </dependencyManagement>
