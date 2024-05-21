@@ -17,10 +17,17 @@ import org.springframework.beans.factory.annotation.Value;
  * <p>
  *     version: 如果@Reference不配置，会出现报错，500
  *     该配置会在 <a href="http://localhost:38080/#/service?filter=%2a&pattern=service">服务查询</a> 面板中,显示版本号,和其对应的接口
+ * <p>
+ *     限流
+ *     限流分为漏桶算法、令牌桶算法。
+ *     漏桶算法给后台的流量是恒定的，天然决定了不能应对突发流量；
+ *     令牌桶算法，定期向桶中投放令牌，可以提高令牌的投放来应对突发流量。
+ *     executes 连接控制 {@link com.alibaba.dubbo.config.AbstractServiceConfig#executes}
+ *     actives 并发控制 {@link com.alibaba.dubbo.config.AbstractMethodConfig#actives}
  * @author caimeng
  * @date 2024/5/15 15:23
  */
-@Service(timeout = 3000, retries = 2, version = "v1.0.0")
+@Service(timeout = 3000, retries = 2, version = "v1.0.0", executes = 0)
 //@Service(timeout = 3000, retries = 2, version = "v1.1.0")
 //@Service(timeout = 3000, retries = 2, version = "v2.0.0")
 public class IOrderServiceImpl implements IOrderService {
