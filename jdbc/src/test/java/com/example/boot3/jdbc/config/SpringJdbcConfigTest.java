@@ -1,18 +1,26 @@
 package com.example.boot3.jdbc.config;
 
+import cn.hutool.core.util.RandomUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.random.RandomGenerator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author caimeng
@@ -82,5 +90,54 @@ public class SpringJdbcConfigTest {
             return pstmt;
         }, keyHolder);
         log.info("SQL更新数据行数:{}, 当前数据ID:{}", count, keyHolder.getKey());
+    }
+
+    /**
+     * 参数批处理插入
+     */
+    @SneakyThrows
+    @Test
+    public void batchTest() {
+        // List.of 1.9
+        List<String> books = List.of("Spring开发实战", "SSM开发实战", "Netty开发实战", "Mybatis开发实战", "Redis开发实战", "Dubbo开发实战");
+        List<Double> prices = Stream.generate(() -> RandomUtil.randomDouble(500, 2, RoundingMode.UP)).limit(6).toList();
+        String insert = "INSERT INTO book(title, author, price) VALUES (?, ?, ?)";
+        int[] results = jdbcTemplate.batchUpdate(insert, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, books.get(i));
+                ps.setString(2, "NPC");
+                ps.setDouble(3, prices.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return books.size();
+            }
+        });
+        log.info("results = {}", results);
+    }
+
+    /**
+     * 对象批处理插入
+     * <p>
+     *     场景：
+     *     定义一个凌晨12点任务，通过某个系统抓取数据（CVS, JSON, XML, EXCEL）
+     *     当需要写入时，一般是1000条左右写入一次（根据实际环境测试决定参数），分批次进行写入
+     */
+    @SneakyThrows
+    @Test
+    public void batchObjectTest() {
+        List<Object[]> objects = List.of(
+                new Object[]{"Spring开发实战", "NPCObject", 11.2},
+                new Object[]{"SSM开发实战", "NPCObject", 12.3},
+                new Object[]{"MQ开发实战", "NPCObject", 13.4},
+                new Object[]{"SC开发实战", "NPCObject", 14.5},
+                new Object[]{"BBC开发实战", "NPCObject", 15.6},
+                new Object[]{"QT开发实战", "NPCObject", 26.7}
+        );
+        String insert = "INSERT INTO book(title, author, price) VALUES (?, ?, ?)";
+        int[] ints = jdbcTemplate.batchUpdate(insert, objects);
+        log.info("ints = {}", ints);
     }
 }
