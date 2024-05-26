@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.MethodValidationInterceptor;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * @author caimeng

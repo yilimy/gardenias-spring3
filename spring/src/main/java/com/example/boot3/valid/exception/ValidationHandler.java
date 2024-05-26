@@ -1,17 +1,16 @@
 package com.example.boot3.valid.exception;
 
 import com.example.boot3.valid.config.FastFailedValidConfig;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Set;
 

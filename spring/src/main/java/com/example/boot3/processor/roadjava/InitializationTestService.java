@@ -1,9 +1,9 @@
 package com.example.boot3.processor.roadjava;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.annotation.PostConstruct;
 
 /**
  * 为{@link MyBeanPostProcessor}提供的初始化三种方法的例子
