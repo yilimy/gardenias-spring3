@@ -102,6 +102,7 @@
         <module>dubbo</module>
         <module>mybatis</module>
         <module>jdbc</module>
+        <module>mybatis-spring</module>
     </modules>
 
 </project>
