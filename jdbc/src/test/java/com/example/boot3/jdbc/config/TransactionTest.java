@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 测试：事务控制
  * @author caimeng
  * @date 2024/5/27 11:32
  */
