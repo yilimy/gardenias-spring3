@@ -275,4 +275,27 @@ public class TransactionTest {
         Book book = jdbcTemplate.queryForObject(querySql, bookMapper, bid);
         log.info("数据重置结果: book={}", book);
     }
+
+    /**
+     * 测试事务只读
+     */
+    @Test
+    public void readOnlyTest() {
+        String updateSql = "update book set title=?, price=? where bid=?";
+        String querySql = "select bid, title, author, price from book where bid=?";
+        DefaultTransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
+        transactionDefinition.setReadOnly(true);
+        TransactionStatus status = transactionManager.getTransaction(transactionDefinition);
+        BookMapper bookMapper = new BookMapper();
+        /*
+         * 查询也是可以开启事务的。
+         * 日常开发中，为了防止可能产生的任何更新操作，会指定特定的业务中配置只读事务
+         */
+        Book book = jdbcTemplate.queryForObject(querySql, bookMapper, 50);
+        // 数据读取结果: book=Book(bid=50, title=Redis开发实战, author=Andy, price=77.32)
+        log.info("数据读取结果: book={}", book);
+        // Connection is read-only. Queries leading to data modification are not allowed
+        jdbcTemplate.update(updateSql, "Gradle开发实战", 123.54, 50);
+        transactionManager.commit(status);
+    }
 }
