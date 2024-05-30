@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development-130">
+        <environment id="development-130">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://192.168.200.130:3306/test_sql?useUnicode=true&amp;allowMultiQuerie=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="Gm02_prd8!"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--
+        加载Mapper有几种方式？
+        四种
+        点开mappers标签，mappers扫描的package，mapper标签描述的三种：resource, url, class。共计4种。
+    -->
+    <mappers>
+        <mapper resource="core/mapper/BlogMapper.xml"/>
+    </mappers>
+</configuration>
