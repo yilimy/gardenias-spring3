@@ -11,6 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 测试：ThreadLocal
+ * 参考: <a href="https://www.bilibili.com/video/BV1US421P7vt/">如何在线程池中传递 ThreadLocal的值</a>
  * @author caimeng
  * @date 2024/5/30 9:23
  */
