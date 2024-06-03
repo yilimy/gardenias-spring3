@@ -8,36 +8,27 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * 测试事务控制注解
- * <p>
- *     spring-base.xml 扫描注入spring bean
- *     spring-transaction.xml 开启事务
  * @author caimeng
  * @date 2024/6/3 12:01
  */
 @ContextConfiguration(locations = {
-        // 扫描注入spring bean
+        // 注入spring bean
         "classpath:spring/spring-base.xml",
-        // 开启事务注解
-        "classpath:spring/spring-transaction.xml"
+        // 通过tx命名空间进行AOP切面事务控制
+        "classpath:spring/spring-transaction-aop.xml"
 })
 @ExtendWith(SpringExtension.class)
-public class BookServiceTest {
+public class PubWithoutAnnotationServiceTest {
     @Autowired
-    private BookService bookService;
+    private PubWithoutAnnotationService pubService;
 
     /**
-     * 事务中出现了错误，删除代码不执行
+     * 测试事务切面控制
+     * 测试失败：服务启动失败
+     *      Cannot resolve reference to bean 'transactionPointCut' while setting bean property 'pointcut'
      */
     @Test
-    public void removeTest() {
-        bookService.remove();
-    }
-
-    /**
-     * 开启事务： 删除一条数据，新增一条数据
-     */
-    @Test
-    public void removeSuccessTest() {
-        bookService.removeSuccess();
+    public void editAllTest() {
+        pubService.editAll();
     }
 }

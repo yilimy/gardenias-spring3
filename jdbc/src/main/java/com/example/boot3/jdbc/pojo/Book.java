@@ -1,6 +1,9 @@
 package com.example.boot3.jdbc.pojo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * java 关联结构对象
@@ -13,6 +16,9 @@ import lombok.Data;
  * @date 2024/5/27 10:29
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Book {
     /**
      * 对应主键

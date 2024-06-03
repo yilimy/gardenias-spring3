@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 该配置中开启了注解的事务控制 -->
+    <tx:annotation-driven />
+    <tx:advice id="txAdvice" >
+    <!-- 进行切面配置 -->
+        <tx:attributes>
+            <!-- 定义方法的名称匹配，以及该业务方法对应的事务处理方案 -->
+            <tx:method name="add*"/>
+            <tx:method name="edit*" propagation="REQUIRED"/>
+            <tx:method name="delete*"/>
+            <tx:method name="insert*"/>
+            <tx:method name="update*"/>
+            <tx:method name="remove*"/>
+            <tx:method name="change*"/>
+            <tx:method name="get*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <!-- 使用切面表达式，需要引入解析表达式的依赖org.springframework:spring-aspects -->
+        <aop:pointcut id="transactionPointcut"
+                      expression="execution(public * com.example.boot3.jdbc.service.impl.PubWithoutAnnotationServiceImpl.editAll())"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointcut"/>
+    </aop:config>
+</beans>

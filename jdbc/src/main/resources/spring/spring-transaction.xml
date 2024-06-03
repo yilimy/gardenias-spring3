@@ -7,6 +7,6 @@
             http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/tx
             http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <!-- 该配置中开启了事务控制 -->
+    <!-- 该配置中开启了注解的事务控制 -->
     <tx:annotation-driven />
 </beans>
