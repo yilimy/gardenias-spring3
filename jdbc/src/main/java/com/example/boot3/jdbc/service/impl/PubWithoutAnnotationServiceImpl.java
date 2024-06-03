@@ -36,6 +36,7 @@ public class PubWithoutAnnotationServiceImpl implements PubWithoutAnnotationServ
         int update = jdbcTemplate.update(updateSql, book.getTitle(), book.getAuthor(), book.getPrice(), book.getBid());
         return update > 0;
     }
+
     @Override
     public boolean editAll() {
         Book bookA = Book.builder().title("Java进阶开发实战").author("小孩").price(45.67).bid(8L).build();

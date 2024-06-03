@@ -29,7 +29,7 @@
     <aop:config>
         <!-- 使用切面表达式，需要引入解析表达式的依赖org.springframework:spring-aspects -->
         <aop:pointcut id="transactionPointcut"
-                      expression="execution(public * com.example.boot3.jdbc.service.impl.PubWithoutAnnotationServiceImpl.editAll())"/>
+                      expression="execution(public * com.example.boot3.jdbc..PubWithoutAnnotationServiceImpl.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="transactionPointcut"/>
     </aop:config>
 </beans>
