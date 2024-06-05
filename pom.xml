@@ -48,6 +48,11 @@
                 <!-- 有些测试类直接写在main包中了 -->
 <!--                <scope>test</scope>-->
             </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>8.0.29</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -103,6 +108,7 @@
         <module>mybatis</module>
         <module>jdbc</module>
         <module>mybatis-spring</module>
+        <module>jpa</module>
     </modules>
 
 </project>
