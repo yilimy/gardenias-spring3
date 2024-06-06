@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 通过xml配置拦截器 -->
+    <plugins>
+        <plugin interceptor="com.example.mybatis.core.interceptor.SqlPrintInterceptor" />
+    </plugins>
     <environments default="development-130">
         <environment id="development-130">
             <transactionManager type="JDBC"/>
