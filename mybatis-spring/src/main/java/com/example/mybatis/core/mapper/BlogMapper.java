@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
  * @date 2024/5/29 14:44
  */
 public interface BlogMapper {
-//    @Select("select * from blog where id=#{id}}")
     Blog selectBlog(int id);
+    @Select("select * from blog where id=#{id}")
+    Blog selectBlogByAnnotation(int id);
 }

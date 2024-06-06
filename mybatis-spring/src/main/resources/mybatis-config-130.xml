@@ -21,5 +21,6 @@
     -->
     <mappers>
         <mapper resource="core/mapper/BlogMapper.xml"/>
+        <mapper class="com.example.mybatis.core.mapper.BlogWithAnnotationMapper"/>
     </mappers>
 </configuration>
