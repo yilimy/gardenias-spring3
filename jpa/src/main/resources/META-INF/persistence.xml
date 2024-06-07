@@ -4,6 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+
     <!-- 持久化单元 -->
     <persistence-unit name="exampleJPA">
         <!-- 实体类 -->
@@ -45,6 +46,63 @@
             <!-- 格式化SQL -->
             <property name="hibernate.format_sql"
                       value="false"/>
+<!--            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="exampleJpaDdlCreate">
+        <class>com.example.boot3.jpa.po.CourseEntity</class>
+        <properties>
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hikari.dataSourceClassName"
+                      value="com.zaxxer.hikari.HikariDataSource"/>
+            <property name="org.hibernate.minimumIdle" value="5"/>
+            <property name="org.hibernate.maximumPoolSize" value="10"/>
+            <property name="org.hibernate.idleTimeout" value="3000"/>
+            <property name="hibernate.hikari.dataSource.driverClassName"
+                      value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.hikari.dataSource.jdbcUrl"
+                      value="jdbc:mysql://192.168.200.130:3306/test_sql"/>
+            <property name="hibernate.hikari.dataSource.username"
+                      value="root"/>
+            <property name="hibernate.hikari.dataSource.password"
+                      value="Gm02_prd8!"/>
+            <property name="hibernate.show_sql"
+                      value="true"/>
+            <property name="hibernate.format_sql"
+                      value="false"/>
+            <!-- 配置DDL -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="exampleJpaDdlUpdate">
+        <class>com.example.boot3.jpa.po.CourseEntity</class>
+        <properties>
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hikari.dataSourceClassName"
+                      value="com.zaxxer.hikari.HikariDataSource"/>
+            <property name="org.hibernate.minimumIdle" value="5"/>
+            <property name="org.hibernate.maximumPoolSize" value="10"/>
+            <property name="org.hibernate.idleTimeout" value="3000"/>
+            <property name="hibernate.hikari.dataSource.driverClassName"
+                      value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.hikari.dataSource.jdbcUrl"
+                      value="jdbc:mysql://192.168.200.130:3306/test_sql"/>
+            <property name="hibernate.hikari.dataSource.username"
+                      value="root"/>
+            <property name="hibernate.hikari.dataSource.password"
+                      value="Gm02_prd8!"/>
+            <property name="hibernate.show_sql"
+                      value="true"/>
+            <property name="hibernate.format_sql"
+                      value="false"/>
+            <!-- 配置DDL -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
     </persistence-unit>
 </persistence>

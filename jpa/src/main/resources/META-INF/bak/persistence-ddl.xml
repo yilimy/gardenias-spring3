@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence-unit name="exampleJpaDdlCreate">
+    <!-- 实体类 -->
+    <class>com.example.boot3.jpa.po.CourseEntity</class>
+    <properties>
+        <!-- 使用 HikariCP 实现数据库连接池管理 -->
+        <property name="hibernate.connection.provider_class"
+                  value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+        <!--
+            数据库方言
+            配置不同的方言就可以实现不同数据库的移植处理
+        -->
+        <property name="hibernate.dialect"
+                  value="org.hibernate.dialect.MySQLDialect"/>
+        <!-- HikariCP数据库源 -->
+        <property name="hibernate.hikari.dataSourceClassName"
+                  value="com.zaxxer.hikari.HikariDataSource"/>
+        <!-- 空闲时连接池数量 -->
+        <property name="org.hibernate.minimumIdle" value="5"/>
+        <!-- 连接池最大数量 -->
+        <property name="org.hibernate.maximumPoolSize" value="10"/>
+        <!-- 连接最小维持时长 -->
+        <property name="org.hibernate.idleTimeout" value="3000"/>
+        <!-- 驱动程序 -->
+        <property name="hibernate.hikari.dataSource.driverClassName"
+                  value="com.mysql.cj.jdbc.Driver"/>
+        <!-- 连接地址 -->
+        <property name="hibernate.hikari.dataSource.jdbcUrl"
+                  value="jdbc:mysql://192.168.200.130:3306/test_sql"/>
+        <!-- 用户名 -->
+        <property name="hibernate.hikari.dataSource.username"
+                  value="root"/>
+        <!-- 密码 -->
+        <property name="hibernate.hikari.dataSource.password"
+                  value="Gm02_prd8!"/>
+        <!-- 显示执行SQL -->
+        <property name="hibernate.show_sql"
+                  value="true"/>
+        <!-- 格式化SQL -->
+        <property name="hibernate.format_sql"
+                  value="false"/>
+        <!-- 配置DDL -->
+        <property name="hibernate.hbm2ddl.auto" value="create"/>
+    </properties>
+</persistence-unit>
