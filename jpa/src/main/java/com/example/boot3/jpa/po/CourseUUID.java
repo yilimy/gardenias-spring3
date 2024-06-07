@@ -18,33 +18,30 @@ import java.util.Date;
 
 /**
  * 表 course 对应的实体类
+ * 与 {@link CourseEntity} 的主键生成方式不同，使用的是UUID
  * @author caimeng
  * @date 2024/6/4 15:23
  */
 @Data
-// Hibernate 是通过反射来创建关系映射的，所以必须要有无参构造器
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-// 根据该注解扫描？
 @Entity
-// 如果类名称与表名称一致，则不需要定义 Table.name
-@Table(name = "course", schema = "test_sql")
-public class CourseEntity {
-    // 生成策略: 交由数据库生成
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // 定义主键标记
-    @Id
-    /*
-     * 如果字段名称和属性名称一致，则不需要 @Column 注解。
-     * 尽量保持一致，避免不必要的注解
+/*
+ * 表名不能和 CourseEntity 一致，否则如果先创建CourseEntity的表，
+ * 在字段cid的数据类型确定后，CourseUUID就不能执行操作了，因为没有删除或修改列的操作（只有新增）
+ */
+@Table(name = "course_identity", schema = "test_sql")
+public class CourseUUID {
+    /**
+     * 修改主键生成策略(UUID)后，主键类型一般改为String
      */
-//    @Column(name = "cid")
-    private long cid;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
+    private String cid;
     @Basic
     private String cname;
     @Basic
-    // 表示日期状态的数据
     @Temporal(TemporalType.DATE)
     private Date start;
     @Basic
