@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="orderService" class="com.example.boot3.bv1cn4y1o7q3.service.OrderService"/>
+    <bean id="userService" class="com.example.boot3.bv1cn4y1o7q3.service.UserService"/>
+    <bean id="mixService" class="com.example.boot3.bv1cn4y1o7q3.service.MixService">
+        <constructor-arg ref="userService"/>
+        <constructor-arg ref="orderService"/>
+    </bean>
+    <bean id="mixStaticInstanceService" class="com.example.boot3.bv1cn4y1o7q3.service.MixStaticInstanceService"
+          factory-method="newInstance" >
+        <constructor-arg index="0" type="com.example.boot3.bv1cn4y1o7q3.service.OrderService" ref="orderService"/>
+        <constructor-arg index="1" type="com.example.boot3.bv1cn4y1o7q3.service.UserService" ref="userService"/>
+    </bean>
+</beans>
