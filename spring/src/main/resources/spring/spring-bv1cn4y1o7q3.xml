@@ -13,4 +13,6 @@
         <constructor-arg index="0" type="com.example.boot3.bv1cn4y1o7q3.service.OrderService" ref="orderService"/>
         <constructor-arg index="1" type="com.example.boot3.bv1cn4y1o7q3.service.UserService" ref="userService"/>
     </bean>
+    <bean id="sequenceService" class="com.example.boot3.bv1cn4y1o7q3.service.SequenceService"
+          init-method="xmlInit" />
 </beans>
