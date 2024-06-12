@@ -5,6 +5,7 @@ import com.example.boot3.jdbc.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -47,6 +48,34 @@ public class BookServiceImpl implements BookService {
         String updateSql = "UPDATE book SET title=?, author=?, price=? WHERE bid=?";
         int update = jdbcTemplate.update(updateSql, book.getTitle(), book.getAuthor(), book.getPrice(), book.getBid());
         return update > 0;
+    }
+
+    @Transactional
+    @Override
+    public void proxyTransactional() {
+        System.out.println("有接口的动态代理执行事务");
+        testNever();
+    }
+
+    @Transactional
+    public void testTransactionalInvoke() {
+        System.out.println("无接口的动态代理执行事务");
+        testNever();
+    }
+
+    /**
+     * 以非事务的方式运行，如果当前存在事务则抛异常。
+     */
+    @Transactional(propagation = Propagation.NEVER)
+    public void testNever() {
+        System.out.println("调用事务控制：NEVER");
+        simpleSelect();
+    }
+
+    private void simpleSelect() {
+        String sql = "DElETE * FROM book WHERE bid = ?";
+        Book book = jdbcTemplate.queryForObject(sql, Book.class, 3);
+        System.out.println(book);
     }
 
 }

@@ -15,5 +15,9 @@ public interface BookService {
     boolean add(Book book);
     boolean edit(Book book);
 
+    /**
+     * 测试JDK的事务控制注解
+     */
+    void proxyTransactional();
 
 }
