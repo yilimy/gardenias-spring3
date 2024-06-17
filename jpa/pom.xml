@@ -10,6 +10,9 @@
     <artifactId>jpa</artifactId>
     <name>jpa</name>
     <url>http://maven.apache.org</url>
+    <properties>
+        <jab.version>2.3.0</jab.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
@@ -37,6 +40,35 @@
             <artifactId>hibernate-core-jakarta</artifactId>
             <version>5.6.9.Final</version>
         </dependency>
+        <!-- jcache缓存标准库 -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>6.1.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>3.10.0</version>
+            <classifier>jakarta</classifier>
+        </dependency>
+        <!-- 升级到JAXB组件的jdk17的解决方案 a3354049-e290-4f38-af05-572bf2aaf941 -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>${jab.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>${jab.version}</version>
+        </dependency>
+        <!-- end a3354049-e290-4f38-af05-572bf2aaf941 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

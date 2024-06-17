@@ -133,4 +133,66 @@
             <property name="hibernate.hbm2ddl.auto" value="create"/>
         </properties>
     </persistence-unit>
+    <!-- 含有二级缓存的配置 -->
+    <persistence-unit name="exampleJPACache">
+        <class>com.example.boot3.jpa.po.CourseCache</class>
+        <!-- 二级缓存处理模式 -->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <properties>
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hikari.dataSourceClassName"
+                      value="com.zaxxer.hikari.HikariDataSource"/>
+            <property name="org.hibernate.minimumIdle" value="5"/>
+            <property name="org.hibernate.maximumPoolSize" value="10"/>
+            <property name="org.hibernate.idleTimeout" value="3000"/>
+            <property name="hibernate.hikari.dataSource.driverClassName"
+                      value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.hikari.dataSource.jdbcUrl"
+                      value="jdbc:mysql://192.168.200.130:3306/test_sql"/>
+            <property name="hibernate.hikari.dataSource.username" value="root"/>
+            <property name="hibernate.hikari.dataSource.password" value="Gm02_prd8!"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <!-- 定义JCache的工厂类，通过该类获取JSR107实现类 -->
+            <property name="hibernate.cache.region.factory_class"
+                      value="org.hibernate.cache.jcache.internal.JCacheRegionFactory"/>
+            <!-- 在应用中启用二级缓存，即EntityManagerFactory级缓存 -->
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <!-- EHCache组件提供的CachingProvider接口实现类，用于EHCache缓存 -->
+            <property name="hibernate.javax.cache.provider" value="org.ehcache.jsr107.EhcacheCachingProvider"/>
+        </properties>
+    </persistence-unit>
+    <!-- 含有查询缓存的二级缓存的配置 -->
+    <persistence-unit name="exampleJPACacheWithQuery">
+        <class>com.example.boot3.jpa.po.CourseCache</class>
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <properties>
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hikari.dataSourceClassName"
+                      value="com.zaxxer.hikari.HikariDataSource"/>
+            <property name="org.hibernate.minimumIdle" value="5"/>
+            <property name="org.hibernate.maximumPoolSize" value="10"/>
+            <property name="org.hibernate.idleTimeout" value="3000"/>
+            <property name="hibernate.hikari.dataSource.driverClassName"
+                      value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.hikari.dataSource.jdbcUrl"
+                      value="jdbc:mysql://192.168.200.130:3306/test_sql"/>
+            <property name="hibernate.hikari.dataSource.username" value="root"/>
+            <property name="hibernate.hikari.dataSource.password" value="Gm02_prd8!"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.cache.region.factory_class"
+                      value="org.hibernate.cache.jcache.internal.JCacheRegionFactory"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.javax.cache.provider" value="org.ehcache.jsr107.EhcacheCachingProvider"/>
+            <!-- 开启查询缓存 -->
+            <property name="hibernate.cache.use_query_cache" value="true"/>
+        </properties>
+    </persistence-unit>
 </persistence>
