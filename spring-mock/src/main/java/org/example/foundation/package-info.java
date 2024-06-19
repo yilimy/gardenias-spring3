@@ -15,6 +15,11 @@
  *     10. @Configuration
  *     11. 循环依赖
  *     12. Spring 整合 Mybatis
+ * 相较于 <i>org.example.mock</i> 包，此处是直接使用spring的组件，而不是自己模拟实现其功能
+ * <p>
+ *     Bean创建的生命周期，其一
+ *     userService --> 无参构造方法 --> 普通对象 --> 依赖注入 --> Bean对象
+ *
  * @author caimeng
  * @date 2024/6/14 18:47
  */
