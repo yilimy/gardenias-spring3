@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -54,4 +55,7 @@ public class CourseEntity {
     private Integer credit;
     @Basic
     private Integer num;
+    // =================== 2024-06-20 追加，版本号 ===================
+    @Version
+    private Integer vseq;
 }
