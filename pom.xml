@@ -110,6 +110,7 @@
         <module>mybatis-spring</module>
         <module>jpa</module>
         <module>spring-mock</module>
+        <module>junit</module>
     </modules>
 
 </project>
