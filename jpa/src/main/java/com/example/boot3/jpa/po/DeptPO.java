@@ -37,7 +37,14 @@ public class DeptPO {
     )
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "DEPT_GENERATOR")
     private long deptno;
+    /**
+     * 部门名称
+     */
     private String dname;
+    /**
+     * 部门位置
+     */
+    private String loc;
 
     public DeptPO(String dname) {
         this.dname = dname;

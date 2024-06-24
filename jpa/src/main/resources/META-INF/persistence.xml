@@ -10,6 +10,14 @@
         <!-- 实体类 -->
         <class>com.example.boot3.jpa.po.CourseEntity</class>
         <class>com.example.boot3.jpa.po.DeptPO</class>
+        <class>com.example.boot3.jpa.po.Dept</class>
+        <class>com.example.boot3.jpa.po.eager.DeptEager</class>
+        <class>com.example.boot3.jpa.po.Emp</class>
+        <class>com.example.boot3.jpa.po.eager.EmpEager</class>
+        <class>com.example.boot3.jpa.po.Details</class>
+        <class>com.example.boot3.jpa.po.lazy.DetailsLazy</class>
+        <class>com.example.boot3.jpa.po.Login</class>
+        <class>com.example.boot3.jpa.po.lazy.LoginLazy</class>
         <properties>
             <!-- 使用 HikariCP 实现数据库连接池管理 -->
             <property name="hibernate.connection.provider_class"
