@@ -3,7 +3,110 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mybatis.core.mapper.BlogMapper">
+
+    <resultMap id="dateResult" type="com.example.mybatis.core.pojo.Blog">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="title" column="title" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="context" column="context" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" jdbcType="DATE" javaType="java.util.Date"/>
+    </resultMap>
+
+    <resultMap id="timeStampResult" type="com.example.mybatis.core.pojo.Blog">
+        <id property="id" column="id" javaType="java.lang.Integer" jdbcType="BIGINT"/>
+        <result property="userName" column="user_name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="title" column="title" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="context" column="context" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+    </resultMap>
+
     <select id="selectBlog" resultType="com.example.mybatis.core.pojo.Blog">
         select * from Blog where id = #{id}
     </select>
+
+    <select id="selectToDateMapById" resultMap="dateResult">
+        select * from Blog where id = #{id}
+    </select>
+
+    <select id="selectByTimeStampMapById" resultMap="timeStampResult">
+        select * from Blog where id = #{id}
+    </select>
+
+    <insert id="addByDate" parameterType="com.example.mybatis.core.pojo.Blog"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id, jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="context != null">
+                #{context, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="addByTimeStamp" parameterType="com.example.mybatis.core.pojo.Blog"
+            useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="context != null">
+                context,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id, jdbcType=BIGINT},
+            </if>
+            <if test="userName != null">
+                #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title, jdbcType=VARCHAR},
+            </if>
+            <if test="context != null">
+                #{context, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
 </mapper>
