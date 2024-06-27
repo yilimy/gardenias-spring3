@@ -33,6 +33,12 @@
  * <p>
  *     如果要启用JPA的配置，那么就要创建一个jpa.properties配置文件，在该文件中定义JPA属性项。
  *     {@link com.example.boot3.datajpa.config.SpringDataJPAConfig}
+ * <p>
+ *     在使用 SpringDataJPA 技术的时候，所有的接口需要使用到一个注解"@RepositoryDefinition"进行配置
+ *     {@link org.springframework.data.repository.RepositoryDefinition}
+ *     {@link com.example.boot3.datajpa.dao.ICompanyDao}
+ *     <a href="https://www.bilibili.com/video/BV1Vs421T7Ks/" />
+ *     但是，如果不想使用该注解，也可以采用接口继承的父接口的方式实现。
  * @author caimeng
  * @date 2024/6/27 14:30
  */
