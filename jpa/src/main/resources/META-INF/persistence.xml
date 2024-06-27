@@ -18,6 +18,8 @@
         <class>com.example.boot3.jpa.po.lazy.DetailsLazy</class>
         <class>com.example.boot3.jpa.po.Login</class>
         <class>com.example.boot3.jpa.po.lazy.LoginLazy</class>
+        <class>com.example.boot3.jpa.po.Member</class>
+        <class>com.example.boot3.jpa.po.Role</class>
         <properties>
             <!-- 使用 HikariCP 实现数据库连接池管理 -->
             <property name="hibernate.connection.provider_class"

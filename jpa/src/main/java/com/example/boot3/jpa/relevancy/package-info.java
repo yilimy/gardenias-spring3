@@ -45,6 +45,19 @@
  *     懒加载的弊端:
  *          按照常规的业务层设计来说,每一次实现数据库查询之后,就应该进行数据库连接的释放.
  *          一旦数据库连接释放之后,这种懒加载操作就会出现问题.
+ * <p>
+ *     多对多
+ *     <a href="https://www.bilibili.com/video/BV1F7421d7Ht/" />
+ *     在一个用户权限管理系统中，多对多的结构是最常见的（Spring Security 设计里面也是最常见的）
+ *     e.g.
+ *     一个用户有多个权限（角色也是权限信息），常见的操作就是多对多的模型。
+ *     Shiro涉及角色和权限，一个角色下会分为若干个权限
+ *     {@link com.example.boot3.jpa.po.Member}
+ *     {@link com.example.boot3.jpa.po.Role}
+ *     注意：
+ *          数据库有多对多的关联表 member_role，但是没有 member_role 的实体类
+ *          由于 member_role 这个表中只有外键关联，因此该表交由 JPA 为维护，代码中提供对应的注解即可。
+ *          如果外键关联表（member_role）中含有其他的数据项，则不能不能用多对多，而只能一对多。
  * @author caimeng
  * @date 2024/6/24 9:28
  */

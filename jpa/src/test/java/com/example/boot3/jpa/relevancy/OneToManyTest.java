@@ -136,7 +136,7 @@ public class OneToManyTest extends EntityManagerBaseTest {
 
     /**
      * 测试:抓取数据为 EAGER, 查询全部数据
-     * 查询次数为 1+N 次,此方案查询效率极低,性能很差.
+     * 查询次数为 1+N 次,此方案查询效率极低,性能很差，而且容易出现各类不确定的问题。
      */
     @SneakyThrows
     @Test
