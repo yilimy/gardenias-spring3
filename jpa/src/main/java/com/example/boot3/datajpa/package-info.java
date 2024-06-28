@@ -45,7 +45,14 @@
  *     SpringDataJPA推荐的做法：通过方法名称来实现查询
  *     <a href="https://docs.spring.io/spring-data/jpa/docs/3.0.0-M4/reference/html/#jpa.query-methods">官方文档</a>
  *     在SpringDataJPA中，方法以find开头表示进行的是数据查询的处理操作，而后在find之后使用By进行字段的定义，如果使用多字段，通过AND连接。
- *
+ * <p>
+ *     CrudRepository数据接口
+ *     <a href="https://www.bilibili.com/video/BV15S411A7no/" />
+ *     虽然现在可以由SpringData操作生成一系列的DAO接口实例，但是这些实例并没有对于CRUD功能进行抽象，
+ *     e.g.
+ *          现在如果有100张数据表，那么可肯定需要重复定义100次的CRUD操作，所以，为了简化这一功能，在Repository接口中提供了其子接口
+ *          {@link org.springframework.data.repository.CrudRepository}
+ *          {@link com.example.boot3.datajpa.dao.ICompanyBaseMapper}
  * @author caimeng
  * @date 2024/6/27 14:30
  */

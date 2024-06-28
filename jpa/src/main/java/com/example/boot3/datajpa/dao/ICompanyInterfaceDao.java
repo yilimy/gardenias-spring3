@@ -17,6 +17,12 @@ import java.util.Set;
  *     简单的增加和查询肯定不够正常的工作需要，需要对接口进行扩充。
  *     1. 直接写上具体的语句
  *     2. 通过方法名称配置，根据方法名称来决定功能的使用
+ * <p>
+ *     迭代路线:
+ *     {@link ICompanyDao}
+ *     {@link ICompanyInterfaceDao}
+ *     {@link ICompanyMapper}
+ *     {@link ICompanyBaseMapper}
  * @author caimeng
  * @date 2024/6/27 17:26
  */
