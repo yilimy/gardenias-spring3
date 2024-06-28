@@ -39,6 +39,13 @@
  *     {@link com.example.boot3.datajpa.dao.ICompanyDao}
  *     <a href="https://www.bilibili.com/video/BV1Vs421T7Ks/" />
  *     但是，如果不想使用该注解，也可以采用接口继承的父接口的方式实现。
+ * <p>
+ *     方法映射
+ *     {@link com.example.boot3.datajpa.dao.ICompanyMapper}
+ *     SpringDataJPA推荐的做法：通过方法名称来实现查询
+ *     <a href="https://docs.spring.io/spring-data/jpa/docs/3.0.0-M4/reference/html/#jpa.query-methods">官方文档</a>
+ *     在SpringDataJPA中，方法以find开头表示进行的是数据查询的处理操作，而后在find之后使用By进行字段的定义，如果使用多字段，通过AND连接。
+ *
  * @author caimeng
  * @date 2024/6/27 14:30
  */

@@ -28,6 +28,10 @@ public class Company implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cid;
     private String name;
+    /**
+     * 查询出来的结果格式类型为：科学计数法， e.g. 3.0E7
+     * 如果要改变数值类型，可以试试 {@link java.math.BigDecimal}
+     */
     private Double capital;
     private String place;
     private Integer num;
