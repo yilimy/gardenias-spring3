@@ -2,6 +2,7 @@ package com.example.junit.mockito.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.junit.mockito.bean.po.JunitUserPO;
+import com.example.junit.mockito.bean.req.UserUpdateReq;
 import com.example.junit.mockito.bean.vo.UserVO;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface UserService extends IService<JunitUserPO> {
      * @param features 用户特征值
      */
     void add(String username, String phone, List<String> features);
+
+    int modifyById(UserUpdateReq userUpdateReq);
 }

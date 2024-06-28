@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.junit.mockito.bean.po.JunitUserFeaturePO;
 import com.example.junit.mockito.bean.po.JunitUserPO;
+import com.example.junit.mockito.bean.req.UserUpdateReq;
 import com.example.junit.mockito.bean.vo.UserVO;
 import com.example.junit.mockito.mapper.JunitUserMapper;
 import com.example.junit.mockito.service.UserFeatureService;
@@ -57,5 +58,15 @@ public class UserServiceImpl extends ServiceImpl<JunitUserMapper, JunitUserPO> i
                         .build())
                 .collect(Collectors.toList());
         userFeatureService.saveBatch(featurePOList);
+    }
+
+    @Override
+    public int modifyById(UserUpdateReq userUpdateReq) {
+        JunitUserPO userPO = new JunitUserPO();
+        userPO.setId(userPO.getId());
+        userPO.setUsername(userUpdateReq.getUsername());
+        userPO.setPhone(userUpdateReq.getPhone());
+        boolean b = updateById(userPO);
+        return b ? 1 : 0;
     }
 }

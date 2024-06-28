@@ -25,6 +25,10 @@
  *          - easymock
  *          - powermock     支持 private
  *          - JMockit
+ * <p>
+ *     初始化
+ *     junit4 @RunWith
+ *     junit5 @ExtendWith
  * @author caimeng
  * @date 2024/6/20 18:24
  */
