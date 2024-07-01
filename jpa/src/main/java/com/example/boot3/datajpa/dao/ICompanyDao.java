@@ -15,12 +15,6 @@ import java.util.List;
  *     查看 {@link org.springframework.data.repository.Repository} 的子接口
  *     {@link org.springframework.data.repository.CrudRepository#save(Object)}
  *     {@link org.springframework.data.jpa.repository.JpaRepository#findAll(Example)}
- * <p>
- *     迭代路线:
- *     {@link ICompanyDao}
- *     {@link ICompanyInterfaceDao}
- *     {@link ICompanyMapper}
- *     {@link ICompanyBaseMapper}
  * @author caimeng
  * @date 2024/6/27 16:53
  */

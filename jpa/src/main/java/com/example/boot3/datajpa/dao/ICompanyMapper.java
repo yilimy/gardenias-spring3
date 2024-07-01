@@ -10,12 +10,6 @@ import java.util.List;
  * 基于方法映射的数据层的持久化处理服务
  * 方法映射参考官网：<a href="https://docs.spring.io/spring-data/jpa/docs/3.0.0-M4/reference/html/#jpa.query-methods" />
  * 相较于 {@link ICompanyInterfaceDao},该类使用方法映射替代了注解
- * <p>
- *     迭代路线:
- *     {@link ICompanyDao}
- *     {@link ICompanyInterfaceDao}
- *     {@link ICompanyMapper}
- *     {@link ICompanyBaseMapper}
  * @author caimeng
  * @date 2024/6/28 10:13
  */
