@@ -7,6 +7,7 @@
  *     {@link com.example.boot3.datajpa.dao.ICompanyMapper}
  *     {@link com.example.boot3.datajpa.dao.ICompanyBaseMapper}
  *     {@link com.example.boot3.datajpa.dao.ICompanyPagingBaseMapper}
+ *     {@link com.example.boot3.datajpa.dao.ICompanyJpaMapper}
  * @author caimeng
  * @date 2024/7/1 11:41
  */
