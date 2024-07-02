@@ -57,6 +57,29 @@
  *     将数据存储到其他服务器上去
  *     - Memcached
  *     - Redis
+ * <p>
+ *     Caffeine 是一套完整的开发组件，其内部也提供有大量的程序类以及操作方法。
+ *     <a href="https://github.com/ben-manes/caffeine" />
+ *     核心的接口 {@link com.github.benmanes.caffeine.cache.Cache} 所有与缓存有关的处理方法都在这个接口中定义。
+ * <p>
+ *     通过 {@link com.github.benmanes.caffeine.cache.Caffeine#newBuilder()} 方法，每次调用返回一个新的实例，用于以后的扩展。
+ *     通过 {@link com.github.benmanes.caffeine.cache.Caffeine#build()} 返回实例
+ *     return isBounded()
+ *         ? new BoundedLocalCache.BoundedLocalManualCache<>(self) // 创建有边界的缓存对象
+ *         : new UnboundedLocalCache.UnboundedLocalManualCache<>(self); // 创建无边界的缓存对象
+ *     - 最大数量
+ *     - 最大权重
+ *     - 过期访问
+ *     - 过期写入
+ *     - 失效配置
+ *     - key的长度
+ *     - value的长度
+ *     以上几个配置项，都属于Caffeine中关于缓存存储的配置处理，每一个配置项都有其特定的处理方法。
+ *     所有的缓存数据都是保存在内存中的，如果无限的让缓存始终进行存储，那么必然造成内存的溢出。
+ *     内存一旦溢出，应用程序有可能直接崩溃，所以缓存的清理是所有组件必须要提供的支持。
+ * <p>
+ *     在默认情况下，一旦缓存数据消失之后，Cache接口返回的内容就是null数据了。
+ *     有些人认为，空数据不利于标注，那么可以考虑进行数据的控制。
  * @author caimeng
  * @date 2024/7/1 14:20
  */
