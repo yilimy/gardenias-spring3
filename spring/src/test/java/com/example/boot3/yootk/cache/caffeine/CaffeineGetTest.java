@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2024/7/2 11:51
  */
 @Slf4j
-public class CaffeineTest {
+public class CaffeineGetTest {
 
     @SneakyThrows
     @Test

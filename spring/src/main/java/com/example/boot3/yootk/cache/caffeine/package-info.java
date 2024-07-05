@@ -80,7 +80,16 @@
  * <p>
  *     在默认情况下，一旦缓存数据消失之后，Cache接口返回的内容就是null数据了。
  *     有些人认为，空数据不利于标注，那么可以考虑进行数据的控制。
+ * <p>
+ *     在进行缓存查询的时候，曾经使用过Cache接口中提供的get方法，这个方法结合Function接口在缓存数据失效后进行数据加载，类似于map中的defaultValue
+ *     {@link com.github.benmanes.caffeine.cache.Cache#get(Object, Function)}
+ *     {@link java.util.HashMap#getOrDefault(Object, Object)}
+ *     然而，在数据不存在时，还有另外一种数据加载操作
+ *     {@link com.github.benmanes.caffeine.cache.CacheLoader}
+ *     该接口是Cache的子接口
  * @author caimeng
  * @date 2024/7/1 14:20
  */
 package com.example.boot3.yootk.cache.caffeine;
+
+import java.util.function.Function;
