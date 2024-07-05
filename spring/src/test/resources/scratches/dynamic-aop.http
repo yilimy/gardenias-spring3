@@ -4,7 +4,7 @@ GET http://localhost:8080/aop/dynamic/fun
 Accept: application/json
 
 ### 通过表达式增加
-GET http://localhost:8080/aop/dynamic/add?interceptorClass={{interceptorOne}}}&expression={{expression}}}
+GET http://localhost:8080/aop/dynamic/add?interceptorClass={{interceptorOne}}&expression={{expression}}}
 Accept: application/json
 
 ### 通过表达式删除
