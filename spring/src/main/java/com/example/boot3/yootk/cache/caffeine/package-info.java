@@ -87,6 +87,16 @@
  *     然而，在数据不存在时，还有另外一种数据加载操作
  *     {@link com.github.benmanes.caffeine.cache.CacheLoader}
  *     该接口是Cache的子接口
+ * <p>
+ *     异步加载
+ *     <a href="https://www.bilibili.com/video/BV1Vm42157jX/" />
+ *     在 Cache 接口的同级，有个异步缓存接口
+ *     {@link com.github.benmanes.caffeine.cache.AsyncCache}
+ *     这个接口实现的数据异步加载操作，与 Cache 接口类似，存在有无参的build和有参 CacheLoader 的接口
+ *     不一样的是，此时可以接收异步的的 CacheLoader
+ *     {@link com.github.benmanes.caffeine.cache.CacheLoader}
+ *     {@link com.github.benmanes.caffeine.cache.AsyncCacheLoader}
+ *     CacheLoader 是 AsyncCacheLoader 子接口
  * @author caimeng
  * @date 2024/7/1 14:20
  */
