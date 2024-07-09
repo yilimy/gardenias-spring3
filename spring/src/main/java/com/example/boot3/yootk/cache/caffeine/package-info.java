@@ -97,9 +97,25 @@
  *     {@link com.github.benmanes.caffeine.cache.CacheLoader}
  *     {@link com.github.benmanes.caffeine.cache.AsyncCacheLoader}
  *     CacheLoader 是 AsyncCacheLoader 子接口
+ * <p>
+ *     缓存数据的驱逐
+ *     <a href="https://www.bilibili.com/video/BV1Ln4y1X7u9/" />
+ *     缓存数据不可能一直存在，涉及到清理多余数据
+ *     专属驱逐策略？四种？
+ *     - JVM回收策略，弱引用和软引用设置
+ *     - 容量的回收策略，比如在caffeine创建时指定的最大容量 maximumSize
+ *     - 时效的回收策略，比如caffeine 创建时，指定的失效时间 expireAfterAccess
+ *     - 自定义的回收策略,
+ *          {@link com.github.benmanes.caffeine.cache.Caffeine#expireAfter(Expiry)}
+ *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterCreate(Object, Object, long)}
+ *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterUpdate(Object, Object, long, long)}
+ *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterRead(Object, Object, long, long)}
+ *
  * @author caimeng
  * @date 2024/7/1 14:20
  */
 package com.example.boot3.yootk.cache.caffeine;
+
+import com.github.benmanes.caffeine.cache.Expiry;
 
 import java.util.function.Function;
