@@ -110,7 +110,15 @@
  *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterCreate(Object, Object, long)}
  *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterUpdate(Object, Object, long, long)}
  *          {@link com.github.benmanes.caffeine.cache.Expiry#expireAfterRead(Object, Object, long, long)}
- *
+ * <p>
+ *     缓存数据的删除
+ *     <a href="https://www.bilibili.com/video/BV1sf421Q755/" />
+ *     缓存数据的删除：
+ *     - 自动驱逐
+ *     - 手工删除
+ *     手工删除：使用 {@link com.github.benmanes.caffeine.cache.Cache#invalidate(Object)}
+ *     在组件设计的时候一般设置有回调的操作
+ *          在Caffeine组件里面提供了一个删除监听的操作，删除数据之前可以通过监听获取到一些信息
  * @author caimeng
  * @date 2024/7/1 14:20
  */
