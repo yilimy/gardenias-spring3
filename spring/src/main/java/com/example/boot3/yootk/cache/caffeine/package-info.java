@@ -174,6 +174,9 @@
  *                  因为新的缓存数据可能还没有积攒到足够的访问频率就已经被剔除了，导致命中率低下。
  *                  针对此，Caffeine设计出了W-Tiny LFU算法
  *          - 驱逐的具体实现 （相对于其他组件，性能很高）
+ * <p>
+ *     Caffeine缓存数据结构
+ *     <a href="https://www.bilibili.com/video/BV11f421Q7jJ/" />
  * @author caimeng
  * @date 2024/7/1 14:20
  */
