@@ -119,6 +119,17 @@
  *     手工删除：使用 {@link com.github.benmanes.caffeine.cache.Cache#invalidate(Object)}
  *     在组件设计的时候一般设置有回调的操作
  *          在Caffeine组件里面提供了一个删除监听的操作，删除数据之前可以通过监听获取到一些信息
+ * <p>
+ *     缓存数据的状态
+ *     <a href="https://www.bilibili.com/video/BV1jx4y1t7Pt/" />
+ *     Caffeine自带数据统计功能，包括查询次数，命中率。
+ *     默认情况下是没有开启该信息的。
+ *     {@link com.github.benmanes.caffeine.cache.Caffeine#recordStats()}
+ *     观察状态的方法 {@link com.github.benmanes.caffeine.cache.Cache#stats()}
+ *     类{@link com.github.benmanes.caffeine.cache.stats.CacheStats} 提供了很多数据统计的方法
+ *     关于命中率：
+ *          在实际的开发中需要用到这个命中率进行key的优化，包括过期处理方案的优化
+ *          如果结合到数据库上去使用，命中率低会导致数据查询猛增，降低整体性能。
  * @author caimeng
  * @date 2024/7/1 14:20
  */
