@@ -29,6 +29,12 @@
  *     初始化
  *     junit4 @RunWith
  *     junit5 @ExtendWith
+ * <p>
+ *     断言工具
+ *     Junit4 : hamcrest, 该工具在junit5之后移除
+ *     assertJ : 常用的额断言工具
+ *     Junit4原生断言
+ *     Junit5原生断言
  * @author caimeng
  * @date 2024/6/20 18:24
  */
