@@ -69,4 +69,9 @@ public class UserServiceImpl extends ServiceImpl<JunitUserMapper, JunitUserPO> i
         boolean b = updateById(userPO);
         return b ? 1 : 0;
     }
+
+    public int getNumber() {
+        System.out.println(getClass().getSimpleName());
+        return 0;
+    }
 }
