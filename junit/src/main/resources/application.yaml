@@ -16,8 +16,9 @@ spring:
 mybatis-plus:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath*:mybatis/mapper/*Mapper.xml
-  configuration:
-    map-underscore-to-camel-case: true
+#  configuration 和 config-location互斥
+#  configuration:
+#    map-underscore-to-camel-case: true
 
 
 

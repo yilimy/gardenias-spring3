@@ -35,6 +35,12 @@
  *     assertJ : 常用的额断言工具
  *     Junit4原生断言
  *     Junit5原生断言
+ * <p>
+ *     在 spring boot 环境中使用，不推荐。
+ *      MockBean 类似于 Mock
+ *              用于通过类型或者名字替换spring容器中已存在的bean，从而达到对这些bean进行mock的目的
+ *      SpyBean 类似于 Spy
+ *              用于通过类型或名字包装spring容器中已存在的bean，当需要mock被测试类的某些方法的时候可以使用
  * @author caimeng
  * @date 2024/6/20 18:24
  */

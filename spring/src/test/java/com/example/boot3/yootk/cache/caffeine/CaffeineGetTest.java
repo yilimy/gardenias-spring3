@@ -52,5 +52,7 @@ public class CaffeineGetTest {
             // 失效数据返回
             return "【EXPIRE】" + key;
         }));
+        // 上一次返回的回调方法的值会更新到最新的缓存中
+        log.info("【已超时获取缓存数据】yootk={}", cache.getIfPresent("yootk"));
     }
 }
