@@ -111,6 +111,7 @@
         <module>jpa</module>
         <module>spring-mock</module>
         <module>junit</module>
+        <module>spring-cache</module>
     </modules>
 
 </project>

@@ -177,6 +177,13 @@
  * <p>
  *     Caffeine缓存数据结构
  *     <a href="https://www.bilibili.com/video/BV11f421Q7jJ/" />
+ * <p>
+ *     Spring Cache 缓存组件概述
+ *     <a href="https://www.bilibili.com/video/BV1TM4m127eN/" />
+ *     项目应用中，通过缓存组件可以实现应用的处理性能提升，但是现实的开发环境中，会存在有不同的缓存组件，
+ *          例如: 常见的单机版缓存组件，包括 Caffeine EHCache
+ *               常见的分布式缓存组件，包括 Memcached Redis
+ *     由于现在的业务层已经提供了缓存的处理支持，所以数据层上不再需要进行任何的缓存控制了（适合于整合各类的ORM框架）
  * @author caimeng
  * @date 2024/7/1 14:20
  */
