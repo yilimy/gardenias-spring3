@@ -29,12 +29,12 @@ public class SpringDataJPAConfig {
     private Boolean showSql;
     @Value("${hibernate.format_sql:false}")
     private Boolean formatSql;
-    @Value("${hibernate.cache.use_second_level_cache:true}")
-    private Boolean useSecondLevelCache;
-    @Value("${hibernate.cache.region.factory_class:org.hibernate.cache.jcache.internal.JCacheRegionFactory}")
-    private String factoryClass;
-    @Value("${hibernate.javax.cache.provider:org.ehcache.jsr107.EhcacheCachingProvider}")
-    private String cacheProvider;
+//    @Value("${hibernate.cache.use_second_level_cache:true}")
+//    private Boolean useSecondLevelCache;
+//    @Value("${hibernate.cache.region.factory_class:org.hibernate.cache.jcache.internal.JCacheRegionFactory}")
+//    private String factoryClass;
+//    @Value("${hibernate.javax.cache.provider:org.ehcache.jsr107.EhcacheCachingProvider}")
+//    private String cacheProvider;
 
     /**
      * @return JPA持久化的实现类
@@ -93,9 +93,9 @@ public class SpringDataJPAConfig {
         factoryBean.getJpaPropertyMap().put(AvailableSettings.HBM2DDL_AUTO, hbm2ddlAuto);
         factoryBean.getJpaPropertyMap().put(AvailableSettings.SHOW_SQL, showSql);
         factoryBean.getJpaPropertyMap().put(AvailableSettings.FORMAT_SQL, formatSql);
-        factoryBean.getJpaPropertyMap().put(AvailableSettings.USE_SECOND_LEVEL_CACHE, useSecondLevelCache);
-        factoryBean.getJpaPropertyMap().put(AvailableSettings.CACHE_REGION_FACTORY, factoryClass);
-        factoryBean.getJpaPropertyMap().put("hibernate.javax.cache.provider", cacheProvider);
+//        factoryBean.getJpaPropertyMap().put(AvailableSettings.USE_SECOND_LEVEL_CACHE, useSecondLevelCache);
+//        factoryBean.getJpaPropertyMap().put(AvailableSettings.CACHE_REGION_FACTORY, factoryClass);
+//        factoryBean.getJpaPropertyMap().put("hibernate.javax.cache.provider", cacheProvider);
         return factoryBean;
     }
 }
