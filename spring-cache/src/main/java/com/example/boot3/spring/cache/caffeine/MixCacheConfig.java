@@ -1,9 +1,11 @@
-package com.example.boot3.spring.cache.config;
+package com.example.boot3.spring.cache.caffeine;
 
+import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -11,34 +13,26 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
- * 缓存配置类
+ * 混合的缓存管理器
+ * 同职责 {@link com.example.boot3.spring.cache.config.CacheConfig}
  * @author caimeng
- * @date 2024/7/18 18:32
+ * @date 2024/7/22 16:49
  */
-@ConditionalOnProperty(value = "cache.type", havingValue="concurrentMap", matchIfMissing = true)
-// 配置类
+@ConditionalOnProperty(value = "cache.type", havingValue="mix")
 @Configuration
-// 当前应用要开启缓存
 @EnableCaching
-public class CacheConfig {
+public class MixCacheConfig {
     @Bean
     public CacheManager cacheManager() {
-        // 获取缓存管理接口实例
         SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
-        /*
-         * 此时在应用的环境里面，Cache属于一个常见的单词，
-         * 所以只要引入了各种不同的依赖库，那么都可能存在有同名不同包的Cache
-         */
         Set<Cache> caches = new HashSet<>();
-        // 创建一个雇员缓存
-        caches.add(new ConcurrentMapCache("emp"));
-        // 创建一个部门缓存
-        caches.add(new ConcurrentMapCache("dept"));
-        // 创建一个薪资缓存
-        caches.add(new ConcurrentMapCache("sal"));
-        // 将缓存放置到缓存管理器中
+        com.github.benmanes.caffeine.cache.Cache<Object, Object> caffeineCache = Caffeine.newBuilder()
+                .maximumSize(100).expireAfterAccess(3L, TimeUnit.SECONDS).build();
+        caches.add(new CaffeineCache("emp", caffeineCache));
+        caches.add(new ConcurrentMapCache("empMap"));
         simpleCacheManager.setCaches(caches);
         return simpleCacheManager;
     }

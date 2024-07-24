@@ -1,6 +1,7 @@
 package com.example.boot3.spring.cache.service;
 
 import com.example.boot3.spring.cache.po.Emp2;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 /**
@@ -11,9 +12,15 @@ import org.springframework.cache.annotation.Cacheable;
 public interface IEmp2Service {
     /**
      * 编辑雇员信息
-     * @param emp2 雇员信息
-     * @return 编辑后的雇员信息
+     * <p>
+     *     进行数据的更新操作，而在数据更新的时候会返回一个新的EMP对象
+     *     如果要进行缓存的处理，那么主要依靠该对象进行数据的更新操作
+     * <p>
+     *     JSR-107标准
+     * @param emp2 雇员信息，表示要更新的雇员数据
+     * @return 编辑后的雇员信息，已经更新完成的数据
      */
+    @CachePut(cacheNames = "emp", key = "#emp2.eid", unless = "#result == null")
     Emp2 edit(Emp2 emp2);
 
     /**
@@ -34,7 +41,7 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp")
+    @Cacheable(cacheNames = "emp", key = "#eid")
     Emp2 get(String eid);
 
     /**
@@ -67,6 +74,11 @@ public interface IEmp2Service {
      */
     @Cacheable(cacheNames = "emp", sync = true)
     default Emp2 getSync(String eid) {
+        return get(eid);
+    }
+
+    @Cacheable(cacheNames = "empMap")
+    default Emp2 getByMix(String eid){
         return get(eid);
     }
 
