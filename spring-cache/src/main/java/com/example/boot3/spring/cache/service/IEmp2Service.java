@@ -1,6 +1,8 @@
 package com.example.boot3.spring.cache.service;
 
 import com.example.boot3.spring.cache.po.Emp2;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
@@ -9,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
  * @date 2024/7/18 17:43
  */
 @SuppressWarnings("all")
+// 在这里配置了缓存容器的名称，方法中就可以不用配置了
+@CacheConfig(cacheNames = "emp")
 public interface IEmp2Service {
     /**
      * 编辑雇员信息
@@ -20,7 +24,7 @@ public interface IEmp2Service {
      * @param emp2 雇员信息，表示要更新的雇员数据
      * @return 编辑后的雇员信息，已经更新完成的数据
      */
-    @CachePut(cacheNames = "emp", key = "#emp2.eid", unless = "#result == null")
+    @CachePut(key = "#emp2.eid", unless = "#result == null")
     Emp2 edit(Emp2 emp2);
 
     /**
@@ -28,6 +32,7 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 删除结果
      */
+    @CacheEvict(key = "#eid")
     boolean delete(String eid);
 
     /**
@@ -41,7 +46,7 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp", key = "#eid")
+    @Cacheable(key = "#eid")
     Emp2 get(String eid);
 
     /**
@@ -51,7 +56,7 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp", key = "#eid", condition = "#eid.contains('yootk')")
+    @Cacheable(key = "#eid", condition = "#eid.contains('yootk')")
     default Emp2 getWithCondition(String eid) {
         return get(eid);
     }
@@ -62,7 +67,7 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp", key = "#eid", unless = "#result.salary > 4000")
+    @Cacheable(key = "#eid", unless = "#result.salary > 4000")
     default Emp2 getWithSalary(String eid) {
         return get(eid);
     }
@@ -72,11 +77,20 @@ public interface IEmp2Service {
      * @param eid 雇员ID
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp", sync = true)
+    @Cacheable(sync = true)
     default Emp2 getSync(String eid) {
         return get(eid);
     }
 
+    /**
+     * 混合缓存容器的查询
+     * <p>
+     *     类头中设置了 CacheConfig，并指定了缓存容器的名字为 emp
+     *     方法中也设置了容器名称为 empMap
+     *     以方法中设置的缓存容器名为最终结果(empMap)
+     * @param eid 查询关键字
+     * @return 查询结果
+     */
     @Cacheable(cacheNames = "empMap")
     default Emp2 getByMix(String eid){
         return get(eid);
@@ -87,6 +101,6 @@ public interface IEmp2Service {
      * @param ename 雇员名称
      * @return 雇员信息
      */
-    @Cacheable(cacheNames = "emp")
+    @Cacheable
     Emp2 getByEname(String ename);
 }
