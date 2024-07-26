@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 
 /**
  * @author caimeng
@@ -26,6 +27,20 @@ public interface IEmp2Service {
      */
     @CachePut(key = "#emp2.eid", unless = "#result == null")
     Emp2 edit(Emp2 emp2);
+
+    /**
+     * 多级缓存
+     * 普通编辑类{@link this#edit(Emp2)}的方法多了额外的 CachePut, 使用 Caching讲这几个CachePut收集起来
+     * @param emp2 雇员信息
+     * @return 编辑后的雇员信息
+     */
+    @Caching(put = {
+            // 根据雇员编号更新缓存
+            @CachePut(key = "#emp2.eid", unless = "#result == null"),
+            // 根据雇员名称更新缓存
+            @CachePut(key = "#emp2.ename", unless = "#result == null")
+    })
+    Emp2 editCascade(Emp2 emp2);
 
     /**
      * 删除雇员信息
