@@ -40,7 +40,9 @@ public interface IEmp2Service {
             // 根据雇员名称更新缓存
             @CachePut(key = "#emp2.ename", unless = "#result == null")
     })
-    Emp2 editCascade(Emp2 emp2);
+    default Emp2 editCascade(Emp2 emp2) {
+        return edit(emp2);
+    }
 
     /**
      * 删除雇员信息
