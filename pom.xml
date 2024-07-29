@@ -112,6 +112,7 @@
         <module>spring-mock</module>
         <module>junit</module>
         <module>spring-cache</module>
+        <module>trisceli</module>
     </modules>
 
 </project>
