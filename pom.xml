@@ -113,6 +113,7 @@
         <module>junit</module>
         <module>spring-cache</module>
         <module>trisceli</module>
+        <module>rabbitmq</module>
     </modules>
 
 </project>
