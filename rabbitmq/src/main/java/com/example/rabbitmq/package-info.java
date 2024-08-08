@@ -26,6 +26,20 @@
  *                  {@link com.rabbitmq.client.Channel#basicConsume(String, boolean, Consumer)}
  *          - 手工应答处理，主要是在Consumer类中完成
  *                  {@link com.example.rabbitmq.consumer.MessageConsumer#firstConsumerManualACK()}
+ * <p>
+ *     RabbitMQ虚拟主机
+ *     <a href="https://www.bilibili.com/video/BV1G4421S7XS/" />
+ *     消息组件是项目必备的组件之一，但不是每个项目都要单独配置消息组件。
+ *     常见的做法是做一个专属的消息服务集群（或单机），该服务上可能要同时拥有不同的操作空间。
+ *     为了方便业务划分，RabbitMQ支持虚拟主机的配置。
+ *     虚拟主机中，不同的用户具有不同的权限，比如：只能生产或者只能消费。
+ *          - RocketMQ是在新版本中才添加权限控制，采用的是基于业务识别码的方式。
+ *     考虑到实用性，一般使用命令行的方式进行配置。
+ *          - RabbitMQ所有的图形化界面操作，都能通过命令行的方式实现；
+ *          - 创建一个虚拟主机 : rabbitmqctl add_vhost YootkVHost, 这种方式创建虚拟主机没有设置用户
+ *          - 查询VHost : rabbitmqctl list_vhosts
+ *          - VHost权限 : rabbitmqctl set_permissions -p YootkVHost yootk .* .* .* 表示给用户yootk配置了conf | write | read 三项所有的权限
+ *          - 删除VHost : rabbitmqctl delete_vhost YootkVHost
  * @author caimeng
  * @date 2024/7/31 16:16
  */
