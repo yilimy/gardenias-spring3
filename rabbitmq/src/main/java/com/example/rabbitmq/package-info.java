@@ -1,5 +1,6 @@
 /**
  * 消息组件 rabbitmq
+ * 页面 <a href="http://localhost:15672/" />
  * <p>
  *     创建RabbitMQ消息生产者
  *     <a href="https://www.bilibili.com/video/BV1RW421X7vB/" />

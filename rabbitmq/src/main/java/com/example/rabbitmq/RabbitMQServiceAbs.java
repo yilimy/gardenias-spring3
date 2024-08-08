@@ -24,8 +24,30 @@ public abstract class RabbitMQServiceAbs {
     protected Channel channel;
     protected Connection connection;
 
+    /**
+     * 使用普通模式
+     */
     @SneakyThrows
     protected void init() {
+        initConnAndChannel();
+        // 所有的消息的内容都保存在队列中，但是现阶段RabbitMQ没有提供队列。
+        // 声明一个队列
+        channel.queueDeclare(QUEUE_NAME, false, false, true, null);
+    }
+
+    /**
+     * 使用持久化队列的方式进行发布
+     * durable=true
+     */
+    @SneakyThrows
+    protected void initPersistence() {
+        initConnAndChannel();
+        // 在声明队列的时候，指定为持久化队列
+        channel.queueDeclare(QUEUE_NAME, true, false, true, null);
+    }
+
+    @SneakyThrows
+    private void initConnAndChannel() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(HOST);
         factory.setPort(PORT);
@@ -35,9 +57,6 @@ public abstract class RabbitMQServiceAbs {
         connection = factory.newConnection();
         // 连接创建之后，要去获取通道
         channel = connection.createChannel();
-        // 所有的消息的内容都保存在队列中，但是现阶段RabbitMQ没有提供队列。
-        // 声明一个队列
-        channel.queueDeclare(QUEUE_NAME, false, false, true, null);
     }
 
     @SneakyThrows
