@@ -22,6 +22,11 @@ public abstract class RabbitMQServiceAbs {
     protected static final String PASSWORD = "hello";
     // 虚拟主机的名称
     protected static final String VHOST =  "MuyanVHost";
+    protected static final String EXCHANGE_NAME = "yootk.exchange.fanout";
+    // 路由的key
+    protected static final String ROUTING_KEY = "yootk.routing.key";
+    // 与路由key一同配置的exchange
+    protected static final String EXCHANGE_DIRECT = "yootk.exchange.direct";
     // 消息组件的通道
     protected Channel channel;
     protected Connection connection;
@@ -56,6 +61,26 @@ public abstract class RabbitMQServiceAbs {
         initConnAndChannelWithHost();
         // 在声明队列的时候，指定为持久化队列
         channel.queueDeclare(QUEUE_NAME, false, false, true, null);
+    }
+
+    @SneakyThrows
+    protected void initWithHostAndExchange() {
+        initConnAndChannelWithHost();
+        /*
+         * 创建Exchange
+         * 使用了exchange之后，不再使用队列了 (queueDeclare)
+         */
+        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+    }
+
+    @SneakyThrows
+    protected void initExchangeWithDirect() {
+        initConnAndChannelWithHost();
+        /*
+         * 创建Exchange
+         * 这里要使用直连模式
+         */
+        channel.exchangeDeclare(EXCHANGE_DIRECT, "direct");
     }
 
     @SneakyThrows

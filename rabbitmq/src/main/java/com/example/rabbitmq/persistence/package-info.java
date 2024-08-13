@@ -19,6 +19,8 @@
  *     如果要创建持久化的队列（Durable）可以在Channel接口中配置
  *     {@link com.rabbitmq.client.Channel#queueDeclare(String, boolean, boolean, boolean, Map)}
  *     第二个参数，是持久化队列的参数
+ * {@link com.example.rabbitmq.producer.MessagePersistenceProducer}
+ * {@link com.example.rabbitmq.consumer.MessagePersistenceConsumer}
  * @author caimeng
  * @date 2024/8/5 18:36
  */

@@ -40,6 +40,23 @@
  *          - 查询VHost : rabbitmqctl list_vhosts
  *          - VHost权限 : rabbitmqctl set_permissions -p YootkVHost yootk .* .* .* 表示给用户yootk配置了conf | write | read 三项所有的权限
  *          - 删除VHost : rabbitmqctl delete_vhost YootkVHost
+ * <p>
+ *     fanout广播模式
+ *     <a href="https://www.bilibili.com/video/BV1e4421Z7dP/" />
+ *     利用Exchange可以实现不同的消息处理模式。
+ *     JMS是java定义的消息标准，JMS的消息模式：
+ *          - 点对点
+ *          - 主题消息，一对多消息
+ *     {@link com.example.rabbitmq.consumer.MessageConsumerA}
+ *     {@link com.example.rabbitmq.consumer.MessageConsumerB}
+ *     多个消费者不会重复进行消息处理，现在的所有的消息处理，都只能是默认形态下处理，还没有涉及Exchange的话题。
+ * <p>
+ *     除了基本的消息队列之外，在RabbitMQ中还提供了Exchange交换机、RoutingKey路由Key等概念，
+ *     同时在Channel接口中提供的 basicPublish() 方法中也提供有对应的参数支持。
+ *     三种模式：
+ *      1. 基于Exchange的广播模式 fanout
+ *      2. 直连模式 direct
+ *      3. 主题模式 topic
  * @author caimeng
  * @date 2024/7/31 16:16
  */

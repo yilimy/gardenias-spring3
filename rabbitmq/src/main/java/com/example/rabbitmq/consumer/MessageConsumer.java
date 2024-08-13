@@ -54,6 +54,32 @@ public class MessageConsumer extends RabbitMQServiceAbs {
     }
 
     /**
+     * 定义包含应答的消费者
+     * @return 应答消费者
+     */
+    protected Consumer createAckConsumer() {
+        return new DefaultConsumer(channel) {
+            @SneakyThrows
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope,
+                                       AMQP.BasicProperties properties, byte[] body) {
+                // 获取消息内容
+                String msg = new String(body, StandardCharsets.UTF_8);
+                accept(msg);
+                channel.basicAck(envelope.getDeliveryTag(), false);
+            }
+        };
+    }
+
+    /**
+     * 消费方法
+     * @param msg 待消费信息
+     */
+    protected void accept(String msg) {
+
+    }
+
+    /**
      * 自动应答ACK
      */
     @SneakyThrows
@@ -96,5 +122,13 @@ public class MessageConsumer extends RabbitMQServiceAbs {
         };
         // 连接队列与消费者
         channel.basicConsume(QUEUE_NAME, consumer);
+    }
+
+    /**
+     * 获取分组信息
+     * @return 组名
+     */
+    protected String getGroupQueueName() {
+        return "yootk.a.group.queue";
     }
 }
