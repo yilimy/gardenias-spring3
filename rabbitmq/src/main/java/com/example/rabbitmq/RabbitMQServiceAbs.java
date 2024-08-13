@@ -27,6 +27,9 @@ public abstract class RabbitMQServiceAbs {
     protected static final String ROUTING_KEY = "yootk.routing.key";
     // 与路由key一同配置的exchange
     protected static final String EXCHANGE_DIRECT = "yootk.exchange.direct";
+    protected static final String EXCHANGE_TOPIC = "yootk.exchange.topic";
+    protected static final String ROUTING_KEY_ERP = "muyan.erp.dept.add";
+    protected static final String ROUTING_KEY_CRM = "muyan.crm.emp.delete";
     // 消息组件的通道
     protected Channel channel;
     protected Connection connection;
@@ -63,6 +66,10 @@ public abstract class RabbitMQServiceAbs {
         channel.queueDeclare(QUEUE_NAME, false, false, true, null);
     }
 
+    /**
+     * 广播模式的初始化
+     * fanout
+     */
     @SneakyThrows
     protected void initWithHostAndExchange() {
         initConnAndChannelWithHost();
@@ -73,6 +80,10 @@ public abstract class RabbitMQServiceAbs {
         channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
     }
 
+    /**
+     * 直连模式的初始化
+     * direct
+     */
     @SneakyThrows
     protected void initExchangeWithDirect() {
         initConnAndChannelWithHost();
@@ -81,6 +92,20 @@ public abstract class RabbitMQServiceAbs {
          * 这里要使用直连模式
          */
         channel.exchangeDeclare(EXCHANGE_DIRECT, "direct");
+    }
+
+    /**
+     * 主题模式的初始化
+     * topic
+     */
+    @SneakyThrows
+    protected void initExchangeWithTopic() {
+        initConnAndChannelWithHost();
+        /*
+         * 创建Exchange
+         * 这里要使用直连模式
+         */
+        channel.exchangeDeclare(EXCHANGE_TOPIC, "topic");
     }
 
     @SneakyThrows
