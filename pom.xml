@@ -114,6 +114,9 @@
         <module>spring-cache</module>
         <module>trisceli</module>
         <module>rabbitmq</module>
+        <module>amqp</module>
+        <module>amqp/amqp-common</module>
+        <module>amqp/amqp-producer</module>
     </modules>
 
 </project>
