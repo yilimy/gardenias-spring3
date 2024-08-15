@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 测试rabbitmq的配置是否成功
+ * <p>
+ *     使用注解的方式
  * @author caimeng
  * @date 2024/8/14 17:19
  */
@@ -19,9 +21,8 @@ import java.util.concurrent.TimeUnit;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = {
         "spring.profiles.active=dev",
-        "config.type=bean",
 })
-public class RabbitMQConfigTest {
+public class RabbitMQAnnotationConfigTest {
 
     /**
      * 监听测试

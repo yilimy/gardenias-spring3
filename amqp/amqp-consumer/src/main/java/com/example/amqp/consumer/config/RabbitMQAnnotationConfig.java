@@ -7,9 +7,12 @@ import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,14 +24,24 @@ import org.springframework.retry.support.RetryTemplate;
 
 /**
  * RabbitMQ的配置类
+ * <p>
+ *     使用注解的方式进行配置。
+ *     相比于 {@link RabbitMQConfig}
+ *     去掉的部分
+ *          1. 监听 {@link RabbitMQConfig#rabbitMQMessageListener()}
+ *          2. 容器 {@link RabbitMQConfig#simpleMessageListenerContainer(RabbitMQMessageListener, Queue, ConnectionFactory)}
+ *     追加的部分
+ *          1. 消息容器工厂 {@link RabbitMQAnnotationConfig#rabbitListenerContainerFactory(ConnectionFactory)}
  * @author caimeng
  * @date 2024/8/14 10:25
  */
 @Configuration
+// 开启rabbitmq注解生效
+@EnableRabbit
 @PropertySource("classpath:config/amqp-${spring.profiles.active}.properties")
 // 使用bean的方式配置，对应：使用注解的方式实现
-@ConditionalOnProperty(value = "config.type", havingValue = "bean")
-public class RabbitMQConfig {
+@ConditionalOnProperty(value = "config.type", havingValue = "anno", matchIfMissing = true)
+public class RabbitMQAnnotationConfig {
     @Value("${amqp.rabbit.host:localhost}")
     private String host;
     @Value("${amqp.rabbit.port:5672}")
@@ -73,38 +86,20 @@ public class RabbitMQConfig {
     }
 
     /**
-     * @return 自定义的消息监听器
+     * 监听工厂
+     * 类比使用bean注入方式的实现 {@link RabbitMQConfig#simpleMessageListenerContainer(RabbitMQMessageListener, Queue, ConnectionFactory)}
+     * @param springFactory spring的连接工厂
+     * @return 消息监听容器
      */
     @Bean
-    public RabbitMQMessageListener rabbitMQMessageListener() {
-        return new RabbitMQMessageListener();
+    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory springFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(springFactory);
+        factory.setConcurrentConsumers(5);
+        factory.setMaxConcurrentConsumers(10);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        return factory;
     }
-
-    /**
-     * @return 监听容器
-     */
-    @Bean
-    public SimpleMessageListenerContainer simpleMessageListenerContainer(
-            RabbitMQMessageListener rabbitMQMessageListener,
-            Queue queue,
-            org.springframework.amqp.rabbit.connection.ConnectionFactory factory
-    ) {
-        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(factory);
-        // 并行的消费端数量
-        container.setConcurrentConsumers(5);
-        // 最大的并行消费端数量
-        container.setMaxConcurrentConsumers(10);
-        // 设置消息监听器
-        container.setMessageListener(rabbitMQMessageListener);
-        // 自动应答
-        container.setAcknowledgeMode(AcknowledgeMode.AUTO);
-        // 追加队列
-        container.addQueues(queue);
-        // 容器初始化
-        container.initialize();
-        return container;
-    }
-
     /**
      * @return 重试Bean
      */
