@@ -8,6 +8,8 @@ import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.batch.BatchingStrategy;
+import org.springframework.amqp.rabbit.batch.SimpleBatchingStrategy;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
@@ -91,6 +93,7 @@ public class RabbitMQAnnotationConfig {
      * @return 消息监听容器
      */
     @Bean
+    @ConditionalOnProperty(value = "rabbit.batch.enable",havingValue = "false")
     public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory springFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(springFactory);
@@ -99,6 +102,39 @@ public class RabbitMQAnnotationConfig {
         factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
         return factory;
     }
+
+    /**
+     * 监听工厂
+     * <p>
+     *     批处理消费端配置
+     * @param springFactory spring的连接工厂
+     * @return 消息监听容器
+     */
+    @Bean
+    @ConditionalOnProperty(value = "rabbit.batch.enable",havingValue = "true", matchIfMissing = true)
+    public RabbitListenerContainerFactory<?> rabbitListenerContainerBatchFactory(ConnectionFactory springFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(springFactory);
+        factory.setConcurrentConsumers(5);
+        factory.setMaxConcurrentConsumers(10);
+        factory.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        // 批量传输的大小
+        int batchSize = 20;
+        // 缓冲区大小 （4K）
+        int bufferLimit = 4096;
+        // 发送的延迟（超时时间）
+        long timeout = 10000;
+        // 批量发送策略
+        BatchingStrategy strategy = new SimpleBatchingStrategy(batchSize, bufferLimit, timeout);
+        // 启用消费批处理
+        factory.setConsumerBatchEnabled(true);
+        // 批处理策略
+        factory.setBatchingStrategy(strategy);
+        // 批处理监听
+        factory.setBatchListener(true);
+        return factory;
+    }
+
     /**
      * @return 重试Bean
      */

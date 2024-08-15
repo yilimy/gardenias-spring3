@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest(properties = {
         "spring.profiles.active=dev",
 //        "handler.type=string",
-        "handler.type=obj",
+        "handler.type=batch",
+        "rabbit.batch.enable=true",
 })
 public class RabbitMQAnnotationConfigTest {
 

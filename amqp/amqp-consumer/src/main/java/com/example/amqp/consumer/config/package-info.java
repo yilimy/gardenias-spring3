@@ -12,7 +12,13 @@
  *     注解的方式
  *     {@link com.example.amqp.consumer.config.RabbitMQAnnotationConfig}
  *     {@link com.example.amqp.consumer.listener.AnnotationMessageListener}
+ * <p>
+ *     消息批处理
+ *     {@link com.example.amqp.consumer.config.RabbitMQAnnotationConfig#rabbitListenerContainerBatchFactory(ConnectionFactory)}
+ *     {@link com.example.amqp.consumer.listener.AnnotationObjectBatchListener}
  * @author caimeng
  * @date 2024/8/14 17:44
  */
 package com.example.amqp.consumer.config;
+
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;

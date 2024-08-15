@@ -3,15 +3,21 @@ package com.example.amqp.producer.config;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.rabbit.batch.BatchingStrategy;
+import org.springframework.amqp.rabbit.batch.SimpleBatchingStrategy;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.PooledChannelConnectionFactory;
+import org.springframework.amqp.rabbit.core.BatchingRabbitTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 /**
  * RabbitMQ生产端的配置类
@@ -99,8 +105,49 @@ public class RabbitMQConfig {
      * @return 生产端模板
      */
     @Bean
+    @ConditionalOnProperty(value = "rabbit.batch.enable", havingValue = "false")
     public AmqpTemplate amqpTemplate(RetryTemplate retryTemplate, ConnectionFactory factory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(factory);
+        rabbitTemplate.setExchange(this.exchangeName);
+        rabbitTemplate.setRetryTemplate(retryTemplate);
+        return rabbitTemplate;
+    }
+
+    /**
+     * 批处理发送消息需要使用的任务计划对象
+     * @return 任务计划
+     */
+    @Bean
+    public TaskScheduler batchQueueTaskScheduler() {
+        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+        /*
+         * 线程池大小
+         * 一般是物理内核 * 2 = 线程池的大小
+         */
+        taskScheduler.setPoolSize(16);
+        return taskScheduler;
+    }
+
+    /**
+     * 批处理的生产端模板
+     * <p>
+     *     相比于一条条的发送 {@link RabbitMQConfig#amqpTemplate(RetryTemplate, ConnectionFactory)}
+     * @param retryTemplate 重试模板
+     * @param factory 连接工厂
+     * @return 批处理的生产端模板
+     */
+    @Bean
+    @ConditionalOnProperty(value = "rabbit.batch.enable",havingValue = "true", matchIfMissing = true)
+    public BatchingRabbitTemplate amqpTemplateBatch(RetryTemplate retryTemplate, ConnectionFactory factory, TaskScheduler taskScheduler) {
+        // 批量传输的大小
+        int batchSize = 20;
+        // 缓冲区大小 （4K）
+        int bufferLimit = 4096;
+        // 发送的延迟（超时时间）
+        long timeout = 10000;
+        // 批量发送策略
+        BatchingStrategy strategy = new SimpleBatchingStrategy(batchSize, bufferLimit, timeout);
+        BatchingRabbitTemplate rabbitTemplate = new BatchingRabbitTemplate(factory, strategy, taskScheduler);
         rabbitTemplate.setExchange(this.exchangeName);
         rabbitTemplate.setRetryTemplate(retryTemplate);
         return rabbitTemplate;

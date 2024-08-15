@@ -12,6 +12,10 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.gomain</groupId>
             <artifactId>amqp-common</artifactId>
         </dependency>

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@ConditionalOnProperty(value = "handler.type",havingValue = "obj", matchIfMissing = true)
+@ConditionalOnProperty(value = "handler.type",havingValue = "obj")
 public class AnnotationObjectListener {
     /**
      * 接收消息的内容
