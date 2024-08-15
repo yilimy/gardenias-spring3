@@ -1,5 +1,6 @@
 package com.example.amqp.producer.service;
 
+import com.example.amqp.common.Dept;
 import com.example.amqp.producer.StartAMQPProducer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,5 +28,14 @@ public class IMessageServiceTest {
     public void sendTest() {
         // 消息的发送
         iMessageService.send("沐言科技:www.yootk.com");
+    }
+
+    /**
+     * 测试，发送一个对象
+     */
+    @Test
+    public void sendObjTest() {
+        Dept dept = Dept.builder().deptno(10L).dname("教学研发部").loc("北京").build();
+        iMessageService.sendObj(dept);
     }
 }

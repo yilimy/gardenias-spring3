@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.support.RetryTemplate;
@@ -86,9 +87,7 @@ public class RabbitMQConfig {
     @Bean
     public SimpleMessageListenerContainer simpleMessageListenerContainer(
             RabbitMQMessageListener rabbitMQMessageListener,
-            Queue queue,
-            org.springframework.amqp.rabbit.connection.ConnectionFactory factory
-    ) {
+            Queue queue, ConnectionFactory factory) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(factory);
         // 并行的消费端数量
         container.setConcurrentConsumers(5);
@@ -163,6 +162,7 @@ public class RabbitMQConfig {
      * @return 整合结果
      */
     @Bean
+    @Primary
     public RabbitAdmin admin(RetryTemplate retryTemplate, Binding binding, Exchange exchange,
                              Queue queue, ConnectionFactory factory) {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(factory);

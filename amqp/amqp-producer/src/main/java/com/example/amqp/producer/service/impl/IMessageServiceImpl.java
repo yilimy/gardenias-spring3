@@ -1,5 +1,6 @@
 package com.example.amqp.producer.service.impl;
 
+import com.example.amqp.common.Dept;
 import com.example.amqp.producer.service.IMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -24,5 +25,10 @@ public class IMessageServiceImpl implements IMessageService {
     @Override
     public void send(String msg) {
         amqpTemplate.convertAndSend(routingKey, msg);
+    }
+
+    @Override
+    public void sendObj(Dept dept) {
+        amqpTemplate.convertAndSend(routingKey, dept);
     }
 }

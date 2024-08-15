@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = {
         "spring.profiles.active=dev",
+//        "handler.type=string",
+        "handler.type=obj",
 })
 public class RabbitMQAnnotationConfigTest {
 
