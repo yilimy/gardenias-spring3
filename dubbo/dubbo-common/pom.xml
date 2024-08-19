@@ -8,10 +8,5 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>dubbo-common</artifactId>
-    <packaging>jar</packaging>
     <name>dubbo-common</name>
-
-    <dependencies>
-
-    </dependencies>
 </project>
