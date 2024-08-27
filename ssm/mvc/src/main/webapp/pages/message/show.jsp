@@ -11,6 +11,8 @@
     <title>SpringMVC开发框架</title>
 </head>
 <body>
-    <h1>${echoMessage}</h1>
+    <h1>回应消息：${echoMessage}</h1>
+    <h1>yootk消息：${yootk}</h1>
+    <h1>edu消息：${edu}</h1>
 </body>
 </html>
