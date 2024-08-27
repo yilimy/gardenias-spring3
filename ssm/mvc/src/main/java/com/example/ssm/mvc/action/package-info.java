@@ -15,6 +15,13 @@
  * <p>
  *     在springMVC设计中，如果不希望使用ModelAndView进行数据返回，也可以直接在控制层方法上定义字符串的返回路径，利用Model对象对内容进行封装。
  *     {@link com.example.ssm.mvc.action.MessageAction#echoPath(String, Model)}
+ * <p>
+ *     1. 通过web容器监听器找到 ContextLoaderListener ;
+ *     2. 上下文监听器创建和初始化 web 上下文，(处理父子容器等);
+ *     3. web 应用上下文的刷新 ( ConfigurationWebApplicationContext ).
+ * <p>
+ *     下一步，抛弃xml，使用bean的方式启动容器。
+ *     那么该如何启动监听器？
  * @author caimeng
  * @date 2024/8/23 18:12
  */
