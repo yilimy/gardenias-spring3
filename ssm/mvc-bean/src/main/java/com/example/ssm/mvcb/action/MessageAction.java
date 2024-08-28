@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -88,5 +89,26 @@ public class MessageAction {
         ModelAndView mav = new ModelAndView("/pages/message/show2.jsp");
         mav.addObject("echoMessage", messageService.echo(message));
         return mav; // 路径的跳转
+    }
+
+    /**
+     * 测试使用 PathVariable
+     * 访问 <a href="http://localhost/pages/message/echo3/yootk/沐言科技：yootk.com/1" /> 查看结果
+     * <p>
+     *     在一些开发要求比较严格的环境下（很多国外的环境），会进行一些严格的路径组成上的定义，
+     *     而这些定义的时候往往都要接收路径参数。
+     * @return 数据内容对象
+     */
+    @GetMapping("/echo3/{title}/{info}/{level}")// 映射地址
+    public ModelAndView echo2(
+            @PathVariable(name = "title") String title,
+            @PathVariable("info") String info,
+            @PathVariable("level") String level){
+        /*
+         * 消息回应处理,title=yootk, info=沐言科技：yootk.com, level=1
+         * 支持中文
+         */
+        log.info("消息回应处理,title={}, info={}, level={}", title, info, level);
+        return null; // 路径的跳转
     }
 }
