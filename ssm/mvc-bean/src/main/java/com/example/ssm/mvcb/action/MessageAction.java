@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
+@RequestMapping("/pages/message")
 public class MessageAction {
     @Autowired
     private IMessageService messageService;// 业务实例
@@ -27,7 +29,7 @@ public class MessageAction {
      * @param message 请求参数
      * @return 视图对象
      */
-    @RequestMapping("/pages/message/echo")// 映射地址
+    @RequestMapping("/echo")// 映射地址
     public ModelAndView echo(String message){
         log.info("消息回应处理,msg={}", message);
         // 配置视图
@@ -50,7 +52,7 @@ public class MessageAction {
      * @param model 内容存储对象
      * @return 返回的页面
      */
-    @RequestMapping("/pages/message/echoPath")// 映射地址
+    @RequestMapping("/echoPath")// 映射地址
     public String echoPath(String message, Model model){
         log.info("消息回应处理2,msg={}", message);
         // 对应 mav.addObject
@@ -62,5 +64,29 @@ public class MessageAction {
         model.addAllAttributes(result);
         // 页面没有变，还是 show.jsp
         return "/pages/message/show.jsp";
+    }
+
+    /**
+     * 由该页面提供输入页面，提交后跳转到 {@link MessageAction#echo2(String)} 所指向的页面
+     * 访问 <a href="http://localhost/pages/message/input" /> 查看结果
+     * @return jsp页面路径
+     */
+    @GetMapping("/input")
+    public String input(){
+        // 由于此处不需要进行任何的值传递，所以直接返回字符串路径
+        return "/pages/message/input.jsp";
+    }
+
+    /**
+     * 接收来自 {@link MessageAction#input()} 页面提交的请求
+     * @param message 表单提交的参数名
+     * @return 数据内容对象
+     */
+    @RequestMapping("/echo2")// 映射地址
+    public ModelAndView echo2(String message){
+        log.info("消息回应处理,msg={}", message);
+        ModelAndView mav = new ModelAndView("/pages/message/show2.jsp");
+        mav.addObject("echoMessage", messageService.echo(message));
+        return mav; // 路径的跳转
     }
 }
