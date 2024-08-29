@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.MatrixVariable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -110,5 +111,44 @@ public class MessageAction {
          */
         log.info("消息回应处理,title={}, info={}, level={}", title, info, level);
         return null; // 路径的跳转
+    }
+
+    /**
+     * 测试：矩阵参数传递
+     * 访问 <a href="http://localhost/pages/message/matrix/1;title=yootk;content=www.yootk.com;level=2" /> 查看结果
+     */
+    @GetMapping("/matrix/{mid}")// 映射地址
+    public ModelAndView matrix(
+            @PathVariable(name = "mid") String mid, // 绑定路径参数
+            @MatrixVariable("title") String title,
+            @MatrixVariable("content") String content,
+            @MatrixVariable("level") int level){
+        log.info("消息回应处理, mid={}, title={}, content={}, level={}", mid, title, content, level);
+        return null; // 路径的跳转
+    }
+
+    /**
+     * 测试：矩阵参数传递，其二
+     * 访问 <a href="http://localhost/pages/message/matrix_map/title=yootk;content=www.yootk.com;level=2" /> 查看结果
+     * <p>
+     *     与视频不一致，视频中使用的是
+     *     <code>
+     *         "/echo_map/{.*}"
+     *     </code>
+     *     但是我这边启动会报错:
+     *          Char '.' not allowed at start of captured variable name
+     *     改成：“{:.*}”,倒是能部分实现功能，但是会忽略掉第一个 ";" 前的内容 (title=yootk)
+     *     e.g.
+     *          content = www.yootk.com
+     *          level = 2
+     * <p>
+     *     可能是矩阵参数要按规则 segment;key=value 来匹配
+     * @see org.springframework.web.util.pattern.InternalPathPatternParser#parse(String)
+     * @param params 矩阵参数
+     */
+    @GetMapping("/matrix_map/{}")
+    public ModelAndView matrixMap(@MatrixVariable Map<String, String> params){
+        params.forEach((k, v) -> System.out.printf("%s = %s\n", k, v));
+        return null;
     }
 }
