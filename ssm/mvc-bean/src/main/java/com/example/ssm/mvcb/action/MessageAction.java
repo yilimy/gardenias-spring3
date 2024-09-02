@@ -1,5 +1,6 @@
 package com.example.ssm.mvcb.action;
 
+import com.example.ssm.mvcb.action.abs.AbstractAction;
 import com.example.ssm.mvcb.service.IMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +21,11 @@ import java.util.Map;
  * @author caimeng
  * @date 2024/8/27 14:18
  */
+@SuppressWarnings({"SpringMVCViewInspection","SpringJavaAutowiredFieldsWarningInspection"})
 @Slf4j
 @Controller
 @RequestMapping("/pages/message")
-public class MessageAction {
+public class MessageAction extends AbstractAction {
     @Autowired
     private IMessageService messageService;// 业务实例
 
@@ -149,6 +152,30 @@ public class MessageAction {
     @GetMapping("/matrix_map/{}")
     public ModelAndView matrixMap(@MatrixVariable Map<String, String> params){
         params.forEach((k, v) -> System.out.printf("%s = %s\n", k, v));
+        return null;
+    }
+
+    /**
+     * 多表单数据绑定的页面
+     * <a href="http://localhost/pages/message/input_many" />
+     * @return 数据对象
+     */
+    @RequestMapping("/input_many")
+    public String pageInputMany(){
+        // 注意，该次转发后 request.contextPath 的值不再是"/",而是"/pages/message"
+        return "/pages/message/input_many.jsp";
+    }
+
+    /**
+     * 多表单数据绑定的页面的数据接收
+     * @see MessageAction#pageInputMany()
+     */
+    @RequestMapping("/input_many_commit")
+    public ModelAndView pageInputManyCommit(String message, int level, Date pupdate){
+        log.info("message = {}", message);
+        log.info("level   = {}", level);
+        log.info("pupdate = {}", pupdate);
+//        log.info("tags    = {}", tags);
         return null;
     }
 }
