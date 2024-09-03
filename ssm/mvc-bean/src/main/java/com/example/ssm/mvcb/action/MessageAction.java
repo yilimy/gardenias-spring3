@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.MatrixVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -175,7 +176,51 @@ public class MessageAction extends AbstractAction {
         log.info("message = {}", message);
         log.info("level   = {}", level);
         log.info("pupdate = {}", pupdate);
-//        log.info("tags    = {}", tags);
         return null;
     }
+
+    /**
+     * 属性传递
+     * <a href="http://localhost/pages/message/input_transfer.jsp" />
+     */
+    @RequestMapping("/transfer")
+    public ModelAndView transfer(String message, int level, Date pupdate){
+        log.info("message = {}", message);
+        log.info("level   = {}", level);
+        log.info("pupdate = {}", pupdate);
+        ModelAndView mav = new ModelAndView("/pages/message/input_transfer.jsp");
+        mav.addObject("message", message);
+        mav.addObject("level", level);
+        mav.addObject("pupdate", pupdate);
+        return mav;
+    }
+
+    /**
+     * 该方法负责页面跳转
+     * <a href="http://localhost/pages/message/transfer_page" />
+     */
+    @RequestMapping("/transfer_page")
+    public String transferPage(){
+        return "/pages/message/input_transfer.jsp";
+    }
+
+    /**
+     * 该方法负责数据绑定
+     * {@link MessageAction#transferPage()}
+     * ModelAttribute 是对控制层功能的进一步拆分
+     */
+    @ModelAttribute
+    public void transferAttribute(String message,
+            /*
+             * 该处与视频不一致，
+             * <a href="https://www.bilibili.com/video/BV16hp2emEYb/" />
+             * 视频中数据类型为int，但是使用 <a href="http://localhost/pages/message/input_transfer.jsp" /> 访问时会报错。
+             */
+                                  Integer level,
+                                  Date pupdate, Model model){
+        model.addAttribute("message", message);
+        model.addAttribute("level", level);
+        model.addAttribute("pupdate", pupdate);
+    }
+
 }

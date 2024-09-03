@@ -8,11 +8,11 @@
 </head>
 <body>
     <%--注意：从MessageAction跳转过来，自带了contextPath--%>
-    <form action="${request.contextPath}/pages/message/input_many_commit" method="post">
+    <form action="${request.contextPath}/pages/message/transfer" method="post">
         消息内容: <input type="text" name="message" value="www.yootk.com"><br>
         消息级别: <select id="level" name="level">
                     <option value="0">紧急</option>
-                    <option value="1">普通</option>
+                    <option value="1" selected>普通</option>
                     <option value="2">延迟</option>
                 </select><br>
         发布日期: <input type="date" id="pupdate" name="pupdate" value="2262-01-21"><br>
