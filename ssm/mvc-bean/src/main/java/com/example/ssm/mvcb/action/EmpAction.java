@@ -20,6 +20,7 @@ public class EmpAction extends AbstractAction { // 父类存在有日期转换�
 
     /**
      * 浏览器访问： <a href="http://localhost/pages/emp/add_input" />
+     * 跳转地址: {@link EmpAction#add(Emp)}
      */
     @GetMapping("/add_input")
     public String addInput() {

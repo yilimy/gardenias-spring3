@@ -30,6 +30,11 @@
  *     服务端跳转    forward:/路径
  *     客户端跳转    redirect:/路径
  *     RedirectAttributes接口是为了跳转后的属性传递操作。
+ *     {@link com.example.ssm.mvcb.action.EmpAction#addInput()}
+ *
+ * RequestBody
+ * <a href="https://www.bilibili.com/video/BV1o3H5e7E2H/" />
+ *
  * @author caimeng
  * @date 2024/8/29 11:18
  */
