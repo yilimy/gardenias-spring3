@@ -41,7 +41,9 @@ public class StartWebApplication implements WebApplicationInitializer {
         // 注解上下文启动
         AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
         // 配置扫描包
-        webContext.scan("com.example.ssm.mvcb.action","com.example.ssm.mvcb.service");
+//        webContext.scan("com.example.ssm.mvcb.action","com.example.ssm.mvcb.service", "com.example.ssm.mvcb.config");
+//        webContext.scan("com.example.ssm.mvcb.context.config", "com.example.ssm.mvcb.config");
+        webContext.scan("com.example.ssm.mvcb");
         // 刷新上下文
         webContext.refresh();
         // 在SpringMVC中要设置一个 DispatcherServlet 分发处理类

@@ -104,7 +104,7 @@ public class MyThreadPoolConfig {
     /**
      * ThreadLocal对象类型
      */
-    public static interface TlMark {}
+    public interface TlMark {}
 
     /**
      * 当拒绝策略是CallerRunsPolicy时，执行任务的线程是父线程，这个时候清理数据，会直接把父线程的threadLocal清理，极有可能导致后续业务出错，
