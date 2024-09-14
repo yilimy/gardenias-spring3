@@ -79,11 +79,11 @@
             <name>repo1</name>
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
-        <repository>
-            <id>spring</id>
-            <name>spring</name>
-            <url>https://repo1.spring.io/libs-milestone</url>
-        </repository>
+<!--        <repository>-->
+<!--            <id>spring</id>-->
+<!--            <name>spring</name>-->
+<!--            <url>https://repo1.spring.io/libs-milestone</url>-->
+<!--        </repository>-->
     </repositories>
     <distributionManagement>
         <repository>

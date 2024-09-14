@@ -140,4 +140,17 @@ public class ParamMatcherTest {
                 .add(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyList());
 
     }
+
+    /**
+     * 返回结果的同时，修改请求参数
+     */
+    @Test
+    public void modifyParamTest() {
+        UserUpdateReq userUpdateReq = new UserUpdateReq();
+        Mockito.doAnswer(invocation -> {
+            UserUpdateReq argument = invocation.getArgument(0, UserUpdateReq.class);
+            argument.setId(1L);
+            return 1;
+        }).when(mockUserService).modifyById(userUpdateReq);
+    }
 }
