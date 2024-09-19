@@ -12,7 +12,6 @@ import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Map;
 import java.util.UUID;
 
 /**

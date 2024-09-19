@@ -147,6 +147,16 @@ public class SubTest {
     }
 
     /**
+     * 测试：让指定的插桩抛出异常
+     * 通过org.junit.Test方式
+     */
+    @org.junit.Test(expected = RuntimeException.class)
+    public void exception3Test() {
+        when(mockList.get(anyInt())).thenThrow(RuntimeException.class);
+        mockList.get(4);
+    }
+
+    /**
      * 多次插桩
      */
     @Test

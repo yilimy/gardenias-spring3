@@ -5,6 +5,7 @@ import com.example.junit.mockito.bean.vo.UserVO;
 import com.example.junit.mockito.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -139,6 +140,23 @@ public class ParamMatcherTest {
         Mockito.verify(mockUserService, Mockito.times(1))
                 .add(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyList());
 
+    }
+
+    /**
+     * 测试参数获取
+     */
+    @Test
+    public void argumentPickTest() {
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        mockUserService.add("新增测试", "18892765374", List.of("A", "B", "C"));
+        // 当使用匹配器的时候，所有的参数，要么都用，要么都不用
+        Mockito.verify(mockUserService, Mockito.times(1))
+                .add(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyList());
+        // 打桩，获取方法调用的参数
+        Mockito.verify(mockUserService).add(captor.capture(), Mockito.anyString(), Mockito.anyList());
+        // 获取参数的值
+        String value = captor.getValue();
+        assert "新增测试".equals(value);
     }
 
     /**
