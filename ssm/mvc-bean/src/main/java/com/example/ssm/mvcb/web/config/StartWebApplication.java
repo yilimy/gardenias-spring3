@@ -14,6 +14,7 @@ import java.util.EnumSet;
 
 /**
  * 启动类
+ * 通过代码的方式实现，需要实现 {@link WebApplicationInitializer} 接口
  * <p>
  *     spring的容器启动类
  *     {@link org.springframework.web.SpringServletContainerInitializer}
@@ -22,7 +23,9 @@ import java.util.EnumSet;
  * @author caimeng
  * @date 2024/8/27 17:29
  */
-public class StartWebApplication implements WebApplicationInitializer {
+//public class StartWebApplication implements WebApplicationInitializer {
+@SuppressWarnings("unused")
+public class StartWebApplication {
     /**
      * 启动
      * <p>
@@ -35,7 +38,7 @@ public class StartWebApplication implements WebApplicationInitializer {
      *          这个链接最终会通过 action 跳转到 webapp 目录下的 jsp 页面
      * @param servletContext the {@code ServletContext} to initialize
      */
-    @Override
+//    @Override
     public void onStartup(@NonNull ServletContext servletContext) {
         // 在该类中可以直接获取到当前的 servletContext 接口实例（web上下文对象）
         // 注解上下文启动
