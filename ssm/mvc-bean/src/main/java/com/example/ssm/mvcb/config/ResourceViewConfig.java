@@ -10,8 +10,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  * @author caimeng
  * @date 2024/9/20 11:02
  */
-@ConditionalOnProperty(value = "security.enable", havingValue = "true")
-//@ConditionalOnProperty(value = "security.enable", havingValue = "true", matchIfMissing = true)
+//@ConditionalOnProperty(value = "security.enable", havingValue = "true")
+@ConditionalOnProperty(value = "security.enable", havingValue = "true", matchIfMissing = true)
 @Configuration
 public class ResourceViewConfig {
 

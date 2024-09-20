@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Configuration;
  * @date 2024/8/29 11:17
  */
 @Configuration
-@ComponentScan({"com.example.ssm.mvcb.service", "com.example.ssm.mvcb.config"})
+@ComponentScan({
+        "com.example.ssm.mvcb.service",
+        "com.example.ssm.mvcb.config",
+        "com.example.ssm.mvcb.advice"
+})
 //@ComponentScan({"com.example.ssm.mvcb.service"})
 public class SpringApplicationContextConfig {
 }
