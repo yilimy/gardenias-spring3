@@ -2,11 +2,14 @@ package com.example.ssm.mvcb.web.config;
 
 import com.example.ssm.mvcb.context.config.SpringApplicationContextConfig;
 import com.example.ssm.mvcb.context.config.SpringWebContextConfig;
+import com.example.ssm.mvcb.servlet.YootkDispatcherServlet;
 import jakarta.servlet.Filter;
 import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.ServletRegistration;
 import org.springframework.lang.NonNull;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -16,6 +19,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  * @date 2024/9/18 11:12
  */
 public class StartWebAnnotationApplication extends AbstractAnnotationConfigDispatcherServletInitializer {
+    @SuppressWarnings("NullableProblems")
+    @Override
+    protected FrameworkServlet createDispatcherServlet(@NonNull WebApplicationContext servletAppContext) {
+        // 替换为自定义的分发器
+        return new YootkDispatcherServlet(servletAppContext);
+    }
+
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{SpringApplicationContextConfig.class};
