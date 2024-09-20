@@ -1,6 +1,7 @@
 package com.example.ssm.mvcb.context.config;
 
 import com.example.ssm.mvcb.config.JacksonConfig;
+import com.example.ssm.mvcb.interceptor.YootkHandlerInterceptor;
 import com.example.ssm.mvcb.web.config.StartWebAnnotationApplication;
 import com.example.ssm.mvcb.web.config.StartWebApplication;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,6 +14,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -81,5 +83,13 @@ public class SpringWebContextConfig implements WebMvcConfigurer {
         registry.addResourceHandler("yootk-js/**").addResourceLocations("/WEB-INF/static/js/");
         registry.addResourceHandler("yootk-css/**").addResourceLocations("/WEB-INF/static/css/");
         registry.addResourceHandler("yootk-img/**").addResourceLocations("/WEB-INF/static/images/");
+    }
+
+    @Override
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
+        // 追加拦截器
+        registry.addInterceptor(new YootkHandlerInterceptor())
+                // 匹配拦截器到 /pages 路由下
+                .addPathPatterns("/pages/**");
     }
 }
