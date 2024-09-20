@@ -2,6 +2,7 @@ package com.example.ssm.mvcb.web.config;
 
 import com.example.ssm.mvcb.context.config.SpringApplicationContextConfig;
 import com.example.ssm.mvcb.context.config.SpringWebContextConfig;
+import com.example.ssm.mvcb.filter.YootkMessageFilter;
 import com.example.ssm.mvcb.servlet.YootkDispatcherServlet;
 import jakarta.servlet.Filter;
 import jakarta.servlet.MultipartConfigElement;
@@ -44,10 +45,14 @@ public class StartWebAnnotationApplication extends AbstractAnnotationConfigDispa
 
     @Override
     protected Filter[] getServletFilters() {
+        // 编码过滤器
         CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding("UTF-8");
         encodingFilter.setForceEncoding(true);
-        return new Filter[]{encodingFilter};
+        // 自定义过滤器
+        YootkMessageFilter messageFilter = new YootkMessageFilter();
+        // 返回过滤器集合
+        return new Filter[]{encodingFilter, messageFilter};
     }
 
     /**
