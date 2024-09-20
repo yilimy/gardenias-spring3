@@ -22,7 +22,7 @@ import java.util.Map;
  * @author caimeng
  * @date 2024/8/27 14:18
  */
-@SuppressWarnings({"SpringMVCViewInspection","SpringJavaAutowiredFieldsWarningInspection"})
+@SuppressWarnings({"SpringJavaAutowiredFieldsWarningInspection", "SpringMVCViewInspection"})
 @Slf4j
 @Controller
 @RequestMapping("/pages/message")
@@ -48,6 +48,33 @@ public class MessageAction extends AbstractAction {
         result.put("edu", "李兴华编程训练营");
         mav.addAllObjects(result);
         return mav; // 路径的跳转
+    }
+
+    /**
+     * 将资源文件转移到 WEB-INF 目录下
+     * 访问 <a href="http://localhost/pages/message/web_info/echo?message=123456" /> 查看结果
+     * @param message 请求参数
+     * @return 视图对象
+     */
+    @RequestMapping("/web_info/echo")// 映射地址
+    public ModelAndView echoWebInfo(String message){
+        ModelAndView mav = new ModelAndView("/WEB-INF/pages/message/show.jsp");
+        mav.addObject("echoMessage", "【ECHO】" + message);
+        return mav;
+    }
+
+    /**
+     * 需要配置文件的支持 security.enable=true
+     * {@link com.example.ssm.mvcb.config.ResourceViewConfig}
+     * 访问 <a href="http://localhost/pages/message/web_info_config/echo?message=123456" /> 查看结果
+     * @param message 请求参数
+     * @return 视图对象
+     */
+    @RequestMapping("/web_info_config/echo")// 映射地址
+    public ModelAndView echoWebInfoConfig(String message){
+        ModelAndView mav = new ModelAndView("/message/show");
+        mav.addObject("echoMessage", "【ECHO】" + message);
+        return mav;
     }
 
     /**
@@ -81,6 +108,19 @@ public class MessageAction extends AbstractAction {
     public String input(){
         // 由于此处不需要进行任何的值传递，所以直接返回字符串路径
         return "/pages/message/input.jsp";
+    }
+
+    /**
+     * 将资源文件转移到 WEB-INF 目录下
+     * <a href="http://localhost/pages/message/web_info/input" />
+     * <p>
+     *     说明SpringMVC里面针对jsp页面的跳转是可以直接跳转到 WEB-INF 目录下的
+     * @return jsp页面路径
+     */
+    @GetMapping("/web_info/input")
+    public String inputWebInfo(){
+        // 由于此处不需要进行任何的值传递，所以直接返回字符串路径
+        return "/WEB-INF/pages/message/input.jsp";
     }
 
     /**

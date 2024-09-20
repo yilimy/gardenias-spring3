@@ -1,6 +1,8 @@
 package com.example.ssm.mvcb.context.config;
 
 import com.example.ssm.mvcb.config.JacksonConfig;
+import com.example.ssm.mvcb.web.config.StartWebAnnotationApplication;
+import com.example.ssm.mvcb.web.config.StartWebApplication;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -10,7 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.lang.NonNull;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -18,10 +22,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
+ * 使用 {@link StartWebApplication} 时不能开启 EnableWebMvc 注解，会报错：找不到ServletContext
+ * 使用 {@link StartWebAnnotationApplication} 应该开启 EnableWebMvc 注解
  * @author caimeng
  * @date 2024/8/29 11:17
  */
-//@EnableWebMvc   // 加入此注解才表示WebMVC配置生效,但是本地添加此配置后，会报错：找不到ServletContext
+@EnableWebMvc   // 加入此注解才表示WebMVC配置生效,但是本地添加此配置后，使用StartWebApplication会报错：找不到ServletContext
 @Configuration
 @ComponentScan("com.example.ssm.mvcb.action")
 public class SpringWebContextConfig implements WebMvcConfigurer {
@@ -67,5 +73,13 @@ public class SpringWebContextConfig implements WebMvcConfigurer {
         converter.setSupportedMediaTypes(List.of(MediaType.APPLICATION_JSON));
         converter.setObjectMapper(objectMapper);
         converters.add(converter);
+    }
+
+    @Override
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
+        // yootk-js路径映射到 /WEB-INF/static/js/
+        registry.addResourceHandler("yootk-js/**").addResourceLocations("/WEB-INF/static/js/");
+        registry.addResourceHandler("yootk-css/**").addResourceLocations("/WEB-INF/static/css/");
+        registry.addResourceHandler("yootk-img/**").addResourceLocations("/WEB-INF/static/images/");
     }
 }
