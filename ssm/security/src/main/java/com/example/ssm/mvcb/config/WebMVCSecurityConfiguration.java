@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -67,6 +69,12 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 "/yootk-js/**",
                 "/yootk-css/**"
         );
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // 密码加密器
+        return new BCryptPasswordEncoder();
     }
 
 }
