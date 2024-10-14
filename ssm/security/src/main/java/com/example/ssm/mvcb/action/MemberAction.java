@@ -82,7 +82,7 @@ public class MemberAction {
      *     匿名用户
      *          <a href="http://localhost/pages/member/principal" />
      *          结果:
-     *              principal=null
+     *              匿名用户
      *     登录用户
      *          <a href="http://localhost/login" />
      *          <a href="http://localhost/pages/member/principal" />

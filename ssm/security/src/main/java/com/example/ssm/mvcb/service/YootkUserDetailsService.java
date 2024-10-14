@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +49,17 @@ public class YootkUserDetailsService implements UserDetailsService {
         } else if ("lee".equals(username)) {
             return loadLee();
         }
-        return null;
+        return anonymousUser();
+    }
+
+    /**
+     * @return 匿名用户登录返回的对象
+     */
+    private User anonymousUser() {
+        return new User("yootk",
+                // 加密后的密码, 明文：hello，加密算法 bcrypt
+                "$2a$10$ncT6ccP.CoVlum8W5f8H8uG5sxejkxxxOZlk6twbwhvDCnqW1w/5q",
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_ANONYMOUS")));
     }
 
     private User loadYootk() {
