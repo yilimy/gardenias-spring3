@@ -4,6 +4,7 @@ import com.example.ssm.mvcb.context.config.SpringWebContextConfig;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -37,6 +38,9 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
      *     本地版本: 6.0.1
      *     参考版本: 6.0.0-M3
      *     {@link HttpSecurity#createMvcMatchers(String...)}
+     * <p>
+     *     用户信息配置
+     *     {@link com.example.ssm.mvcb.service.YootkUserDetailsService#loadUserByUsername(String)}
      * @param http HttpSecurity
      * @return security 认证链
      */
@@ -48,9 +52,34 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 // 配置认证目录
-                                .requestMatchers("/pages/message/**").authenticated()
+                                .requestMatchers("/pages/message/**")
+                                .authenticated()
+                                /*
+                                 * access(方法) 等同于直接调用 authenticated()
+                                 * 只允许认证后的用户访问
+                                 */
+                                .requestMatchers("/pages/authenticated/**")
+                                .access(AuthenticatedAuthorizationManager.authenticated())
+                                /*
+                                 * 用户详情中配置了角色
+                                 * com.example.ssm.mvcb.service.YootkUserDetailsService.loadUserByUsername
+                                 * 注意: 角色 ADMIN， 配置的值为 ROLE_ADMIN，"ROLE_"为前缀
+                                 */
+                                .requestMatchers("/pages/role/info")
+                                .hasRole("ADMIN")
+                                // 任意角色，命中其一
+                                .requestMatchers("/pages/role/any")
+                                .hasAnyRole("NEWS", "ADMIN")
+                                /*
+                                 * 配置一个不存在的路径
+                                 * http://localhost/pages/message/info
+                                 * 先认证，再跳转到404
+                                 */
+                                .requestMatchers("/pages/news/**")
+                                .hasAnyRole("NEWS")
                                 // 任意访问
-                                .requestMatchers("/**").permitAll()
+                                .requestMatchers("/**")
+                                .permitAll()
                 )
                 // Spring Security 内部自带登录表单
                 .formLogin();
