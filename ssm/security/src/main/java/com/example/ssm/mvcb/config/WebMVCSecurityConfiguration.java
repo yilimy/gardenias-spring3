@@ -21,6 +21,9 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 @EnableWebSecurity  // 启用 Spring Security 的支持
 public class WebMVCSecurityConfiguration {  // WEB配置类
+    public static final String LOGIN_PAGE = "/login_page";
+    public static final String LOGOUT_PAGE = "/logout_page";
+    public static final String ERROR_403 = "/error_403";
 
     @Bean(name = "mvcHandlerMappingIntrospector")
     public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
@@ -81,8 +84,35 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                                 .requestMatchers("/**")
                                 .permitAll()
                 )
-                // Spring Security 内部自带登录表单
-                .formLogin();
+//                .formLogin();   // SpringSecurity 中自带的登录表单
+                // 配置自定义登录事项
+                .formLogin()
+                // 自定义表单的用户名参数名称
+                .usernameParameter("mid")
+                // 自定义表单的密码参数名称
+                .passwordParameter("pwd")
+                // 登录成功后的
+                .successForwardUrl("/")
+                // 登录表单的路径
+                .loginPage(LOGIN_PAGE)
+                // 表单提交路径, 见 /pages/login.jsp
+                .loginProcessingUrl("/yootk-login")
+                // 登录失败页，见 /pages/login.jsp
+                .failureForwardUrl("/login_page?error=登录失败，错误的用户名或者密码！")
+                .and()
+                // 配置注销事项
+                .logout()
+                // 注销路径
+                .logoutUrl("/yootk-logout")
+                // 注销后的显示路径
+                .logoutSuccessUrl(LOGOUT_PAGE)
+                // 注销后删除 cookies
+                .deleteCookies("JSESSIONID")
+                .and()
+                // 认证错误的配置
+                .exceptionHandling()
+                // 失败处理
+                .accessDeniedPage(ERROR_403);
         // 关闭 CSRF 功能
         http.csrf().disable();
         return http.build();
