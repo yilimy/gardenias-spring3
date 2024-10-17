@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -28,6 +29,12 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
     @Bean(name = "mvcHandlerMappingIntrospector")
     public HandlerMappingIntrospector mvcHandlerMappingIntrospector() {
         return new HandlerMappingIntrospector();
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        // 剔除已登录用户的事件注册
+        return new HttpSessionEventPublisher();
     }
 
     /**
@@ -50,6 +57,18 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
     @SneakyThrows
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) {
+        // 配置session管理器
+        http.sessionManagement()
+                // 一个账户并行数量为1
+                .maximumSessions(1)
+                /*
+                 * 剔除之前登录过的.
+                 * 一旦某个账户被剔除，SpringSecurity会认为需要为其添加一个Session处理事件
+                 * httpSessionEventPublisher()
+                 */
+                .maxSessionsPreventsLogin(false)
+                // session失效后的显示页面
+                .expiredUrl("/?invalidate=true");
         // 配置认证的访问请求
         http
                 .authorizeHttpRequests((authorizeHttpRequests) ->
@@ -83,10 +102,10 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                                 // 任意访问
                                 .requestMatchers("/**")
                                 .permitAll()
-                )
-//                .formLogin();   // SpringSecurity 中自带的登录表单
+                );
+//        http.formLogin();   // SpringSecurity 中自带的登录表单
                 // 配置自定义登录事项
-                .formLogin()
+        http.formLogin()
                 // 自定义表单的用户名参数名称
                 .usernameParameter("mid")
                 // 自定义表单的密码参数名称

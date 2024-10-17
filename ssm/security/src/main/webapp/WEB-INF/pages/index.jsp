@@ -13,7 +13,10 @@
   public static final String logout_url = "/yootk-logout";
 %>
 <h3>
-  ${msg}
+${msg}
+</h3>
+<h3>
+  ${param.invalidate ? "当前账户已在其他设备登录，为了您的安全已将该账户注销" : ""}
 </h3>
 <security:authorize access="isAuthenticated()">
   <h3>
