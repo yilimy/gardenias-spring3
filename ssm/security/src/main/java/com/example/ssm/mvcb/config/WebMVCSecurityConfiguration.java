@@ -83,6 +83,8 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 )
                 // Spring Security 内部自带登录表单
                 .formLogin();
+        // 关闭 CSRF 功能
+        http.csrf().disable();
         return http.build();
     }
 
