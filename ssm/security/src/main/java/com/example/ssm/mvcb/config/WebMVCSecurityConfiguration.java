@@ -8,9 +8,11 @@ import org.springframework.security.authorization.AuthenticatedAuthorizationMana
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -56,7 +58,11 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
      */
     @SneakyThrows
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           // 免登录时添加的参数
+                                           UserDetailsService userDetailsService,
+                                           // 持久化时添加的参数
+                                           JdbcTokenRepositoryImpl jdbcTokenRepository) {
         // 配置session管理器
         http.sessionManagement()
                 // 一个账户并行数量为1
@@ -75,7 +81,10 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                         authorizeHttpRequests
                                 // 配置认证目录
                                 .requestMatchers("/pages/message/**")
-                                .authenticated()
+                                // 普通认证
+//                                .authenticated()
+                                // 强制认证
+                                .fullyAuthenticated()
                                 /*
                                  * access(方法) 等同于直接调用 authenticated()
                                  * 只允许认证后的用户访问
@@ -126,7 +135,7 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 // 注销后的显示路径
                 .logoutSuccessUrl(LOGOUT_PAGE)
                 // 注销后删除 cookies
-                .deleteCookies("JSESSIONID")
+                .deleteCookies("JSESSIONID", "yootk-cookie-rememberme")
                 .and()
                 // 认证错误的配置
                 .exceptionHandling()
@@ -134,6 +143,29 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 .accessDeniedPage(ERROR_403);
         // 关闭 CSRF 功能
         http.csrf().disable();
+        // 配置免登录
+        http.rememberMe()
+                // 如果要持久化，设置持久化仓库
+                .tokenRepository(jdbcTokenRepository)
+                // 获取用户信息
+                .userDetailsService(userDetailsService)
+                /*
+                 * 参数名称
+                 * login.jsp中下拉框的提交参数
+                 */
+                .rememberMeParameter("rme")
+                // 数据加密密钥
+                .key("yootk-lixinhua")
+                /*
+                 * Cookie保存时间，单位秒.30天免登录
+                 * 2_592_000 是 2,592,000 的另一种写法，等于 2592000
+                 */
+                .tokenValiditySeconds(2_592_000)
+                /*
+                 * Cookie的名称
+                 * 注销环节(deleteCookies)也要删除该Cookie值
+                 */
+                .rememberMeCookieName("yootk-cookie-rememberme");
         return http.build();
     }
 

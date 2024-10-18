@@ -16,7 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan({
         "com.example.ssm.mvcb.service",
         "com.example.ssm.mvcb.config",
-        "com.example.ssm.mvcb.advice"
+        "com.example.ssm.mvcb.advice",
+        "com.example.ssm.mvcb.dao"
 })
 public class SpringApplicationContextConfig {
 }
