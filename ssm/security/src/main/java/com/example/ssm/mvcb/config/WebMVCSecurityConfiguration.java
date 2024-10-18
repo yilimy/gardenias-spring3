@@ -24,7 +24,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 @EnableWebSecurity  // 启用 Spring Security 的支持
 public class WebMVCSecurityConfiguration {  // WEB配置类
-    public static final String LOGIN_PAGE = "/login_page";
+    public static final String LOGIN_PAGE = "/login";
     public static final String LOGOUT_PAGE = "/logout_page";
     public static final String ERROR_403 = "/error_403";
 

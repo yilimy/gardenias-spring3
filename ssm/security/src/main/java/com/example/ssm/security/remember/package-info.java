@@ -10,7 +10,7 @@
  *          WebMVCSecurityConfiguration#filterChain(HttpSecurity)
  *              -> WebMVCSecurityConfiguration#filterChain(HttpSecurity, UserDetailsService)
  *     3. 验证
- *          登录 <a href="http://localhost/login_page" />
+ *          登录 <a href="http://localhost/login" />
  *          查询 <a href="http://localhost/pages/message/info" />
  *     4. 免登录的操作主要是基于Cookie的，这些数据保存在WEB应用的内存中，如果WEB应用突然垮掉，仍然可以访问。
  *     5. 现在添加了用户免登录，但是如果是安全要求比较高的资源访问，需要使用强制登录处理，可以添加其他的授权限制。
