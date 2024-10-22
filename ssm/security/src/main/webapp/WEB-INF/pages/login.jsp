@@ -21,6 +21,7 @@
     用户名:<input type="text" name="mid" value="yootk"><br>
     密码:<input type="password" name="pwd" value="hello"><br>
     <input type="checkbox" id="rme" name="rme" value="true" checked>下次免登录<br>
+    验证码:<input type="text" name="code" maxlength="4" size="4"><img alt="验证码" src="/captcha"><br>
     <button type="submit">登录</button><button type="reset">重置</button>
   </label>
 </form>

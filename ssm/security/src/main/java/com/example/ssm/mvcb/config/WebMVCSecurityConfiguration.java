@@ -1,6 +1,7 @@
 package com.example.ssm.mvcb.config;
 
 import com.example.ssm.mvcb.context.config.SpringWebContextConfig;
+import com.example.ssm.mvcb.filter.CaptchaAuthenticationFilter;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -24,7 +27,8 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 @Configuration
 @EnableWebSecurity  // 启用 Spring Security 的支持
 public class WebMVCSecurityConfiguration {  // WEB配置类
-    public static final String LOGIN_PAGE = "/login";
+    public static final String LOGIN_PAGE = "/login_page";
+    public static final String LOGIN_ACTION = "/yootk-login";
     public static final String LOGOUT_PAGE = "/logout_page";
     public static final String ERROR_403 = "/error_403";
 
@@ -37,6 +41,15 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         // 剔除已登录用户的事件注册
         return new HttpSessionEventPublisher();
+    }
+
+    @Bean
+    public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
+        // 认证失败
+        SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+        // 错误的跳转路径
+        handler.setDefaultFailureUrl(LOGIN_PAGE + "?error=true");
+        return handler;
     }
 
     /**
@@ -62,7 +75,9 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                                            // 免登录时添加的参数
                                            UserDetailsService userDetailsService,
                                            // 持久化时添加的参数
-                                           JdbcTokenRepositoryImpl jdbcTokenRepository) {
+                                           JdbcTokenRepositoryImpl jdbcTokenRepository,
+                                           // 验证失败的处理类
+                                           SimpleUrlAuthenticationFailureHandler failureHandler) {
         // 配置session管理器
         http.sessionManagement()
                 // 一个账户并行数量为1
@@ -124,9 +139,9 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 // 登录表单的路径
                 .loginPage(LOGIN_PAGE)
                 // 表单提交路径, 见 /pages/login.jsp
-                .loginProcessingUrl("/yootk-login")
+                .loginProcessingUrl(LOGIN_ACTION)
                 // 登录失败页，见 /pages/login.jsp
-                .failureForwardUrl("/login_page?error=登录失败，错误的用户名或者密码！")
+                .failureForwardUrl(LOGIN_PAGE + "?error=登录失败，错误的用户名或者密码！")
                 .and()
                 // 配置注销事项
                 .logout()
@@ -166,6 +181,10 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                  * 注销环节(deleteCookies)也要删除该Cookie值
                  */
                 .rememberMeCookieName("yootk-cookie-rememberme");
+        CaptchaAuthenticationFilter captchaAuthenticationFilter = new CaptchaAuthenticationFilter();
+        captchaAuthenticationFilter.setAuthenticationFailureHandler(failureHandler);
+        // 验证码应该在用户登录认证之前进行检查
+        http.addFilterBefore(captchaAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

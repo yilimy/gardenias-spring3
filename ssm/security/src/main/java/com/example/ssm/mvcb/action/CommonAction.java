@@ -31,7 +31,7 @@ public class CommonAction {
         return "/index";
     }
 
-    @RequestMapping(WebMVCSecurityConfiguration.LOGIN_PAGE)
+    @RequestMapping({WebMVCSecurityConfiguration.LOGIN_PAGE, "/login"})
     public String login() {
         // 登录表单页
         return "/login";
