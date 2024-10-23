@@ -8,18 +8,22 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.expression.SecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
-import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -203,15 +207,41 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
     }
 
     /**
+     * 注册一个角色的层级管理实例
+     * @return 角色层级关系
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl role = new RoleHierarchyImpl();
+        role.setHierarchy("ROLE_ADMIN > ROLE_RESOURCE > ROLE_USER > ROLE_NEWS");
+        return role;
+    }
+
+    /**
+     * 设置表达式解析器
+     * @param roleHierarchy 层级关系对象
+     * @return 注册
+     */
+    @Bean
+    public SecurityExpressionHandler<FilterInvocation> expressionHandler(RoleHierarchy roleHierarchy) {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy);
+        return expressionHandler;
+    }
+
+    /**
      * @return 投票器
      */
     @Bean
-    public AccessDecisionManager accessDecisionManager() {
+    public AccessDecisionManager accessDecisionManager(SecurityExpressionHandler expressionHandler) {
         List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
         decisionVoters.add(new RoleVoter());
         decisionVoters.add(new AuthenticatedVoter());
         decisionVoters.add(new LocalAccessVoter());
-        decisionVoters.add(new WebExpressionVoter());
+//        decisionVoters.add(new WebExpressionVoter());
+        WebExpressionVoter webExpressionVoter = new WebExpressionVoter();
+        webExpressionVoter.setExpressionHandler(expressionHandler);
+        decisionVoters.add(webExpressionVoter);
         return new AffirmativeBased(decisionVoters);
     }
 
