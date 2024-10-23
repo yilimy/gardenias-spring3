@@ -2,10 +2,17 @@ package com.example.ssm.mvcb.config;
 
 import com.example.ssm.mvcb.context.config.SpringWebContextConfig;
 import com.example.ssm.mvcb.filter.CaptchaAuthenticationFilter;
+import com.example.ssm.mvcb.voter.LocalAccessVoter;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.AuthenticatedVoter;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authorization.AuthenticatedAuthorizationManager;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -13,12 +20,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionVoter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author caimeng
@@ -77,7 +88,9 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                                            // 持久化时添加的参数
                                            JdbcTokenRepositoryImpl jdbcTokenRepository,
                                            // 验证失败的处理类
-                                           SimpleUrlAuthenticationFailureHandler failureHandler) {
+                                           SimpleUrlAuthenticationFailureHandler failureHandler,
+                                           // 投票器
+                                           AccessDecisionManager accessDecisionManager) {
         // 配置session管理器
         http.sessionManagement()
                 // 一个账户并行数量为1
@@ -90,14 +103,15 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
                 .maxSessionsPreventsLogin(false)
                 // session失效后的显示页面
                 .expiredUrl("/?invalidate=true");
+//        http.authorizeRequests().accessDecisionManager(accessDecisionManager)
+//                .requestMatchers("/pages/message/**")
+//                .hasAnyRole("ADMIN", "MESSAGE", LocalAccessVoter.LOCAL_FLAG);
         // 配置认证的访问请求
         http
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests
                                 // 配置认证目录
                                 .requestMatchers("/pages/message/**")
-                                // 普通认证
-//                                .authenticated()
                                 // 强制认证
                                 .fullyAuthenticated()
                                 /*
@@ -186,6 +200,19 @@ public class WebMVCSecurityConfiguration {  // WEB配置类
         // 验证码应该在用户登录认证之前进行检查
         http.addFilterBefore(captchaAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    /**
+     * @return 投票器
+     */
+    @Bean
+    public AccessDecisionManager accessDecisionManager() {
+        List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
+        decisionVoters.add(new RoleVoter());
+        decisionVoters.add(new AuthenticatedVoter());
+        decisionVoters.add(new LocalAccessVoter());
+        decisionVoters.add(new WebExpressionVoter());
+        return new AffirmativeBased(decisionVoters);
     }
 
     /**
