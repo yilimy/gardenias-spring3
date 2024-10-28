@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logImpl" value="SLF4J"/>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <package name="com.ssm.mybatis.vo"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <!-- JDBC事务管理 -->
+            <transactionManager type="JDBC"/>
+            <!-- 定义数据源，Mybatis内部提供有三种数据源支持 -->
+            <!-- POOLED：采用Mybatis内置的连接池进行数据库连接管理 -->
+            <!-- UNPOOLED：不使用数据库连接池管理 -->
+            <!-- JNDI：引入外部的数据库连接池配置 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://192.168.200.130:3306/test_sql?useUnicode=true&amp;allowMultiQuerie=true&amp;characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false"/>
+                <property name="username" value="root"/>
+                <property name="password" value="Gm02_prd8!"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/mapper/BookMapper.xml" />
+    </mappers>
+</configuration>
