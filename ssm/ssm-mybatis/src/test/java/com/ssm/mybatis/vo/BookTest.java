@@ -1,5 +1,6 @@
 package com.ssm.mybatis.vo;
 
+import com.ssm.mybatis.util.MybatisSessionFactory;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.io.Resources;
@@ -34,13 +35,36 @@ public class BookTest {
                     .build();
             // 5. 在执行具体的SQL操作时，需要提供有准确的命令定义，而命令都在映射文件中
             log.info("【数据增加】更新数据行数: {}", session.insert(
-                    // 命名空间 + 方法ID
+                    /*
+                     * 命名空间 + 方法ID
+                     * 使用 SqlSession 执行 sql 操作是不需要有Mapper接口及其方法的。
+                     * 反而是Mapper接口的方法需要通过命名空间找mapper.xml中的id去完成具体的 statement 拼接。
+                     * 通过使用Mapper接口，可以隐藏掉 SqlSession 的操作。
+                     */
                     "com.ssm.mybatis.mapper.BookMapper.doCreate", book
             ));
             // 6. 所有的操作都受到事务的保护，那么需要手工进行事务的提交
             session.commit();   // 提交事务
             session.close();    // 关闭事务
         }
+    }
 
+    /**
+     * 测试工厂连接类改造后的方法
+     */
+    @Test
+    public void doCreateWithFactoryTest() {
+        // 4. 将所需要保存的实例保存在数据库中
+        Book book = Book.builder()
+                .title("Spring开发实战2")
+                .author("小李老师")
+                .price(79.8)
+                .build();
+        SqlSession sqlSession = MybatisSessionFactory.getSqlSession();
+        log.info("【数据增加】更新数据行数: {}", sqlSession.insert(
+                "com.ssm.mybatis.mapper.BookMapper.doCreate", book
+        ));
+        sqlSession.commit();
+        MybatisSessionFactory.close();
     }
 }
