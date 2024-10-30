@@ -9,6 +9,7 @@
     </settings>
     <typeAliases>
         <package name="com.ssm.mybatis.vo"/>
+<!--        <typeAlias type="com.ssm.mybatis.vo.Book" alias="Book" />-->
     </typeAliases>
     <environments default="development">
         <environment id="development">

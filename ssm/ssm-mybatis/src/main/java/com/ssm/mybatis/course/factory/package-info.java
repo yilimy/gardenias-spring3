@@ -6,7 +6,6 @@
  *          {@link com.ssm.mybatis.util.MybatisSessionFactory}
  *     2. 改造测试
  *          com.ssm.mybatis.vo.BookTest#doCreateWithFactoryTest()
- *     3.
  * @author caimeng
  * @date 2024/10/28 14:05
  */
