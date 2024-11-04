@@ -15,7 +15,16 @@
         price
     </sql>
     <!-- 定义一个增加的sql语句-->
-    <insert id="doCreate" parameterType="com.ssm.mybatis.vo.Book">
+    <insert id="doCreate" parameterType="com.ssm.mybatis.vo.Book"
+            keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
         insert into book(title, author, price) values (#{title}, #{author}, #{price});
+    </insert>
+
+    <!-- 数据库不支持返回自增ID的情况 -->
+    <insert id="doCreateAdapterOracle" parameterType="com.ssm.mybatis.vo.Book">
+        insert into book(title, author, price) values (#{title}, #{author}, #{price});
+        <selectKey keyProperty="bid" keyColumn="bid" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
     </insert>
 </mapper>

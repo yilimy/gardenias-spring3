@@ -64,6 +64,31 @@ public class BookTest {
         log.info("【数据增加】更新数据行数: {}", sqlSession.insert(
                 "com.ssm.mybatis.mapper.BookMapper.doCreate", book
         ));
+        log.info("【获取主键】当前新增图书的主键内容为: {}", book.getBid());
+        sqlSession.commit();
+        MybatisSessionFactory.close();
+    }
+
+    /**
+     * 测试：通过selectKey获取新插入数据之后的ID
+     * <p>
+     *     执行了两次数据库操作
+     *     1. insert into book(title, author, price) values (?, ?, ?);
+     *     2. SELECT LAST_INSERT_ID();
+     */
+    @Test
+    public void doCreateWithLastInsertIdTest() {
+        // 4. 将所需要保存的实例保存在数据库中
+        Book book = Book.builder()
+                .title("Spring开发实战2")
+                .author("小李老师")
+                .price(79.8)
+                .build();
+        SqlSession sqlSession = MybatisSessionFactory.getSqlSession();
+        log.info("【数据增加】更新数据行数: {}", sqlSession.insert(
+                "com.ssm.mybatis.mapper.BookMapper.doCreateAdapterOracle", book
+        ));
+        log.info("【获取主键】当前新增图书的主键内容为: {}", book.getBid());
         sqlSession.commit();
         MybatisSessionFactory.close();
     }
