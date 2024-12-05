@@ -138,6 +138,7 @@
         <module>rabbitmq</module>
         <module>amqp</module>
         <module>ssm</module>
+        <module>agent</module>
     </modules>
 
 </project>
