@@ -92,4 +92,29 @@ public class BookTest {
         sqlSession.commit();
         MybatisSessionFactory.close();
     }
+
+    @Test
+    public void doEditTest() {
+        Book book = Book.builder()
+                .bid(1L)
+                .title("JAVA从入门到入土2")
+                .author("小王老师")
+                .price(996.96)
+                .build();
+        SqlSession sqlSession = MybatisSessionFactory.getSqlSession();
+        int update = sqlSession.update("com.ssm.mybatis.mapper.BookMapper.doEdit", book);
+        log.info("【数据更新】更新数据行数: {}",update);
+        sqlSession.commit();
+        sqlSession.close();
+    }
+
+    @Test
+    public void doRemoveTest() {
+        Book book = Book.builder().bid(60L).build();
+        SqlSession sqlSession = MybatisSessionFactory.getSqlSession();
+        int delete = sqlSession.delete("com.ssm.mybatis.mapper.BookMapper.doRemove", book);
+        log.info("【数据删除】删除数据行数: {}",delete);
+        sqlSession.commit();
+        sqlSession.close();
+    }
 }

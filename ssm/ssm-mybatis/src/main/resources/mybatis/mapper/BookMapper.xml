@@ -27,4 +27,20 @@
             SELECT LAST_INSERT_ID();
         </selectKey>
     </insert>
+
+    <!-- Mybatis映射文件配置中insert、update、delete三个配置项作用是一样的，随意使用，但尽量按标准来 -->
+    <!-- 可以直接使用Book作为parameterType，是因为在mybatis.cfg中定义了typeAlias -->
+    <update id="doEdit" parameterType="Book" >
+        update book set title=#{title}, author=#{author}, price=#{price}
+        <where>
+            bid=#{bid}
+        </where>
+    </update>
+
+    <delete id="doRemove" parameterType="java.lang.Long" >
+        delete from book
+        <where>
+            bid=#{bid}
+        </where>
+    </delete>
 </mapper>
