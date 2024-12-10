@@ -10,9 +10,6 @@
             <result property="price" column="price" jdbcType="DOUBLE"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        bid, title, author, price
-    </sql>
     <!-- 定义一个增加的sql语句-->
     <insert id="doCreate" parameterType="com.ssm.mybatis.vo.Book"
             keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
@@ -30,17 +27,19 @@
     <!-- Mybatis映射文件配置中insert、update、delete三个配置项作用是一样的，随意使用，但尽量按标准来 -->
     <!-- 可以直接使用Book作为parameterType，是因为在mybatis.cfg中定义了typeAlias -->
     <update id="doEdit" parameterType="Book" >
-        update test_sql.book set title=#{title}, author=#{author}, price=#{price}
+        update test_sql.book
+        <set>
+            title=#{title}, author=#{author}, price=#{price}
+        </set>
         <where>
-            bid=#{bid}
+            <if test="bid != null">
+                bid=#{bid}
+            </if>
         </where>
     </update>
 
     <delete id="doRemove" parameterType="java.lang.Long" >
-        delete from test_sql.book
-        <where>
-            bid=#{bid}
-        </where>
+        delete from test_sql.book where bid=#{bid}
     </delete>
     <!-- 定义数据查询操作，根据ID查询需要传递数据的主键，返回结果为VO对象实例 -->
     <select id="findById" parameterType="java.lang.Long" resultType="Book">
@@ -65,4 +64,47 @@
             ${column} like #{keyword}
         </where>
     </select>
+    <!-- 动态查询 -->
+    <select id="findByColumn" parameterType="Book" resultType="Book">
+        select bid, title, author, price from test_sql.book
+        <where>
+            <if test="bid != null and bid != &quot;&quot;">
+                and bid = #{bid}
+            </if>
+            <if test="title != null and title != &quot;&quot;">
+                and title = #{title}
+            </if>
+            <if test="author != null and author != &quot;&quot;">
+                and author = #{author}
+            </if>
+            <if test="price != null and price != 0.0">
+                and price = #{price}
+            </if>
+        </where>
+    </select>
+    <!-- 动态新增 -->
+    <insert id="doDynamicCreate" parameterType="Book"
+            keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
+        insert into test_sql.book(title, author, price) values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title == null or title == &quot;&quot;">
+                'NoTitle',
+            </if>
+            <if test="title != null and title != &quot;&quot;">
+                #{title},
+            </if>
+            <if test="author == null or author == &quot;&quot;">
+                'NoAuthor',
+            </if>
+            <if test="author != null and author != &quot;&quot;">
+                #{author},
+            </if>
+            <if test="price == null or price == 0.0">
+                -1,
+            </if>
+            <if test="price != null and price != 0.0">
+                #{price},
+            </if>
+        </trim>
+    </insert>
 </mapper>
