@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Slf4j
 public class BookTest {
-    private static final String NAME_SPACE_BOOK = "com.ssm.mybatis.mapper.BookMapper";
+    public static final String NAME_SPACE_BOOK = "com.ssm.mybatis.mapper.BookMapper";
 
     @SneakyThrows
     @Test
