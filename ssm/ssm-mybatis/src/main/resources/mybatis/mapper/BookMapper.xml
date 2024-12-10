@@ -10,6 +10,11 @@
             <result property="price" column="price" jdbcType="DOUBLE"/>
     </resultMap>
 
+    <!-- 定义一个基本查询的sql语句-->
+    <sql id="base_select">
+        select bid, title, author, price from book
+    </sql>
+
     <!-- 定义一个增加的sql语句-->
     <insert id="doCreate" parameterType="com.ssm.mybatis.vo.Book"
             keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
@@ -29,44 +34,48 @@
     <update id="doEdit" parameterType="Book" >
         update book
         <set>
-            title=#{title}, author=#{author}, price=#{price}
+            <if test="title != null">title=#{title},</if>
+            <if test="author != null">author=#{author},</if>
+            <if test="price != null">price=#{price},</if>
         </set>
-        <where>
-            <if test="bid != null">
-                bid=#{bid}
-            </if>
-        </where>
+        where bid=#{bid}
     </update>
 
     <delete id="doRemove" parameterType="java.lang.Long" >
+        <!-- 删除操作一定要有条件，防止全表删除，所以此时不能用"where标签"，非空判定防止调用方 -->
         delete from book where bid=#{bid}
     </delete>
+
     <!-- 定义数据查询操作，根据ID查询需要传递数据的主键，返回结果为VO对象实例 -->
     <select id="findById" parameterType="java.lang.Long" resultType="Book">
-        select bid, title, author, price from book where bid=#{bid}
+        <include refid="base_select" /> where bid=#{bid}
     </select>
+
     <!-- 查询全部数据返回的肯定是一个List集合，但是此处定义的是List保存项的类型 -->
     <select id="findAll" resultType="Book">
-        select bid, title, author, price from book
+        <include refid="base_select" />
     </select>
-    <!-- 分页数据查询的时候，需要传递若干数据项，只能通过Map集合进行传递 -->
-    <!-- 要传递的内容包括：模糊的查询列，模糊的关键字，起始行，每次加载的数量 -->
+
+    <!-- 分页数据查询的时候，需要传递若干个数据项，只能通过Map集合进行传递 -->
+    <!-- 要传递的内容包括：模糊查询列，模糊的关键字，起始行，每次加载的数量 -->
     <!-- MyBatis内部使用的是PreparedStatement, 所以"#{}"转为"?","${}"转为具体的内容 -->
     <select id="findSplit" parameterType="java.util.Map" resultType="Book">
-        select bid, title, author, price from book
+        <include refid="base_select" />
         <where>
             ${column} like #{keyword} limit #{start}, #{lineSize}
         </where>
     </select>
+
     <select id="getAllCount" parameterType="java.util.Map" resultType="java.lang.Long">
         select  count(*) from book
         <where>
             ${column} like #{keyword}
         </where>
     </select>
+
     <!-- 动态查询 -->
     <select id="findByColumn" parameterType="Book" resultType="Book">
-        select bid, title, author, price from book
+        <include refid="base_select" />
         <where>
             <if test="bid != null and bid != &quot;&quot;">
                 and bid = #{bid}
@@ -82,6 +91,7 @@
             </if>
         </where>
     </select>
+
     <!-- 动态新增 -->
     <insert id="doDynamicCreate" parameterType="Book"
             keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
@@ -107,4 +117,51 @@
             </if>
         </trim>
     </insert>
+
+    <!-- 多条件查询 -->
+    <select id="findByCondition" parameterType="Book" resultType="Book">
+        <!-- 如果查询时根据条件，可能不希望出现where，可以使用where标签 -->
+        <include refid="base_select" />
+        <where>
+            <choose>
+                <when test="title != null and author != null">
+                    title=#{title} AND author=#{author}
+                </when>
+                <when test="title != null and author == null">
+                    title=#{title}
+                </when>
+                <when test="title == null and author != null">
+                    author=#{author}
+                </when>
+                <otherwise>
+                    <!--
+                        默认的查询条件，能够保证程序不出错。
+                        但是加了该项会影响性能，因为对于数据库查询来讲，where语句是逐行匹配的模式。
+                     -->
+                    1=1
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="findByConditionOptimize" parameterType="Book" resultType="Book">
+        <!-- 如果查询时根据条件，可能不希望出现where，可以使用where标签 -->
+        <include refid="base_select" />
+        <where>
+            <choose>
+                <when test="title != null and author != null">
+                    title=#{title} AND author=#{author}
+                </when>
+                <when test="title != null and author == null">
+                    title=#{title}
+                </when>
+                <when test="title == null and author != null">
+                    author=#{author}
+                </when>
+                <!--
+                    相比于 findByCondition, 此处优化掉了"otherwise标签"，
+                    当"when标签"没有匹配时，"when标签"就不会使用where语句，就不会执行"1=1"的逐行匹配，从而执行全量查询
+                -->
+            </choose>
+        </where>
+    </select>
 </mapper>

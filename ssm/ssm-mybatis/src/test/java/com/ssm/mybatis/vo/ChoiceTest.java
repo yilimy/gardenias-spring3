@@ -62,4 +62,37 @@ public class ChoiceTest {
         sqlSession.commit();
         MybatisSessionFactory.close();
     }
+
+    /**
+     * 测试，多条件查询
+     */
+    @Test
+    public void chooseTest() {
+        SqlSession sqlSession = MybatisSessionFactory.getSqlSession();
+        Book book = Book.builder()
+                .title("Spring开发实战2")
+                .author("小李老师")
+                .build();
+        List<Book> bookList = sqlSession.selectList(BookTest.NAME_SPACE_BOOK + ".findByCondition", book);
+        bookList.forEach(System.out::println);
+        System.out.println("------------------");
+        book.setTitle(null);
+        bookList = sqlSession.selectList(BookTest.NAME_SPACE_BOOK + ".findByCondition", book);
+        bookList.forEach(System.out::println);
+        System.out.println("------------------");
+        book.setTitle("Spring开发实战2");
+        book.setAuthor(null);
+        bookList = sqlSession.selectList(BookTest.NAME_SPACE_BOOK + ".findByCondition", book);
+        bookList.forEach(System.out::println);
+        System.out.println("------------------");
+        book = new Book();
+        bookList = sqlSession.selectList(BookTest.NAME_SPACE_BOOK + ".findByCondition", book);
+        bookList.forEach(System.out::println);
+        System.out.println("------------------");
+        // 没有了“1=1”的逐行匹配，提升了性能
+        bookList = sqlSession.selectList(BookTest.NAME_SPACE_BOOK + ".findByConditionOptimize", book);
+        bookList.forEach(System.out::println);
+        System.out.println("------------------");
+        MybatisSessionFactory.close();
+    }
 }
