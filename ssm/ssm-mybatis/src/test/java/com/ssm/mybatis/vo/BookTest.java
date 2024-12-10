@@ -10,6 +10,9 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
 import java.io.InputStream;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author caimeng
@@ -17,6 +20,7 @@ import java.io.InputStream;
  */
 @Slf4j
 public class BookTest {
+    private static final String NAME_SPACE_BOOK = "com.ssm.mybatis.mapper.BookMapper";
 
     @SneakyThrows
     @Test
@@ -116,5 +120,43 @@ public class BookTest {
         log.info("【数据删除】删除数据行数: {}",delete);
         sqlSession.commit();
         sqlSession.close();
+    }
+
+    @Test
+    public void findByIdTest() {
+        // 此时的查询直接返回一个VO对象，所以符合ORM的设计要求
+        Book book = MybatisSessionFactory.getSqlSession().selectOne(NAME_SPACE_BOOK + ".findById", 1L);
+        System.out.println(book);
+        MybatisSessionFactory.close();
+    }
+
+    @Test
+    public void findAllTest() {
+        List<Book> bookList = MybatisSessionFactory.getSqlSession().selectList(NAME_SPACE_BOOK + ".findAll");
+        bookList.forEach(System.out::println);
+        MybatisSessionFactory.close();
+    }
+
+    @Test
+    public void findSplitTest() {
+        // MyBatis调用的时候，只允许传递一个参数项，所以使用Map接收
+        Map<String, ? extends Serializable> queryMap = Map.of(
+                "column", "title",
+                "keyword", "%Spring%",
+                "start", 0,
+                "lineSize", 10);
+        List<Book> bookList = MybatisSessionFactory.getSqlSession().selectList(NAME_SPACE_BOOK + ".findSplit", queryMap);
+        bookList.forEach(System.out::println);
+        MybatisSessionFactory.close();
+    }
+
+    @Test
+    public void getAllCountTest() {
+        Map<String, ? extends Serializable> queryMap = Map.of(
+                "column", "title",
+                "keyword", "%Spring%");
+        Long count = MybatisSessionFactory.getSqlSession().selectOne(NAME_SPACE_BOOK + ".getAllCount", queryMap);
+        System.out.println("count = " + count);
+        MybatisSessionFactory.close();
     }
 }
