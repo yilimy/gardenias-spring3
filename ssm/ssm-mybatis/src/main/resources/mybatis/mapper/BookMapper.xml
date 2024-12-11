@@ -40,6 +40,23 @@
         </set>
         where bid=#{bid}
     </update>
+    <!-- 相比于 doEdit 增加了部分校验 -->
+    <update id="doEditOptimize" parameterType="Book" >
+        update book
+        <set>
+            <if test="title != null and title != &quot;&quot;">title=#{title},</if>
+            <if test='author != null and author != ""'>author=#{author},</if>
+            <if test="price != null and price !=0">price=#{price},</if>
+        </set>
+        <where>
+            <if test="bid != null">
+                bid=#{bid}
+            </if>
+            <if test="bid == null">
+                bid=-1
+            </if>
+        </where>
+    </update>
 
     <delete id="doRemove" parameterType="java.lang.Long" >
         <!-- 删除操作一定要有条件，防止全表删除，所以此时不能用"where标签"，非空判定防止调用方 -->
