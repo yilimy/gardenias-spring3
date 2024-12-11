@@ -20,6 +20,15 @@
             keyProperty="bid" keyColumn="bid" useGeneratedKeys="true">
         insert into book(title, author, price) values (#{title}, #{author}, #{price});
     </insert>
+    <insert id="doCreateWithBid" parameterType="com.ssm.mybatis.vo.Book">
+        insert into book(bid, title, author, price) values (#{bid}, #{title}, #{author}, #{price});
+    </insert>
+    <insert id="doCreateBatch" parameterType="Book">
+        insert into book(title, author, price) values
+        <foreach collection="list" separator="," item="book">
+            (#{book.title}, #{book.author}, #{book.price})
+        </foreach>
+    </insert>
 
     <!-- 数据库不支持返回自增ID的情况 -->
     <insert id="doCreateAdapterOracle" parameterType="com.ssm.mybatis.vo.Book">
@@ -63,9 +72,30 @@
         delete from book where bid=#{bid}
     </delete>
 
+    <delete id="doRemoveBatch" parameterType="java.lang.Long" >
+        delete from book
+        <where>
+            bid IN
+            <!-- 定义foreach结果的时候需要配置有数据类型的集合，一般为数组和list两种 -->
+            <!-- array 表示接收的是一个数组 -->
+            <foreach collection="array" open="(" close=")" separator="," item="bid">
+                #{bid}
+            </foreach>
+        </where>
+    </delete>
+
     <!-- 定义数据查询操作，根据ID查询需要传递数据的主键，返回结果为VO对象实例 -->
     <select id="findById" parameterType="java.lang.Long" resultType="Book">
         <include refid="base_select" /> where bid=#{bid}
+    </select>
+    <select id="findByIds" parameterType="java.lang.Long" resultType="Book">
+        <include refid="base_select" />
+        <where>
+            bid IN
+            <foreach collection="array" open="(" close=")" separator="," item="bid">
+                #{bid}
+            </foreach>
+        </where>
     </select>
 
     <!-- 查询全部数据返回的肯定是一个List集合，但是此处定义的是List保存项的类型 -->
