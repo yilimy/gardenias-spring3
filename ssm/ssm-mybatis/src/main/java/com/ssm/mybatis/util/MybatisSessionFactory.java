@@ -47,8 +47,12 @@ public class MybatisSessionFactory {
         return sessionFactory;
     }
 
-    public static SqlSessionFactory getSessionFactory() {
-        return sessionFactory;
+    public synchronized static SqlSessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            return buildSqlSessionFactory();
+        } else {
+            return sessionFactory;
+        }
     }
 
     /**

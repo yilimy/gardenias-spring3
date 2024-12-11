@@ -3,6 +3,30 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssm.mybatis.mapper.BookMapper">
+    <!--
+        开启二级缓存
+        1. type
+            配置分布式缓存处理类
+        2. eviction
+            设置缓存的驱逐算法
+                a. LRU  最近最少使用算法（默认）
+                b. FIFO 先进先出，最早保留的数据会优先清除
+                c. SOFT 采用JAVA软引用机制，GC触发后根据内存占用情况执行清除
+                d. WEAK 采用JAVA弱引用，只要执行GC，立即清空。
+        3. flushInterval
+            设置缓存的刷新间隔
+        4. size
+            设置缓存占用内存的大小，不建议修改
+        5. readOnly
+            是否设置为只读缓存，
+            一般的缓存分为读写缓存、只读缓存、只写缓存，
+            如果使用的是读写缓存，那么在进行缓存的时候，就要考虑数据更新的问题，但是这种更新有可能会有很严重的性能问题，所以一般设置为只读缓存。
+        6. blocking
+            是否要开启缓存的阻塞队列，默认为false不启用。
+            当设置为true启用队列时，在进行数据查询时会对相应的数据进行锁定，
+            如果缓存在使用中已经明确进行了命中处理，其他线程将无法直接对此数据进行修改，并且将阻止的修改线程设置到缓存队列中。
+     -->
+    <cache />
     <resultMap id="BaseResultMap" type="com.ssm.mybatis.vo.Book">
             <id property="bid" column="bid" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
@@ -96,6 +120,10 @@
                 #{bid}
             </foreach>
         </where>
+    </select>
+    <!-- 不使用缓存的查询 -->
+    <select id="findByIdNoCache" parameterType="java.lang.Long" resultType="Book" useCache="false">
+        <include refid="base_select" /> where bid=#{bid}
     </select>
 
     <!-- 查询全部数据返回的肯定是一个List集合，但是此处定义的是List保存项的类型 -->

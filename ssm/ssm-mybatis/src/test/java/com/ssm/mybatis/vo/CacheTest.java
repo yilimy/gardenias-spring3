@@ -46,8 +46,6 @@ public class CacheTest {
         Book bookB = sqlSession.selectOne(BookTest.NAME_SPACE_BOOK + ".findById", cacheBid);
         // 第二次查询: Book(bid=3, title=Python从入门到放弃, author=小明, price=7.0)
         System.out.println("第二次查询: " + bookB);
-        // true
-        System.out.println(bookA.equals(bookB));
         // 一级缓存：在同一个事务(SqlSession)中，查询条件相同，返回同样的数据
         MybatisSessionFactory.close();
     }
@@ -67,8 +65,6 @@ public class CacheTest {
         Book bookB = sqlSession.selectOne(BookTest.NAME_SPACE_BOOK + ".findById", cacheBid);
         // 第二次查询: Book(bid=3, title=Python从入门到放弃, author=修改者, price=7.0)
         System.out.println("第二次查询: " + bookB);
-        // true
-        System.out.println(bookA.equals(bookB));
         // 说明是是直接在对象上动刀子
         MybatisSessionFactory.close();
     }
@@ -92,8 +88,6 @@ public class CacheTest {
         Book bookB = sqlSession.selectOne(BookTest.NAME_SPACE_BOOK + ".findById", cacheBid);
         // 第二次查询: Book(bid=3, title=Python从入门到放弃, author=小明, price=7.0)
         System.out.println("第二次查询: " + bookB);
-        // false
-        System.out.println(bookA.equals(bookB));
         MybatisSessionFactory.close();
     }
 }
