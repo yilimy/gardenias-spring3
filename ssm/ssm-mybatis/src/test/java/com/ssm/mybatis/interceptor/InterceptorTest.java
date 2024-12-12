@@ -1,4 +1,4 @@
-package com.ssm.mybatis.intercept;
+package com.ssm.mybatis.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.plugin.Interceptor;

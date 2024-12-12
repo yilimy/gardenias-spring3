@@ -9,4 +9,4 @@
  * @author caimeng
  * @date 2024/12/12 15:12
  */
-package com.ssm.mybatis.intercept;
+package com.ssm.mybatis.interceptor;
