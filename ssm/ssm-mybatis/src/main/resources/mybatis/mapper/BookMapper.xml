@@ -26,7 +26,8 @@
             当设置为true启用队列时，在进行数据查询时会对相应的数据进行锁定，
             如果缓存在使用中已经明确进行了命中处理，其他线程将无法直接对此数据进行修改，并且将阻止的修改线程设置到缓存队列中。
      -->
-    <cache />
+    <cache type="com.ssm.mybatis.cache.MybatisRedisSerializeDefinedCache"/>
+<!--    <cache type="com.ssm.mybatis.cache.MybatisRedisCache"/>-->
     <resultMap id="BaseResultMap" type="com.ssm.mybatis.vo.Book">
             <id property="bid" column="bid" jdbcType="BIGINT"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
