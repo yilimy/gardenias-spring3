@@ -20,6 +20,7 @@
             <property name="prefix" value="MuYan"/>     <!-- 属性的配置 -->
             <property name="suffix" value="Yootk"/>     <!-- 属性的配置 -->
         </plugin>
+        <plugin interceptor="com.ssm.mybatis.interceptor.StatementInterceptor" />
     </plugins>
     <environments default="development">
         <environment id="development">
