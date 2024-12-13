@@ -39,9 +39,9 @@ public class StatementInterceptor implements Interceptor {
             // 通过反射获取 StatementHandler
             Field delegateField = handler.getClass().getDeclaredField("delegate");
             delegateField.setAccessible(true);
-            // 因为拦截器拦截的是prepare方法，所以这里的 StatementHandler 一定是 PreparedStatementHandler 类型
-            PreparedStatementHandler delegate = (PreparedStatementHandler) delegateField.get(handler);
-            log.debug("获取到了" + delegate);
+            if (delegateField.get(handler) instanceof PreparedStatementHandler delegate) {
+                log.debug("该 StatementHandler 是 PreparedStatementHandler : " + delegate);
+            }
             // 从 RoutingStatementHandler 的方法 getBoundSql 中，可以得到执行的sql和执行参数
             BoundSql boundSql = handler.getBoundSql();
             // 【SQL命令】select bid, title, author, price from book

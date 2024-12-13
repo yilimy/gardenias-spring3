@@ -240,4 +240,22 @@
             </choose>
         </where>
     </select>
+    <!-- 存储过程（单个返回） -->
+    <select id="producerSingle" parameterType="string" resultType="Book"
+            statementType="CALLABLE">
+        {call book_select_proc(#{param, jdbcType=VARCHAR, mode=IN})}
+    </select>
+    <!-- 定义返回结果 -->
+    <resultMap id="CountMap" type="java.lang.Integer">
+        <result column="count" property="value" />  <!-- Integer中的属性保存就是value -->
+    </resultMap>
+    <!-- 存储过程（多个返回） -->
+    <select id="producerMulti"
+            parameterType="map" resultMap="BaseResultMap, CountMap" resultSets="books, count"
+            statementType="CALLABLE" useCache="false">
+        {call book_multi_select_proc(
+            #{start, jdbcType=INTEGER, mode=IN},
+            #{size, jdbcType=INTEGER, mode=IN}
+            )}
+    </select>
 </mapper>
