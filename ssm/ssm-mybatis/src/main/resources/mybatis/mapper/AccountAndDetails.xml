@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.AccountAndDetailsMapper">
+    <resultMap id="AccountAndDetailsResultMap" type="AccountAndDetails">
+        <id column="aid" property="aid"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"
+                javaType="java.lang.Boolean" jdbcType="INTEGER"
+                typeHandler="com.ssm.mybatis.type.BooleanAndIntegerTypeHandler"/>
+        <!--
+            关联配置，
+            此时表示的是AccountAndDetails中的结构,
+            获取Details的时候，调用的是其他映射文件中的查询(findById)
+        -->
+        <association property="details" column="aid"
+                     javaType="com.ssm.mybatis.vo.Details"
+                     select="com.ssm.mybatis.mapper.DetailsMapper.findById"/>
+    </resultMap>
+    <!-- 这是给一对一映射查询准备的 -->
+    <select id="findById" parameterType="java.lang.String" resultMap="AccountAndDetailsResultMap">
+        SELECT aid, name, status FROM account where aid=#{aid}
+    </select>
+</mapper>

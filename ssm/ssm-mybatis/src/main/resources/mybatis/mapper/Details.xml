@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.DetailsMapper">
+    <resultMap id="DetailsResultMap" type="Details">
+        <id property="aid" column="aid"/>
+        <result property="rmb" column="rmb"/>
+        <result property="dollar" column="dollar"/>
+        <result property="dollar" column="dollar"/>
+        <result property="euro" column="euro"/>
+        <association property="accountAndDetails"
+                     column="aid"
+                     javaType="com.ssm.mybatis.vo.AccountAndDetails"
+                     select="com.ssm.mybatis.mapper.AccountAndDetailsMapper.findById"/>
+    </resultMap>
+    <!-- 一对一查询被关联方定义的查询statement -->
+    <select id="findById" parameterType="java.lang.String" resultMap="DetailsResultMap">
+        SELECT aid, rmb, dollar, euro FROM account_details where aid=#{aid}
+    </select>
+</mapper>

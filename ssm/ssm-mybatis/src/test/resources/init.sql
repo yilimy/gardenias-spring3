@@ -28,3 +28,11 @@ CREATE TABLE account (
 insert into account (aid, name, status) values ('muyan', '沐言', 0);
 insert into account (aid, name, status) values ('yootk', '优拓', 0);
 insert into account (aid, name, status) values ('lixinghua', '李兴华', 1);
+
+CREATE TABLE account_details(
+    aid VARCHAR(50) comment '账户ID',
+    rmb DOUBLE comment '人民币存款总额',
+    dollar DOUBLE comment '美元存款总额',
+    euro DOUBLE comment '欧元存款总额',
+    CONSTRAINT pk_aid2 primary key (aid)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
