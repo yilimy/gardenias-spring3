@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.ActionMapper">
+    <resultMap id="ActionResultMap" type="Action">
+        <id property="aid" column="aid"/>
+        <result property="name" column="name"/>
+        <!-- 关联的是role属性中的rid字段 -->
+        <result property="role.rid" column="rid"/>
+        <!--
+            添加关联
+            关联的属性:  role
+            关联的列:   rid
+        -->
+        <association property="role" column="rid" javaType="Role"
+                     select="com.ssm.mybatis.mapper.RoleMapper.findById" fetchType="lazy"/>
+    </resultMap>
+    <select id="findById" parameterType="string" resultMap="ActionResultMap">
+        SELECT aid, name, rid FROM action WHERE aid=#{aid}
+    </select>
+    <!--
+        提供给 Role.xml 关联查询的statement。
+        在一对多的关联之中，每当加载了“一方”数据的同时（也可能延迟加载）需要加载对应的“多方”数据
+    -->
+    <select id="findAllByRole" parameterType="string" resultMap="ActionResultMap">
+        SELECT aid, name, rid FROM action WHERE rid=#{rid}
+    </select>
+</mapper>

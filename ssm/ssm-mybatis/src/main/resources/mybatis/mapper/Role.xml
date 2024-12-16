@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.RoleMapper">
+    <resultMap id="RoleResultMap" type="Role">
+        <id property="rid" column="rid"/>
+        <result property="name" column="name"/>
+        <!--
+            实现一对多的关联结构.
+            默认情况下加载一方的时候同时加载多方.
+            fetchType: 延迟加载处理
+        -->
+        <collection property="actions"
+                    column="rid"
+                    javaType="java.util.List"
+                    select="com.ssm.mybatis.mapper.ActionMapper.findAllByRole"
+                    ofType="Action"
+                    fetchType="lazy"/>
+    </resultMap>
+    <select id="findById" parameterType="string" resultMap="RoleResultMap">
+        SELECT rid, name FROM role WHERE rid=#{rid}
+    </select>
+</mapper>

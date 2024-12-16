@@ -50,5 +50,7 @@
         <mapper resource="mybatis/mapper/Account.xml" />
         <mapper resource="mybatis/mapper/AccountAndDetails.xml" />
         <mapper resource="mybatis/mapper/Details.xml" />
+        <mapper resource="mybatis/mapper/Action.xml" />
+        <mapper resource="mybatis/mapper/Role.xml" />
     </mappers>
 </configuration>

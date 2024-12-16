@@ -36,3 +36,23 @@ CREATE TABLE account_details(
     euro DOUBLE comment '欧元存款总额',
     CONSTRAINT pk_aid2 primary key (aid)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+
+CREATE TABLE role(
+    rid VARCHAR(50) comment '角色ID',
+    name VARCHAR(50) comment '角色名称',
+    CONSTRAINT pk_rid primary key (rid)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+INSERT INTO `role` (`rid`, `name`) VALUES ('member', '用户管理');
+INSERT INTO `role` (`rid`, `name`) VALUES ('system', '系统管理');
+
+CREATE TABLE action(
+    aid VARCHAR(50) comment '权限ID',
+    name VARCHAR(50) comment '权限名称',
+    rid VARCHAR(50) comment '角色ID',
+    CONSTRAINT pk_aid primary key (aid)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+INSERT INTO `action` (`aid`, `name`, `rid`) VALUES ('member:lock', '用户锁定', 'member');
+INSERT INTO `action` (`aid`, `name`, `rid`) VALUES ('member:verify', '用户验证', 'member');
+INSERT INTO `action` (`aid`, `name`, `rid`) VALUES ('member:delete', '用户删除', 'member');
+INSERT INTO `action` (`aid`, `name`, `rid`) VALUES ('system:init', '系统初始化', 'system');
+INSERT INTO `action` (`aid`, `name`, `rid`) VALUES ('system:backup', '系统备份', 'system');
