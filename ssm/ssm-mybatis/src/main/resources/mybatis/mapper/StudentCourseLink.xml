@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.StudentCourseLinkMapper">
+    <insert id="doCreate" parameterType="studentCourseLink">
+        INSERT INTO student_course(sid, cid) values
+        <foreach collection="list" separator="," item="link">
+            (#{link.student.sid}, #{link.course.cid})
+        </foreach>
+    </insert>
+    <delete id="doRemoveByStudent" parameterType="string">
+        DELETE FROM student_course
+        <where>
+            sid IN
+            <foreach collection="array" open="(" close=")" separator="," item="sid">
+                #{sid}
+            </foreach>
+        </where>
+    </delete>
+    <delete id="doRemoveByCourse" parameterType="long">
+        DELETE FROM student_course
+        <where>
+            cid IN
+            <foreach collection="array" open="(" close=")" separator="," item="cid">
+                #{cid}
+            </foreach>
+        </where>
+    </delete>
+</mapper>

@@ -52,5 +52,8 @@
         <mapper resource="mybatis/mapper/Details.xml" />
         <mapper resource="mybatis/mapper/Action.xml" />
         <mapper resource="mybatis/mapper/Role.xml" />
+        <mapper resource="mybatis/mapper/Student.xml" />
+        <mapper resource="mybatis/mapper/Course.xml" />
+        <mapper resource="mybatis/mapper/StudentCourseLink.xml" />
     </mappers>
 </configuration>

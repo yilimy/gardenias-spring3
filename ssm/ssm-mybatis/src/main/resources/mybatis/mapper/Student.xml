@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.StudentMapper">
+    <resultMap id="StudentBaseResultMap" type="studentPO">
+        <id property="sid" column="sid"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <!-- 关联的结构可以写在一起，也可以依据继承的结构来写 -->
+    <resultMap id="StudentResultMap" type="studentPO" extends="StudentBaseResultMap">
+        <collection property="courses" column="sid"
+                    javaType="java.util.List" ofType="coursePO" fetchType="lazy"
+                    select="com.ssm.mybatis.mapper.CourseMapper.findAllByStudent"/>
+    </resultMap>
+    <select id="findById" parameterType="string" resultMap="StudentResultMap">
+        SELECT sid, name FROM student where sid=#{sid}
+    </select>
+    <!-- 查询课程信息的同时，还要查询参加了此课程的学生信息 -->
+    <select id="findAllByCourse" parameterType="long" resultMap="StudentResultMap">
+        SELECT sid, name FROM student WHERE sid IN (
+            SELECT sid FROM student_course WHERE cid=#{cid})
+    </select>
+    <insert id="doCreate" parameterType="studentPO">
+        INSERT INTO student(sid, name) VALUES (#{sid}, #{name})
+    </insert>
+    <delete id="doRemove" parameterType="string">
+        DELETE FROM student
+        <where>
+            sid IN
+            <foreach collection="array" open="(" close=")" separator="," item="sid">
+                #{sid}
+            </foreach>
+        </where>
+    </delete>
+</mapper>

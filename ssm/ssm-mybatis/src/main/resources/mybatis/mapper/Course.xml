@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.CourseMapper">
+    <resultMap id="CourseBaseResultMap" type="coursePO">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname"/>
+        <result property="credit" column="credit"/>
+    </resultMap>
+    <resultMap id="CourseResultMap" type="coursePO" extends="CourseBaseResultMap">
+        <collection property="students" column="cid"
+                    javaType="list" ofType="studentPO" fetchType="lazy"
+                    select="com.ssm.mybatis.mapper.StudentMapper.findAllByCourse"/>
+    </resultMap>
+    <select id="findById" parameterType="long" resultMap="CourseResultMap">
+        SELECT cid, cname, credit FROM course where cid=#{cid}
+    </select>
+    <!-- 查询学生信息的时候，应该也可以查出课程信息 -->
+    <select id="findAllByStudent" parameterType="string" resultMap="CourseResultMap">
+        SELECT cid, cname, credit FROM course WHERE cid IN (
+            SELECT cid FROM student_course WHERE sid=#{sid})
+    </select>
+    <insert id="doCreate" parameterType="coursePO">
+        INSERT INTO course(cid, cname, credit) VALUES (#{cid}, #{cname}, #{credit})
+    </insert>
+    <delete id="doRemove" parameterType="long">
+        DELETE FROM course
+        <where>
+            cid IN
+            <foreach collection="array" open="(" close=")" separator="," item="cid">
+                #{cid}
+            </foreach>
+        </where>
+    </delete>
+</mapper>
