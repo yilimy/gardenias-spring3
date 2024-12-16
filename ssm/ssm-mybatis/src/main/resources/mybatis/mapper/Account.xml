@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mybatis.mapper.AccountMapper">
+    <resultMap id="AccountResultMap" type="com.ssm.mybatis.vo.Account" >
+        <id column="aid" property="aid"/>
+        <result column="name" property="name"/>
+        <result column="status" property="status"
+                javaType="java.lang.Boolean" jdbcType="INTEGER"
+                typeHandler="com.ssm.mybatis.type.BooleanAndIntegerTypeHandler"/>
+    </resultMap>
+    <insert id="doCreate" parameterType="Account">
+        insert into account(aid, name, status) values
+        (#{aid}, #{name}, #{status, javaType=java.lang.Boolean, jdbcType=INTEGER, })
+    </insert>
+    <select id="findAll" resultMap="AccountResultMap">
+        select aid, name, status from account
+    </select>
+</mapper>

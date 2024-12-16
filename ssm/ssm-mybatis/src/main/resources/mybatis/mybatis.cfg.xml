@@ -14,6 +14,12 @@
         <typeAlias type="com.ssm.mybatis.vo.Book" alias="Book" />
         <package name="com.ssm.mybatis.vo"/>
     </typeAliases>
+    <typeHandlers>
+        <!-- jdbcType大小写敏感，实际找的是enum: org.apache.ibatis.type.JdbcType.INTEGER -->
+        <typeHandler handler="com.ssm.mybatis.type.BooleanAndIntegerTypeHandler"
+                     javaType="java.lang.Boolean"
+                     jdbcType="INTEGER"/>
+    </typeHandlers>
     <plugins>
         <plugin interceptor="com.ssm.mybatis.interceptor.YootkInterceptor">
             <!-- 通过Interceptor接口中的setProperties方法进行属性的配置 -->
@@ -41,5 +47,6 @@
     <mappers>
         <mapper resource="mybatis/mapper/BookMapper.xml" />
         <mapper resource="mybatis/mapper/Member.xml" />
+        <mapper resource="mybatis/mapper/Account.xml" />
     </mappers>
 </configuration>

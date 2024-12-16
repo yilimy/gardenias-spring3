@@ -18,3 +18,13 @@ CREATE TABLE member2 (
     type VARCHAR(50) comment '类型区分',
     CONSTRAINT pk_mid primary key(mid)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+
+CREATE TABLE account (
+     aid VARCHAR(50) comment '账户ID',
+     name VARCHAR(50) comment '账户姓名',
+     status INT comment '账户锁定状态，0表示活跃，1表示锁定',
+     CONSTRAINT pk_aid primary key (aid)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+insert into account (aid, name, status) values ('muyan', '沐言', 0);
+insert into account (aid, name, status) values ('yootk', '优拓', 0);
+insert into account (aid, name, status) values ('lixinghua', '李兴华', 1);
