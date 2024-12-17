@@ -32,6 +32,21 @@ public class IMessageServiceTest {
     }
 
     @Test
+    public void addWithAnnotationTest() {
+        Message message = new Message();
+        message.setTitle("原创创世图书");
+        message.setSender("莉莉丝");
+        message.setContent("《改天换地开发实战》");
+        System.out.println("【增加消息】message : " + message);
+        /*
+         * Preparing: INSERT INTO message(title, sender, content) VALUES (?, ?, ?)
+         * Preparing: SELECT LAST_INSERT_ID()
+         */
+        boolean add = iMessageService.addWithAnnotation(message);
+        System.out.println("【增加消息】结果 : " + add);
+    }
+
+    @Test
     public void findDetailsTest() {
         /*
          * Preparing: SELECT mid, title, sender, content FROM message LIMIT ?, ?
@@ -41,5 +56,11 @@ public class IMessageServiceTest {
         list.forEach(System.out::println);
     }
 
+    @Test
+    public void findDetailsWithAnnotationTest() {
+        // Preparing: SELECT mid, title, sender, content FROM message LIMIT ?, ?
+        List<Message> list = iMessageService.listWithAnnotation(1, 2);
+        list.forEach(System.out::println);
+    }
 
 }
