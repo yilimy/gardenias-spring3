@@ -11,7 +11,9 @@ import java.util.List;
 public interface IMessageService {
     boolean add(Message message);
     boolean addWithAnnotation(Message message);
+    boolean addWithProvider(Message message);
 
     List<Message> list(int current, int line);
     List<Message> listWithAnnotation(int current, int line);
+    List<Message> listWithProvider(int current, int line);
 }

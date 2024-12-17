@@ -2,6 +2,7 @@ package com.ssm.mybatis.service.impl;
 
 import com.ssm.mybatis.mapper.IMessageAnnotationDao;
 import com.ssm.mybatis.mapper.IMessageDao;
+import com.ssm.mybatis.mapper.IMessageProviderDao;
 import com.ssm.mybatis.service.IMessageService;
 import com.ssm.mybatis.vo.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class IMessageServiceImpl implements IMessageService {
     private IMessageDao iMessageDao;
     @Autowired
     private IMessageAnnotationDao iMessageAnnotationDao;
+    @Autowired
+    private IMessageProviderDao iMessageProviderDao;
     @Override
     public boolean add(Message message) {
         return this.iMessageDao.doCreate(message);
@@ -28,6 +31,11 @@ public class IMessageServiceImpl implements IMessageService {
     @Override
     public boolean addWithAnnotation(Message message) {
         return this.iMessageAnnotationDao.doCreate(message);
+    }
+
+    @Override
+    public boolean addWithProvider(Message message) {
+        return this.iMessageProviderDao.doCreate(message);
     }
 
 
@@ -39,5 +47,10 @@ public class IMessageServiceImpl implements IMessageService {
     @Override
     public List<Message> listWithAnnotation(int current, int line) {
         return this.iMessageAnnotationDao.findAll(Map.of("start", (current - 1) * line, "line", line));
+    }
+
+    @Override
+    public List<Message> listWithProvider(int current, int line) {
+        return this.iMessageProviderDao.findAll(Map.of("start", (current - 1) * line, "line", line));
     }
 }
