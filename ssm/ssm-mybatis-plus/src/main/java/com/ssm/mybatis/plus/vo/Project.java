@@ -3,6 +3,7 @@ package com.ssm.mybatis.plus.vo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,7 +42,9 @@ public class Project {
     private String note;
     /**
      * 项目状态
+     * 逻辑删除标记，0表示正常，1表示删除
      */
+    @TableLogic     // 标记为逻辑删除字段
     @TableField("status")
     private Integer status;
 }
