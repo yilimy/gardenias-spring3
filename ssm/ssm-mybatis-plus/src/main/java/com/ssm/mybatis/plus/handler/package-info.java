@@ -4,7 +4,7 @@
  *     1. 自定义数据填充器
  *          {@link com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler}
  *     2. 添加全局配置
- *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#globalConfig(ProjectMetaObjectHandler, SnowFlakeIdGenerator)}
+ *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#globalConfig(ProjectMetaObjectHandler, SnowFlakeIdGenerator, com.ssm.mybatis.plus.injector.MySqlInjector)}
  *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig)}
  *     3. 实体类标记
  *          FieldFill.INSERT_UPDATE 新增和修改都会触发填充器逻辑

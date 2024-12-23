@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
+import com.ssm.mybatis.plus.injector.MySqlInjector;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -60,14 +61,17 @@ public class MyBatisPlusConfig {
      * @param projectMetaObjectHandler 自定义填充器
      * @return 全局配置
      */
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Bean
     public GlobalConfig globalConfig(
             ProjectMetaObjectHandler projectMetaObjectHandler,  // 数据填充器
-            SnowFlakeIdGenerator identifierGenerator     // id 生成器
+            SnowFlakeIdGenerator identifierGenerator,     // id 生成器
+            MySqlInjector injector       // 自定义的SQL注入器
     ) {
         GlobalConfig config = new GlobalConfig();
         config.setMetaObjectHandler(projectMetaObjectHandler);
         config.setIdentifierGenerator(identifierGenerator);
+        config.setSqlInjector(injector);
         return config;
     }
 }
