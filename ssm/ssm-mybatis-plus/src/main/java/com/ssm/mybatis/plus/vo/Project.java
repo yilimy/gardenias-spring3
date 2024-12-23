@@ -1,5 +1,6 @@
 package com.ssm.mybatis.plus.vo;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -45,6 +46,6 @@ public class Project {
      * 逻辑删除标记，0表示正常，1表示删除
      */
     @TableLogic     // 标记为逻辑删除字段
-    @TableField("status")
+    @TableField(value = "status", fill = FieldFill.INSERT_UPDATE)       // 新增和修改都会触发填充器逻辑
     private Integer status;
 }

@@ -2,6 +2,7 @@ package com.ssm.mybatis.plus.config;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -17,11 +18,12 @@ import javax.sql.DataSource;
 public class MyBatisPlusConfig {
 
     @Bean
-    public MybatisSqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) {
+    public MybatisSqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource, GlobalConfig globalConfig) {
         MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         // 设置扫描包
         factoryBean.setTypeAliasesPackage("com.ssm.mybatis.plus.vo");
+        factoryBean.setGlobalConfig(globalConfig);
         return factoryBean;
     }
 
@@ -49,5 +51,18 @@ public class MyBatisPlusConfig {
          */
 //        dbConfig.setLogicDeleteField("status");
         return dbConfig;
+    }
+
+    /**
+     * 交由spring管理后，在 MybatisSqlSessionFactoryBean 对象创建时注入全局变量 GlobalConfig
+     * {@link MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig)}
+     * @param projectMetaObjectHandler 自定义填充器
+     * @return 全局配置
+     */
+    @Bean
+    public GlobalConfig globalConfig(ProjectMetaObjectHandler projectMetaObjectHandler) {
+        GlobalConfig config = new GlobalConfig();
+        config.setMetaObjectHandler(projectMetaObjectHandler);
+        return config;
     }
 }
