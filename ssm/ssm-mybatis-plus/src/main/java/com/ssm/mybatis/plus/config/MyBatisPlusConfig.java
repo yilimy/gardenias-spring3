@@ -2,6 +2,7 @@ package com.ssm.mybatis.plus.config;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -60,9 +61,13 @@ public class MyBatisPlusConfig {
      * @return 全局配置
      */
     @Bean
-    public GlobalConfig globalConfig(ProjectMetaObjectHandler projectMetaObjectHandler) {
+    public GlobalConfig globalConfig(
+            ProjectMetaObjectHandler projectMetaObjectHandler,  // 数据填充器
+            SnowFlakeIdGenerator identifierGenerator     // id 生成器
+    ) {
         GlobalConfig config = new GlobalConfig();
         config.setMetaObjectHandler(projectMetaObjectHandler);
+        config.setIdentifierGenerator(identifierGenerator);
         return config;
     }
 }

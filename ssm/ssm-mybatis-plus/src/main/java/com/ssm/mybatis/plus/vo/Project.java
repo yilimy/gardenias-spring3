@@ -24,7 +24,8 @@ public class Project {
     /**
      * 项目ID
      */
-    @TableId(type = IdType.AUTO)
+//    @TableId(type = IdType.AUTO)
+    @TableId(type = IdType.ASSIGN_ID)
     private Long pid;
     /**
      * 项目名称

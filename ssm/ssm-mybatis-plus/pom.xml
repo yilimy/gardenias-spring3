@@ -66,6 +66,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.imadcn.framework</groupId>
+            <artifactId>idworker</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
