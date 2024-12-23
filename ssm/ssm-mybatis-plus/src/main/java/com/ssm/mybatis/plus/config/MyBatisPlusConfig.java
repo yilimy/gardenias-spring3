@@ -1,10 +1,12 @@
 package com.ssm.mybatis.plus.config;
 
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import com.ssm.mybatis.plus.injector.MySqlInjector;
+import com.ssm.mybatis.plus.interceptor.MyInnerInterceptor;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -20,12 +22,17 @@ import javax.sql.DataSource;
 public class MyBatisPlusConfig {
 
     @Bean
-    public MybatisSqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource, GlobalConfig globalConfig) {
+    public MybatisSqlSessionFactoryBean sqlSessionFactoryBean(
+            DataSource dataSource,
+            GlobalConfig globalConfig,
+            MybatisPlusInterceptor mybatisPlusInterceptor
+    ) {
         MybatisSqlSessionFactoryBean factoryBean = new MybatisSqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         // 设置扫描包
         factoryBean.setTypeAliasesPackage("com.ssm.mybatis.plus.vo");
         factoryBean.setGlobalConfig(globalConfig);
+        factoryBean.setPlugins(mybatisPlusInterceptor);
         return factoryBean;
     }
 
@@ -57,7 +64,7 @@ public class MyBatisPlusConfig {
 
     /**
      * 交由spring管理后，在 MybatisSqlSessionFactoryBean 对象创建时注入全局变量 GlobalConfig
-     * {@link MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig)}
+     * {@link MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig, MybatisPlusInterceptor)}
      * @param projectMetaObjectHandler 自定义填充器
      * @return 全局配置
      */
@@ -73,5 +80,13 @@ public class MyBatisPlusConfig {
         config.setIdentifierGenerator(identifierGenerator);
         config.setSqlInjector(injector);
         return config;
+    }
+
+    @Bean
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        // 追加自定义的拦截器
+        interceptor.addInnerInterceptor(new MyInnerInterceptor());
+        return interceptor;
     }
 }

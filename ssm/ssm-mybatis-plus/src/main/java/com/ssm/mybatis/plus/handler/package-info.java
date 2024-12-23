@@ -5,7 +5,7 @@
  *          {@link com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler}
  *     2. 添加全局配置
  *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#globalConfig(ProjectMetaObjectHandler, SnowFlakeIdGenerator, com.ssm.mybatis.plus.injector.MySqlInjector)}
- *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig)}
+ *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig, com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor)}
  *     3. 实体类标记
  *          FieldFill.INSERT_UPDATE 新增和修改都会触发填充器逻辑
  *          {@link com.ssm.mybatis.plus.vo.Project#status}

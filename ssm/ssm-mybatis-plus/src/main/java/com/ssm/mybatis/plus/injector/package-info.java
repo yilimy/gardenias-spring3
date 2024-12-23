@@ -9,7 +9,7 @@
  *          {@link com.ssm.mybatis.plus.injector.MySqlInjector}
  *     4. 全局配置更新
  *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#globalConfig(ProjectMetaObjectHandler, SnowFlakeIdGenerator, MySqlInjector)}
- *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig)}
+ *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig, com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor)}
  *     5. 业务类实现自定的BaseMapper，实现业务调用
  * @author caimeng
  * @date 2024/12/23 17:18

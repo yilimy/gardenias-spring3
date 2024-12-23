@@ -56,7 +56,7 @@ public class IProjectDAOTest {
     @Test
     public void selectIdTest() {
         // Preparing: SELECT pid,name,charge,note,status FROM project WHERE pid=?
-        Project project = projectDAO.selectById(54L);
+        Project project = projectDAO.selectById(59L);
         // 【项目信息】项目ID: 54, 项目名称: 李兴华GoLang就业编程, 负责人: 李兴华, 说明: 高并发应用设计, 状态: 0
         System.out.println(MessageFormat.format(
                 "【项目信息】项目ID: {0}, 项目名称: {1}, 负责人: {2}, 说明: {3}, 状态: {4,number}",
