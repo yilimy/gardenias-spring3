@@ -1,5 +1,6 @@
 package com.ssm.mybatis.plus.config;
 
+import com.ssm.mybatis.plus.utils.AESUtil;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -50,9 +51,9 @@ public class DataSourceConfig {
     public DataSource hikariDataSource() {
         HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setDriverClassName(driverClassName);
-        hikariDataSource.setJdbcUrl(url);
-        hikariDataSource.setUsername(username);
-        hikariDataSource.setPassword(password);
+        hikariDataSource.setJdbcUrl(AESUtil.decrypt(url));
+        hikariDataSource.setUsername(AESUtil.decrypt(username));
+        hikariDataSource.setPassword(AESUtil.decrypt(password));
         hikariDataSource.setReadOnly(readOnly);
         hikariDataSource.setConnectionTimeout(connectionTimeOut);
         hikariDataSource.setIdleTimeout(idleTimeOut);
