@@ -3,6 +3,7 @@ package com.ssm.mybatis.plus.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
@@ -101,6 +102,9 @@ public class MyBatisPlusConfig {
         // 乐观锁拦截器
         OptimisticLockerInnerInterceptor lockInterceptor = new OptimisticLockerInnerInterceptor();
         interceptor.addInnerInterceptor(lockInterceptor);
+        // 防护插件：防止全部更新或者全表删除的拦截器
+        BlockAttackInnerInterceptor blockInterceptor = new BlockAttackInnerInterceptor();
+        interceptor.addInnerInterceptor(blockInterceptor);
         return interceptor;
     }
 }
