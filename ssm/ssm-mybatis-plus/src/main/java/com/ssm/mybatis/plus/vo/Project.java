@@ -56,4 +56,12 @@ public class Project {
     @Version
     @TableField("version")
     private Integer version;
+    /**
+     * 租户
+     * <p>
+     *     租户的列名有默认值
+     *     {@link com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler#getTenantIdColumn()}
+     */
+    @TableField("tenant_id")
+    private String tenantId;
 }

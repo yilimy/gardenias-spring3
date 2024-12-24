@@ -8,3 +8,5 @@ CREATE TABLE project(
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 -- 新增乐观锁
 ALTER TABLE project ADD version INT default 1;
+-- 新增租户功能
+ALTER TABLE project ADD tenant_id VARCHAR(50) default 'muyan';

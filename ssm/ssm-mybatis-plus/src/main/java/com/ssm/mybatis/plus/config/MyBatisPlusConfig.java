@@ -7,12 +7,14 @@ import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerIntercep
 import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import com.ssm.mybatis.plus.injector.MySqlInjector;
 import com.ssm.mybatis.plus.interceptor.MyInnerInterceptor;
 import com.ssm.mybatis.plus.table.MyTableNameHandler;
+import net.sf.jsqlparser.expression.StringValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -111,6 +113,9 @@ public class MyBatisPlusConfig {
         DynamicTableNameInnerInterceptor tableInterceptor = new DynamicTableNameInnerInterceptor();
         tableInterceptor.setTableNameHandler(new MyTableNameHandler());
         interceptor.addInnerInterceptor(tableInterceptor);
+        // 多租户拦截器
+        TenantLineInnerInterceptor tenantInterceptor = new TenantLineInnerInterceptor(() -> new StringValue("muyan"));
+        interceptor.addInnerInterceptor(tenantInterceptor);
         return interceptor;
     }
 }

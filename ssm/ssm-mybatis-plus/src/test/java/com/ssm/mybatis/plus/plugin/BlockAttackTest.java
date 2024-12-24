@@ -29,6 +29,7 @@ public class BlockAttackTest {
      */
     @Test
     public void doUpdateAllTest() {
+        @SuppressWarnings("TestFailedLine")
         long count = projectDAO.doUpdateAll();
         /*
          * org.mybatis.spring.MyBatisSystemException
@@ -52,6 +53,7 @@ public class BlockAttackTest {
          * Error updating database.  Cause: com.baomidou.mybatisplus.core.exceptions.MybatisPlusException: Prohibition of full table deletion
          *      Cause: com.baomidou.mybatisplus.core.exceptions.MybatisPlusException: Prohibition of full table deletion
          */
+        @SuppressWarnings("TestFailedLine")
         long count = projectDAO.doDeleteAll();
         System.out.println("【删除全部数据】count= " + count);
     }

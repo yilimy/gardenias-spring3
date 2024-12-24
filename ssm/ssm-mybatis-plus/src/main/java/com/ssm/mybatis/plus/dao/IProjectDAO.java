@@ -20,6 +20,7 @@ public interface IProjectDAO extends IBaseMapper<Project> {
      *     测试全更防护
      * @return 更新条数
      */
+    @SuppressWarnings("SqlWithoutWhere")    // 本就是来测试MP的全表更新拦截
     @Update(value = "UPDATE project SET charge='小李老师'")
     long doUpdateAll();
 
@@ -29,6 +30,7 @@ public interface IProjectDAO extends IBaseMapper<Project> {
      *     测试全删防护
      * @return 删除条数
      */
+    @SuppressWarnings("SqlWithoutWhere")    // 本就是来测试MP的全表删除拦截
     @Delete(value = "DELETE FROM project")
     long doDeleteAll();
 }
