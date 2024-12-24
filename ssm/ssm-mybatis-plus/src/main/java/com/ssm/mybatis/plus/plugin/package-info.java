@@ -1,5 +1,5 @@
 /**
- * MyBatis 自定义插件开发
+ * MyBatis 自定义拦截器开发
  * <a href="https://www.bilibili.com/video/BV1H8DZYKExq/" />
  * <p>
  *     在使用MyBatis开发框架的时候，其实也可以基于切面的操作方式，实现插件配置。
@@ -17,6 +17,12 @@
  *     2. 修改配置，增加拦截功能
  *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#mybatisPlusInterceptor()}
  *          {@link com.ssm.mybatis.plus.config.MyBatisPlusConfig#sqlSessionFactoryBean(DataSource, GlobalConfig, MybatisPlusInterceptor)}
+ *
+ * 分页插件
+ * <a href="https://www.bilibili.com/video/BV1VmDZY9EH3/" />
+ * <p>
+ *     所谓分页插件，指的是在进行数据查询的同时，可以将数据对应的统计信息一并查询出来，
+ *     其实就是在拦截器里利用当前的数据库连接，多创建一次查询。
  * @author caimeng
  * @date 2024/12/23 17:48
  */
