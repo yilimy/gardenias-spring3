@@ -6,3 +6,5 @@ CREATE TABLE project(
     status INT comment '项目状态',
     CONSTRAINT pk_pid PRIMARY KEY (pid)
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+-- 新增乐观锁
+ALTER TABLE project ADD version INT default 1;

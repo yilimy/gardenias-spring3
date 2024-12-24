@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -49,4 +50,10 @@ public class Project {
     @TableLogic     // 标记为逻辑删除字段
     @TableField(value = "status", fill = FieldFill.INSERT_UPDATE)       // 新增和修改都会触发填充器逻辑
     private Integer status;
+    /**
+     * 乐观锁
+     */
+    @Version
+    @TableField("version")
+    private Integer version;
 }
