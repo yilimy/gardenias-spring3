@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
@@ -11,6 +12,7 @@ import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import com.ssm.mybatis.plus.injector.MySqlInjector;
 import com.ssm.mybatis.plus.interceptor.MyInnerInterceptor;
+import com.ssm.mybatis.plus.table.MyTableNameHandler;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -105,6 +107,10 @@ public class MyBatisPlusConfig {
         // 防护插件：防止全部更新或者全表删除的拦截器
         BlockAttackInnerInterceptor blockInterceptor = new BlockAttackInnerInterceptor();
         interceptor.addInnerInterceptor(blockInterceptor);
+        // 动态表名称的处理插件
+        DynamicTableNameInnerInterceptor tableInterceptor = new DynamicTableNameInnerInterceptor();
+        tableInterceptor.setTableNameHandler(new MyTableNameHandler());
+        interceptor.addInnerInterceptor(tableInterceptor);
         return interceptor;
     }
 }
