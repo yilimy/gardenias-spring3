@@ -7,21 +7,20 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
+import lombok.*;
 
 /**
  * @author caimeng
  * @date 2024/12/23 10:01
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @TableName  // 此时表名与类名一致
-public class Project {
+public class Project extends Model<Project> {
     /**
      * 项目ID
      */

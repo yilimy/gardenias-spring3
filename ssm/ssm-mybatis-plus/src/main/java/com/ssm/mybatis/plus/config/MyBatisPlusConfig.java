@@ -3,12 +3,7 @@ package com.ssm.mybatis.plus.config;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.DynamicTableNameInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.IllegalSQLInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.*;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.ssm.mybatis.plus.generator.SnowFlakeIdGenerator;
 import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
@@ -117,9 +112,12 @@ public class MyBatisPlusConfig {
         // 多租户拦截器
         TenantLineInnerInterceptor tenantInterceptor = new TenantLineInnerInterceptor(() -> new StringValue("muyan"));
         interceptor.addInnerInterceptor(tenantInterceptor);
-        // 非法SQL拦截 | 性能不规范
-        IllegalSQLInnerInterceptor illegalInterceptor = new IllegalSQLInnerInterceptor();
-        interceptor.addInnerInterceptor(illegalInterceptor);
+        /*
+         * 非法SQL拦截 | 性能不规范
+         * 这个拦截器的影响范围有点广，暂时先停掉
+         */
+//        IllegalSQLInnerInterceptor illegalInterceptor = new IllegalSQLInnerInterceptor();
+//        interceptor.addInnerInterceptor(illegalInterceptor);
         return interceptor;
     }
 }
