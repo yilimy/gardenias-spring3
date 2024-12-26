@@ -44,4 +44,6 @@ public interface IProjectDAO extends IBaseMapper<Project> {
      */
     @Select("SELECT pid, name, charge, note, status, version, tenant_id FROM project WHERE charge=#{charge}")
     List<Project> findAllByCharge(String charge);
+
+    Project findById2(Long id);
 }

@@ -10,11 +10,13 @@ import com.ssm.mybatis.plus.handler.ProjectMetaObjectHandler;
 import com.ssm.mybatis.plus.injector.MySqlInjector;
 import com.ssm.mybatis.plus.interceptor.MyInnerInterceptor;
 import com.ssm.mybatis.plus.table.MyTableNameHandler;
+import lombok.SneakyThrows;
 import net.sf.jsqlparser.expression.StringValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,7 @@ import javax.sql.DataSource;
 @Configuration
 public class MyBatisPlusConfig {
 
+    @SneakyThrows
     @Bean
     public MybatisSqlSessionFactoryBean sqlSessionFactoryBean(
             DataSource dataSource,
@@ -37,6 +40,12 @@ public class MyBatisPlusConfig {
         factoryBean.setTypeAliasesPackage("com.ssm.mybatis.plus.vo");
         factoryBean.setGlobalConfig(globalConfig);
         factoryBean.setPlugins(mybatisPlusInterceptor);
+        // 设置mapper.xml扫描路径
+        PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
+        // 所有Mapper文件的路径匹配
+        String mapperPath = PathMatchingResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "mybatis/mapper/*.xml";
+        // Mapper.xml的资源解析配置
+        factoryBean.setMapperLocations(patternResolver.getResources(mapperPath));
         return factoryBean;
     }
 

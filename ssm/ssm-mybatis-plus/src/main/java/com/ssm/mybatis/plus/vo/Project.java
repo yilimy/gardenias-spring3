@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.ssm.mybatis.plus.type.ChargeEnum;
 import lombok.*;
 
 /**
@@ -18,7 +19,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 @TableName  // 此时表名与类名一致
 public class Project extends Model<Project> {
     /**
@@ -34,9 +35,10 @@ public class Project extends Model<Project> {
     private String name;
     /**
      * 项目主管
+     * @date 2024-12-25 将 String 类型替换为枚举
      */
     @TableField("charge")
-    private String charge;
+    private ChargeEnum charge;
     /**
      * 项目描述
      */
@@ -63,4 +65,74 @@ public class Project extends Model<Project> {
      */
     @TableField("tenant_id")
     private String tenantId;
+
+    public void setCharge(String charge) {
+        this.charge = ChargeEnum.of(charge);
+    }
+
+    public static ProjectBuilder builder() {
+        return new ProjectBuilder();
+    }
+
+    public Project(Long pid, String name, String charge, String note, Integer status, Integer version, String tenantId) {
+        this.pid = pid;
+        this.name = name;
+        this.charge = ChargeEnum.of(charge);
+        this.note = note;
+        this.status = status;
+        this.version = version;
+        this.tenantId = tenantId;
+    }
+
+    public static class ProjectBuilder {
+        private Long pid;
+        private String name;
+        private String charge;
+        private String note;
+        private Integer status;
+        private Integer version;
+        @SuppressWarnings("unused")
+        private String tenantId;
+
+        ProjectBuilder() {
+        }
+
+        public ProjectBuilder pid(Long pid) {
+            this.pid = pid;
+            return this;
+        }
+
+        public ProjectBuilder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ProjectBuilder charge(String charge) {
+            this.charge = charge;
+            return this;
+        }
+
+        public ProjectBuilder note(String note) {
+            this.note = note;
+            return this;
+        }
+
+        public ProjectBuilder status(Integer status) {
+            this.status = status;
+            return this;
+        }
+
+        public ProjectBuilder version(Integer version) {
+            this.version = version;
+            return this;
+        }
+
+        public Project build() {
+            return new Project(this.pid, this.name, this.charge, this.note, this.status, this.version, this.tenantId);
+        }
+
+        public String toString() {
+            return "Project.ProjectBuilder(pid=" + this.pid + ", name=" + this.name + ", charge=" + this.charge + ", note=" + this.note + ", status=" + this.status + ", version=" + this.version + ", tenantId=" + this.tenantId + ")";
+        }
+    }
 }
