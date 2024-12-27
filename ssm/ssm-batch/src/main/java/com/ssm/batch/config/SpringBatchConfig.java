@@ -43,9 +43,10 @@ public class SpringBatchConfig {
      */
     @Autowired
     private PlatformTransactionManager batchTransactionManager;
+    public static final String JOB_NAME = "messageJob";
     @Bean
     public Job messageJob() {
-        return new JobBuilder("messageJob", jobRepository)
+        return new JobBuilder(JOB_NAME, jobRepository)
                 //define job flow as needed
                 .start(messageStep())
                 .build();
