@@ -1,5 +1,8 @@
 package com.ssm.batch.config;
 
+//import com.ssm.batch.listener.MessageJobExecutionListener;
+import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
+import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.tasklet.MessageTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -52,7 +55,21 @@ public class SpringBatchConfig {
                 .start(messageStep())
                 // 追加批处理的验证器
                 .validator(jobParametersValidator())
+                // 消息作业的监听器（实现类的方式）
+//                .listener(messageJobExecutionListener())
+                // 消息作业的监听器（注解标记的方式）
+                .listener(messageJobExecutionAnnotationListener())
                 .build();
+    }
+
+    @Bean
+    public MessageJobExecutionListener messageJobExecutionListener() {
+        return new MessageJobExecutionListener();
+    }
+
+    @Bean
+    public MessageJobExecutionByAnnotationListener messageJobExecutionAnnotationListener() {
+        return new MessageJobExecutionByAnnotationListener();
     }
 
     @Bean
