@@ -4,6 +4,7 @@ import com.ssm.batch.tasklet.MessageTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -49,7 +50,20 @@ public class SpringBatchConfig {
         return new JobBuilder(JOB_NAME, jobRepository)
                 //define job flow as needed
                 .start(messageStep())
+                // 追加批处理的验证器
+                .validator(jobParametersValidator())
                 .build();
+    }
+
+    @Bean
+    public DefaultJobParametersValidator jobParametersValidator() {
+        // 定义参数验证器
+        DefaultJobParametersValidator validator =  new DefaultJobParametersValidator();
+        // 设置必选参数
+        validator.setRequiredKeys(new String[]{"project"});
+        // 设置可选参数
+        validator.setOptionalKeys(new String[]{"developer", "timestamp"});
+        return validator;
     }
 
     @Bean
