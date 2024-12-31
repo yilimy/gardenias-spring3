@@ -14,6 +14,7 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +51,11 @@ public class SpringBatchConfig {
     @Autowired
     private PlatformTransactionManager batchTransactionManager;
     public static final String JOB_NAME = "messageJob";
-    @Bean
+
+    /**
+     * @return 测试：含有若干个功能的作业
+     */
+//    @Bean
     public Job messageJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 //define job flow as needed
@@ -66,21 +71,47 @@ public class SpringBatchConfig {
                 .build();
     }
 
+    /**
+     * @return 测试: 包含有若干处理步骤的作业
+     */
+    @Bean
+    public Job messageStepJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                // 设置作业的处理步骤
+                .start(messagePrepareStep())
+                .next(messageReadStep())
+                .next(messageHandlerStep())
+                .next(messageWriteStep())
+                .build();
+    }
+
+    /**
+     * @return 一个包含有暂停功能的监听器
+     */
     @Bean
     public AbortExecutionListener abortExecutionListener() {
         return new AbortExecutionListener();
     }
 
+    /**
+     * @return 通过实现接口的方式，创建的监听器
+     */
     @Bean
     public MessageJobExecutionListener messageJobExecutionListener() {
         return new MessageJobExecutionListener();
     }
 
+    /**
+     * @return 通过使用注解的方式实现的监听器
+     */
     @Bean
     public MessageJobExecutionByAnnotationListener messageJobExecutionAnnotationListener() {
         return new MessageJobExecutionByAnnotationListener();
     }
 
+    /**
+     * @return 自定义的验证器，包含有必需参数和可选参数。这两者之外的参数会报错。
+     */
     @Bean
     public DefaultJobParametersValidator jobParametersValidator() {
         // 定义参数验证器
@@ -92,6 +123,9 @@ public class SpringBatchConfig {
         return validator;
     }
 
+    /**
+     * @return 自定义的消息步骤
+     */
     @Bean
     public Step messageStep() {     // 定义消息步骤
         return new StepBuilder("messageStep", jobRepository)
@@ -104,4 +138,58 @@ public class SpringBatchConfig {
         // 任务的具体处理逻辑
         return new MessageTasklet();
     }
+
+    /**
+     * @return 步骤：准备部分
+     */
+    @Bean
+    public Step messagePrepareStep() {
+        // 有可能此时需要进行某些特定服务器的连接，或者是执行一些数据库额DDL操作
+        return new StepBuilder("messagePrepareStep", jobRepository)
+                .tasklet((stepContribution, chunkContext) -> {
+                    log.info("【Step-0,消息准备步骤】初始化系统环境，连接服务器接口等。");
+                    return RepeatStatus.FINISHED;
+                }, batchTransactionManager)
+                .build();
+    }
+
+    /**
+     * @return 步骤：消息的读取部分
+     */
+    @Bean
+    public Step messageReadStep() {
+        return new StepBuilder("messageReadStep", jobRepository)
+                .tasklet((stepContribution, chunkContext) -> {
+                    log.info("【Step-1,消息读取步骤】通过输入源，读取消息内容");
+                    return RepeatStatus.FINISHED;
+                }, batchTransactionManager)
+                .build();
+    }
+
+    /**
+     * @return 步骤：消息的处理步骤
+     */
+    @Bean
+    public Step messageHandlerStep() {
+        return new StepBuilder("messageHandlerStep", jobRepository)
+                .tasklet((stepContribution, chunkContext) -> {
+                    log.info("【Step-2,消息处理步骤】检索出包含有yootk的数据内容");
+                    return RepeatStatus.FINISHED;
+                }, batchTransactionManager)
+                .build();
+    }
+
+    /**
+     * @return 步骤：消息的写入步骤
+     */
+    @Bean
+    public Step messageWriteStep() {
+        return new StepBuilder("messageWriteStep", jobRepository)
+                .tasklet((stepContribution, chunkContext) -> {
+                    log.info("【Step-3,消息写入步骤】将合法的消息写入数据终端");
+                    return RepeatStatus.FINISHED;
+                }, batchTransactionManager)
+                .build();
+    }
+
 }
