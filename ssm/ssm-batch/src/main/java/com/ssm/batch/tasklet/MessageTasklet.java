@@ -1,11 +1,14 @@
 package com.ssm.batch.tasklet;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.lang.NonNull;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * 创建一个批处理的任务
@@ -24,10 +27,15 @@ import org.springframework.lang.NonNull;
  */
 @Slf4j
 public class MessageTasklet implements Tasklet {
+    @SneakyThrows
     @Override
     public RepeatStatus execute(@NonNull StepContribution stepContribution,
                                 @NonNull ChunkContext chunkContext) {
-        log.info("【数据批处理操作】沐言科技 - 李兴华Java高薪就业编程训练营");
+        // 为了测试任务的停止操作，添加延时代码
+        for (int i = 0; i < 10; i++) {
+            log.info("【数据批处理操作】沐言科技 - 李兴华Java高薪就业编程训练营");
+            TimeUnit.SECONDS.sleep(1);
+        }
         /*
          * 每一个步骤都会包含一个完整的执行状态，这个状态通过RepeatStatus表示
          */

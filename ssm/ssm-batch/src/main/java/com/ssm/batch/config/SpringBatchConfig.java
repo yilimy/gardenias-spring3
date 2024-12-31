@@ -1,6 +1,8 @@
 package com.ssm.batch.config;
 
 //import com.ssm.batch.listener.MessageJobExecutionListener;
+
+import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.tasklet.MessageTasklet;
@@ -59,7 +61,14 @@ public class SpringBatchConfig {
 //                .listener(messageJobExecutionListener())
                 // 消息作业的监听器（注解标记的方式）
                 .listener(messageJobExecutionAnnotationListener())
+                // 配置中断监听
+                .listener(abortExecutionListener())
                 .build();
+    }
+
+    @Bean
+    public AbortExecutionListener abortExecutionListener() {
+        return new AbortExecutionListener();
     }
 
     @Bean
