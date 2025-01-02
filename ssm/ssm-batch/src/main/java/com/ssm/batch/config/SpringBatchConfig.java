@@ -5,6 +5,7 @@ package com.ssm.batch.config;
 import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
+import com.ssm.batch.listener.MessageStepExecutionListener;
 import com.ssm.batch.tasklet.MessageTasklet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -163,7 +164,17 @@ public class SpringBatchConfig {
                     log.info("【Step-1,消息读取步骤】通过输入源，读取消息内容");
                     return RepeatStatus.FINISHED;
                 }, batchTransactionManager)
+                // 定义步骤监听
+                .listener(stepExecutionListener())
                 .build();
+    }
+
+    /**
+     * @return 消息的步骤监听
+     */
+    @Bean
+    public MessageStepExecutionListener stepExecutionListener() {
+        return new MessageStepExecutionListener();
     }
 
     /**
