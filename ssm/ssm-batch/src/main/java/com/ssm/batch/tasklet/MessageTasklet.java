@@ -21,7 +21,8 @@ import java.util.concurrent.TimeUnit;
  *          - 第二步：进行数据检测
  *          - 第三步：
  *          - 第四步：
- *     1
+ * <p>
+ *     在 Spring Batch 里，最为重要的结构是作业，作业中是由一个个具体的步骤处理的，每一个步骤由 Tasklet 定义具体的代码逻辑
  * @author caimeng
  * @date 2024/12/27 14:18
  */

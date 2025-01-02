@@ -17,6 +17,8 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
+import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +153,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 异步执行的任务
      */
-    @Bean
+//    @Bean
     public Job asyncJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messageReadStep())
@@ -159,6 +161,28 @@ public class SpringBatchConfig {
                 .split(asyncTaskExecutor())
                 .add(messeageFlow())
                 .end()
+                .build();
+    }
+
+    /**
+     * 通过调用Callable的方式实现异步任务调用
+     * @return callableTasklet的作业
+     */
+//    @Bean
+    public Job callableJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(callableStep())
+                .build();
+    }
+
+    /**
+     * 通过调用自定义方法实现类的方式实现异步任务调用
+     * @return {@link MethodInvokingTaskletAdapter} 的作业
+     */
+    @Bean
+    public Job methodInvokeJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(methodInvokeStep())
                 .build();
     }
 
@@ -217,6 +241,55 @@ public class SpringBatchConfig {
         return new StepBuilder("messageStep", jobRepository)
                 // 创建任务的步骤
                 .tasklet(messageTasklet(), batchTransactionManager)
+                .build();
+    }
+
+    /**
+     * Tasklet已有方案应用其一
+     * 通过已有的模式 {@link CallableTaskletAdapter} 创建 tasklet，而不是通过实现 {@link Tasklet} 或者匿名内部类的方式创建
+     * @return CallableTasklet
+     */
+    @Bean
+    public Step callableStep() {
+        CallableTaskletAdapter callableTaskletAdapter = new CallableTaskletAdapter();
+        callableTaskletAdapter.setCallable(() -> {
+            log.info("【消息批处理任务】Hello: 《SSM开发实战》");
+            return RepeatStatus.FINISHED;
+        });
+        return new StepBuilder("messageStep", jobRepository)
+                .tasklet(callableTaskletAdapter, batchTransactionManager)
+                .build();
+    }
+
+    /**
+     * Tasklet已有应用方案其二
+     * {@link Tasklet}
+     * {@link MethodInvokingTaskletAdapter}
+     * @return MethodInvokingTaskletAdapter
+     */
+    @Bean
+    @SuppressWarnings("DanglingJavadoc")
+    public Step methodInvokeStep() {
+        /**
+         * 自定义的结构类
+         * <p>
+         *     该类主要实现 {@link org.springframework.batch.core.step.tasklet.Tasklet} 的功能
+         */
+        class MessageHandler {
+            // 一定要注意返回的结果，与 Tasklet 定义的返回结果类型一致
+            public RepeatStatus exec() {
+                log.info("【消息处理任务】Hello: 《Spring Boot开发实战》");
+                return RepeatStatus.FINISHED;
+            }
+        }
+        // 创建一个自定义的方法调用的任务处理
+        MethodInvokingTaskletAdapter adapter = new MethodInvokingTaskletAdapter();
+        // 设置方法调用实例
+        adapter.setTargetObject(new MessageHandler());
+        // 设置方法调用名称
+        adapter.setTargetMethod("exec");
+        return new StepBuilder("messageStep", jobRepository)
+                .tasklet(adapter, batchTransactionManager)
                 .build();
     }
 
