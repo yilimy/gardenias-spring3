@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -56,6 +58,33 @@ public class SpringBatchConfig {
     @Autowired
     private PlatformTransactionManager batchTransactionManager;
     public static final String JOB_NAME = "messageJob";
+
+    /**
+     * 异步任务执行器
+     * <p>
+     *     1. 创建异步任务执行器 (TaskExecutor)
+     *     2. 在任务 (Job) 中配置异步任务执行器
+     *          {@link SpringBatchConfig#asyncJob()}
+     * @return 异步任务执行器
+     */
+    @Bean
+    public TaskExecutor asyncTaskExecutor() {
+        /*
+         * 异步任务执行器
+         * spring_batch_1
+         * ...
+         * spring_batch_2
+         */
+        SimpleAsyncTaskExecutor executor = new SimpleAsyncTaskExecutor("spring_batch_");
+        /*
+         * 并行数量
+         * 一般由物理CPU来决定
+         * 同时按照常规的优化方式：内核数量 * 2
+         * Netty 中就是这么做的
+         */
+        executor.setConcurrencyLimit(Runtime.getRuntime().availableProcessors() * 2);
+        return executor;
+    }
 
     /**
      * @return 测试：含有若干个功能的作业
@@ -105,7 +134,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 混搭的作业配置
      */
-    @Bean
+//    @Bean
     public Job messageMixJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messageReadStep())
@@ -115,6 +144,20 @@ public class SpringBatchConfig {
                 .from(messageDecider()).on("Handler").to(messageHandlerStep())
                 .from(messageDecider()).on("Write").to(messageWriteStep())
                 // 决策器配置完成，调用 end()
+                .end()
+                .build();
+    }
+
+    /**
+     * @return 测试: 异步执行的任务
+     */
+    @Bean
+    public Job asyncJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(messageReadStep())
+                // 配置异步任务执行器
+                .split(asyncTaskExecutor())
+                .add(messeageFlow())
                 .end()
                 .build();
     }
