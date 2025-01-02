@@ -2,6 +2,7 @@ package com.ssm.batch.config;
 
 //import com.ssm.batch.listener.MessageJobExecutionListener;
 
+import com.ssm.batch.decider.MessageJobExecutionDecider;
 import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
@@ -36,6 +37,7 @@ import javax.sql.DataSource;
  * @author caimeng
  * @date 2024/12/27 15:14
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Configuration
 public class SpringBatchConfig {
@@ -77,7 +79,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 包含有若干处理步骤的作业
      */
-    @Bean
+//    @Bean
     public Job messageStepJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 // 设置作业的处理步骤
@@ -91,13 +93,39 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 使用FLow定义的作业
      */
-    @Bean
+//    @Bean
     public Job messageFlowJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messeageFlow())
                 // 如果设置的步骤是Flow，必需使用 end() 返回Builder
                 .end()
                 .build();
+    }
+
+    /**
+     * @return 测试: 混搭的作业配置
+     */
+    @Bean
+    public Job messageMixJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(messageReadStep())
+                // 配置决策器
+                .next(messageDecider())
+                // 执行处理的分支
+                .from(messageDecider()).on("Handler").to(messageHandlerStep())
+                .from(messageDecider()).on("Write").to(messageWriteStep())
+                // 决策器配置完成，调用 end()
+                .end()
+                .build();
+    }
+
+    /**
+     * 决策器的操作是依据作业的信息处理的，所以要在作业配置上决策器
+     * @return 决策器
+     */
+    @Bean
+    public MessageJobExecutionDecider messageDecider() {
+        return new MessageJobExecutionDecider();
     }
 
     /**
