@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
+import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -87,6 +89,18 @@ public class SpringBatchConfig {
     }
 
     /**
+     * @return 测试: 使用FLow定义的作业
+     */
+    @Bean
+    public Job messageFlowJob() {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(messeageFlow())
+                // 如果设置的步骤是Flow，必需使用 end() 返回Builder
+                .end()
+                .build();
+    }
+
+    /**
      * @return 一个包含有暂停功能的监听器
      */
     @Bean
@@ -138,6 +152,24 @@ public class SpringBatchConfig {
     public Tasklet messageTasklet() {
         // 任务的具体处理逻辑
         return new MessageTasklet();
+    }
+
+    /**
+     * 步骤组
+     * <p>
+     *     几个步骤需要一起定义管理的时候，可以通过Flow来进行配置
+     * @return 步骤组
+     */
+    @Bean
+    public Flow messeageFlow() {
+        // 将消息的读-处理-写，作为一套完整的逻辑，使用Flow作为封装
+        // 定义一组步骤，命名为: muyanMessageFlow
+        FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("muyanMessageFlow");
+        // 定义flow中的执行步骤
+        return flowBuilder.start(messageReadStep())
+                .next(messageHandlerStep())
+                .next(messageWriteStep())
+                .build();
     }
 
     /**
