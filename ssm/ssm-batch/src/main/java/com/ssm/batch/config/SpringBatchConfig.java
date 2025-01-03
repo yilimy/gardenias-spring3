@@ -7,7 +7,9 @@ import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.listener.MessageStepExecutionListener;
+import com.ssm.batch.mapper.BillMapper;
 import com.ssm.batch.tasklet.MessageTasklet;
+import com.ssm.batch.vo.Bill;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -20,6 +22,8 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +99,25 @@ public class SpringBatchConfig {
     @Bean
     public DelimitedLineTokenizer lineTokenizer() {
         return new DelimitedLineTokenizer(",");
+    }
+
+    /**
+     * 注入映射器
+     * @return 映射器
+     */
+    @Bean
+    public BillMapper billMapper() {
+        return new BillMapper();
+    }
+
+    @Bean
+    public LineMapper<Bill> lineMapper() {
+        DefaultLineMapper<Bill> mapper = new DefaultLineMapper<>();
+        // 设置数据分割器
+        mapper.setLineTokenizer(lineTokenizer());
+        // 设置数据映射器
+        mapper.setFieldSetMapper(billMapper());
+        return mapper;
     }
 
     /**
