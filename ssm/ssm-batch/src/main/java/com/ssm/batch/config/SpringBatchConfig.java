@@ -10,6 +10,7 @@ import com.ssm.batch.listener.MessageStepExecutionListener;
 import com.ssm.batch.mapper.BillMapper;
 import com.ssm.batch.tasklet.MessageTasklet;
 import com.ssm.batch.vo.Bill;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -22,7 +23,10 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
+import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -30,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.type.AnnotationMetadata;
@@ -118,6 +123,45 @@ public class SpringBatchConfig {
         // 设置数据映射器
         mapper.setFieldSetMapper(billMapper());
         return mapper;
+    }
+
+    @Bean
+    public ItemReader<Bill> billReader() {
+        /*
+         * 此时的数据是批量读取进来，但是会按照既定的格式进行拆分（每行读一次）
+         * 当前:
+         *      使用单个文件读取，使用的是 FlatFileItemReader
+         *      后续有适合于目录的多文件读取，使用 MultiResourceItemReader
+         */
+        FlatFileItemReader<Bill> reader = new FlatFileItemReader<>();
+        // 每行读取到的数据，需要设置专属的数据行处理映射实例
+        reader.setLineMapper(lineMapper());
+        /*
+         * 当前数据在 CALSSPATH 资源下，需要使用Resource读取
+         * 考虑到读取的可能不只一个文件，
+         * 因此做资源的匹配
+         */
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        String filePath = "classpath:data/bill.txt";
+        reader.setResource(resolver.getResource(filePath));
+        return reader;
+    }
+
+    @SneakyThrows
+    @Bean
+    public ItemReader<Bill> billMultiReader() {
+        // 多资源读取数据
+        MultiResourceItemReader<Bill> reader = new MultiResourceItemReader<>();
+        // 单资源读取
+        FlatFileItemReader<Bill> itemReader = new FlatFileItemReader<>();
+        itemReader.setLineMapper(lineMapper());
+        reader.setDelegate(itemReader);
+        // 路径匹配器
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        String filePath = "classpath:data/*.txt";
+        // 匹配资源
+        reader.setResources(resolver.getResources(filePath));
+        return reader;
     }
 
     /**
