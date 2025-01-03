@@ -20,6 +20,7 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -86,6 +87,14 @@ public class SpringBatchConfig {
          */
         executor.setConcurrencyLimit(Runtime.getRuntime().availableProcessors() * 2);
         return executor;
+    }
+
+    /**
+     * @return 指定分隔符的分割器
+     */
+    @Bean
+    public DelimitedLineTokenizer lineTokenizer() {
+        return new DelimitedLineTokenizer(",");
     }
 
     /**
