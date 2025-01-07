@@ -27,6 +27,9 @@ import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.MultiResourceItemReader;
@@ -35,6 +38,7 @@ import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.support.ScriptItemProcessor;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -192,6 +196,25 @@ public class SpringBatchConfig {
         // 脚本里面绑定的属性名称
         itemProcessor.setItemBindingVariableName("item");
         return itemProcessor;
+    }
+
+    /**
+     * 数据输出
+     * @param yootkDataSource 数据库连接
+     * @return 数据输出对象
+     */
+    @Bean
+    public ItemWriter<Account> itemWriter(
+            @Autowired @Qualifier("yootkDataSource") DataSource yootkDataSource) {
+        JdbcBatchItemWriter<Account> itemWriter = new JdbcBatchItemWriter<>();
+        // 数据库的连接
+        itemWriter.setDataSource(yootkDataSource);
+        // 通过冒号的形式表示类型的属性
+        String sql = "INSERT INTO account(id, amount) VALUES (:id, :amount)";
+        itemWriter.setSql(sql);
+        // SQL参数的配置定义
+        itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
+        return itemWriter;
     }
 
     /**

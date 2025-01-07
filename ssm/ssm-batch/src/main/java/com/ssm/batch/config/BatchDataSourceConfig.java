@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
@@ -47,7 +48,23 @@ public class BatchDataSourceConfig {
     private Integer minIdle;
 
     @Bean("batchDataSource")
+    @Primary
     public DataSource batchDataSource() {
+        return getDataSource(
+                driverClassName,
+                url,
+                username,
+                password,
+                readOnly,
+                connectionTimeOut,
+                idleTimeOut,
+                maxLeftTime,
+                maxSize,
+                minIdle
+        );
+    }
+
+    public static DataSource getDataSource(String driverClassName, String url, String username, String password, Boolean readOnly, Long connectionTimeOut, Long idleTimeOut, Long maxLeftTime, Integer maxSize, Integer minIdle) {
         HikariDataSource hikariDataSource = new HikariDataSource();
         hikariDataSource.setDriverClassName(driverClassName);
         hikariDataSource.setJdbcUrl(url);
