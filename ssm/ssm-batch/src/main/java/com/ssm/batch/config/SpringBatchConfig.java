@@ -40,7 +40,9 @@ import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.support.ScriptItemProcessor;
+import org.springframework.batch.repeat.CompletionPolicy;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -485,8 +487,10 @@ public class SpringBatchConfig {
         return builder
                 // 事务管理
                 .transactionManager(batchTransactionManager)
-                // 每次处理5行数据
-                .chunk(5)
+                // 每次处理5行数据，与完成策略互斥，因为完成策略中也设置了执行数量
+//                .chunk(5)
+                // 定义完成策略
+                .chunk(completionPolicy())
                 // 设置数据写入监听
                 .listener(accountItemWriterListener())
                 // 数据读取
@@ -583,6 +587,15 @@ public class SpringBatchConfig {
                     return RepeatStatus.FINISHED;
                 }, batchTransactionManager)
                 .build();
+    }
+
+    /**
+     * @return 完成策略
+     */
+    @Bean
+    public CompletionPolicy completionPolicy() {
+        // 每次执行3条处理
+        return new SimpleCompletionPolicy(3);
     }
 
 }
