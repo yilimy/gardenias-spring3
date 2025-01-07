@@ -4,6 +4,7 @@ package com.ssm.batch.config;
 
 import com.ssm.batch.decider.MessageJobExecutionDecider;
 import com.ssm.batch.listener.AbortExecutionListener;
+import com.ssm.batch.listener.AccountItemWriterListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.listener.MessageStepExecutionListener;
@@ -393,6 +394,14 @@ public class SpringBatchConfig {
     }
 
     /**
+     * @return 数据写入监听
+     */
+    @Bean
+    public AccountItemWriterListener accountItemWriterListener() {
+        return new AccountItemWriterListener();
+    }
+
+    /**
      * @return 自定义的验证器，包含有必需参数和可选参数。这两者之外的参数会报错。
      */
     @Bean
@@ -478,6 +487,8 @@ public class SpringBatchConfig {
                 .transactionManager(batchTransactionManager)
                 // 每次处理5行数据
                 .chunk(5)
+                // 设置数据写入监听
+                .listener(accountItemWriterListener())
                 // 数据读取
                 .reader(itemReader)
                 // 数据处理
