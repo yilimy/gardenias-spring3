@@ -15,12 +15,15 @@ import com.ssm.batch.vo.Bill;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.SimpleStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
@@ -39,9 +42,11 @@ import org.springframework.batch.item.support.ScriptItemProcessor;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
@@ -156,7 +161,7 @@ public class SpringBatchConfig {
     }
 
     @SneakyThrows
-    @Bean
+    @Bean("billMultiReader")
     public ItemReader<Bill> billMultiReader() {
         // 多资源读取数据
         MultiResourceItemReader<Bill> reader = new MultiResourceItemReader<>();
@@ -169,6 +174,31 @@ public class SpringBatchConfig {
         String filePath = "classpath:data/*.txt";
         // 匹配资源
         reader.setResources(resolver.getResources(filePath));
+        return reader;
+    }
+
+    /**
+     * 数据读取器
+     * <p>
+     *     在步骤中读取参数
+     *     {@link JobExecution#getJobParameters()}
+     * @param path 文件读取路径
+     * @return 数据读取器
+     */
+    @SneakyThrows
+    @Bean("billMultiScopeReader")
+    @StepScope  // 接收作业执行的参数
+    public ItemReader<Bill> billMultiScopeReader(
+            // 读取作业参数中的
+            @SuppressWarnings("SpringElInspection")
+            @Value("#{jobParameters[path]}") String path
+    ) {
+        MultiResourceItemReader<Bill> reader = new MultiResourceItemReader<>();
+        FlatFileItemReader<Bill> itemReader = new FlatFileItemReader<>();
+        itemReader.setLineMapper(lineMapper());
+        reader.setDelegate(itemReader);
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        reader.setResources(resolver.getResources(path));
         return reader;
     }
 
@@ -220,7 +250,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试：含有若干个功能的作业
      */
-//    @Bean
+//    @Bean("messageJob")
     public Job messageJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 //define job flow as needed
@@ -239,7 +269,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 包含有若干处理步骤的作业
      */
-//    @Bean
+//    @Bean("messageStepJob")
     public Job messageStepJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 // 设置作业的处理步骤
@@ -253,7 +283,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 使用FLow定义的作业
      */
-//    @Bean
+//    @Bean("messageFlowJob")
     public Job messageFlowJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messeageFlow())
@@ -265,7 +295,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 混搭的作业配置
      */
-//    @Bean
+//    @Bean("messageMixJob")
     public Job messageMixJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messageReadStep())
@@ -282,7 +312,7 @@ public class SpringBatchConfig {
     /**
      * @return 测试: 异步执行的任务
      */
-//    @Bean
+//    @Bean("asyncJob")
     public Job asyncJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(messageReadStep())
@@ -297,7 +327,7 @@ public class SpringBatchConfig {
      * 通过调用Callable的方式实现异步任务调用
      * @return callableTasklet的作业
      */
-//    @Bean
+//    @Bean("callableJob")
     public Job callableJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(callableStep())
@@ -308,10 +338,24 @@ public class SpringBatchConfig {
      * 通过调用自定义方法实现类的方式实现异步任务调用
      * @return {@link MethodInvokingTaskletAdapter} 的作业
      */
-    @Bean
+    @Bean("methodInvokeJob")
+    @Primary
     public Job methodInvokeJob() {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(methodInvokeStep())
+                .build();
+    }
+
+    /**
+     * 批处理：对账作业
+     * @return 作业对象
+     */
+    @Bean("billJob")
+    public Job billJob(@Autowired @Qualifier("scopeStep") Step step) {
+        return new JobBuilder("billJob", jobRepository)
+                // 设置作业步骤
+                .start(step)
+                // 构建作业
                 .build();
     }
 
@@ -358,7 +402,7 @@ public class SpringBatchConfig {
         // 设置必选参数
         validator.setRequiredKeys(new String[]{"project"});
         // 设置可选参数
-        validator.setOptionalKeys(new String[]{"developer", "timestamp"});
+        validator.setOptionalKeys(new String[]{"developer", "timestamp", "path"});
         return validator;
     }
 
@@ -419,6 +463,28 @@ public class SpringBatchConfig {
         adapter.setTargetMethod("exec");
         return new StepBuilder("messageStep", jobRepository)
                 .tasklet(adapter, batchTransactionManager)
+                .build();
+    }
+
+    @Bean("scopeStep")
+    public Step scopeStep(
+            // 因为 billMultiScopeReader 的创建是需要有参数的，这里使用自己注入自己的方式
+            @Autowired @Qualifier("billMultiScopeReader") ItemReader<Bill> itemReader,
+            @Autowired ItemWriter<Account> itemWriter) {
+        SimpleStepBuilder<Bill, Account> builder = new SimpleStepBuilder<>(
+                new StepBuilder("billStep", jobRepository));
+        return builder
+                // 事务管理
+                .transactionManager(batchTransactionManager)
+                // 每次处理5行数据
+                .chunk(5)
+                // 数据读取
+                .reader(itemReader)
+                // 数据处理
+                .processor(jsItemProcessor())
+                // 数据输出
+                .writer(itemWriter)
+                // 构建
                 .build();
     }
 
