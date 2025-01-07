@@ -8,7 +8,9 @@ import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.listener.MessageStepExecutionListener;
 import com.ssm.batch.mapper.BillMapper;
+import com.ssm.batch.processor.BillToAccountItemProcessor;
 import com.ssm.batch.tasklet.MessageTasklet;
+import com.ssm.batch.vo.Account;
 import com.ssm.batch.vo.Bill;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +25,14 @@ import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.support.ScriptItemProcessor;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -162,6 +166,32 @@ public class SpringBatchConfig {
         // 匹配资源
         reader.setResources(resolver.getResources(filePath));
         return reader;
+    }
+
+    /**
+     * @return 通过自定义实现的实例
+     */
+//    @Bean
+    public ItemProcessor<Bill, Account> itemProcessor() {
+        return new BillToAccountItemProcessor();
+    }
+
+    /**
+     * 脚本处理转换器
+     * <p>
+     *     通过JS脚本实现数据的处理逻辑，理论上功能会更加强悍。
+     *     而且适合于不同的开发者进行编写，毕竟不同的语言开发者，大多数都会JS语法。
+     * @return 通过使用提供的脚本处理类来注入实例
+     */
+    @Bean
+    public ItemProcessor<Bill, Account> jsItemProcessor() {
+        ScriptItemProcessor<Bill, Account> itemProcessor = new ScriptItemProcessor<>();
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        String filePath = "classpath:/js/billToAccount.js";
+        itemProcessor.setScript(resolver.getResource(filePath));
+        // 脚本里面绑定的属性名称
+        itemProcessor.setItemBindingVariableName("item");
+        return itemProcessor;
     }
 
     /**
