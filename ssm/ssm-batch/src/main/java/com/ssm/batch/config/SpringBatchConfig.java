@@ -6,6 +6,7 @@ import com.ssm.batch.decider.MessageJobExecutionDecider;
 import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.AccountItemWriterListener;
 import com.ssm.batch.listener.BillStepChunkListener;
+import com.ssm.batch.listener.BillStepSkipListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.listener.MessageStepExecutionListener;
@@ -27,6 +28,8 @@ import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.SimpleStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy;
+import org.springframework.batch.core.step.skip.SkipPolicy;
 import org.springframework.batch.core.step.tasklet.CallableTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -55,6 +58,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -392,6 +396,12 @@ public class SpringBatchConfig {
     public BillStepChunkListener billStepChunkListener() {
         return new BillStepChunkListener();
     }
+
+    @Bean
+    public BillStepSkipListener billStepSkipListener() {
+        return new BillStepSkipListener();
+    }
+
     /**
      * @return 通过使用注解的方式实现的监听器
      */
@@ -506,7 +516,18 @@ public class SpringBatchConfig {
                 .writer(itemWriter)
                 // 失败处理操作
                 .faultTolerant()
+                // 跳过指定的异常
+                .skip(NumberFormatException.class)
+                // 跳过重复主键的异常
+                .skip(DuplicateKeyException.class)
+                // 跳过的极限
+                .skipLimit(Integer.MAX_VALUE)
+                // 设置跳过策略
+                .skipPolicy(skipPolicy())
+                // 设置Chunk监听
                 .listener(billStepChunkListener())
+                // 设置跳过监听
+                .listener(billStepSkipListener())
                 // 构建
                 .build();
     }
@@ -604,6 +625,15 @@ public class SpringBatchConfig {
     public CompletionPolicy completionPolicy() {
         // 每次执行3条处理
         return new SimpleCompletionPolicy(3);
+    }
+
+    /**
+     * @return 跳过策略
+     */
+    @Bean
+    public SkipPolicy skipPolicy() {
+        // 总是跳过
+        return new AlwaysSkipItemSkipPolicy();
     }
 
 }
