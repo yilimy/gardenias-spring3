@@ -17,6 +17,13 @@
  *     完成策略在步骤中配置
  *          {@link com.ssm.batch.config.SpringBatchConfig#scopeStep(ItemReader, ItemWriter)}
  *     配置了Chunk能进行各类容错功能的配置处理。
+ *
+ * <p>
+ *     Chunk监听器 {@link org.springframework.batch.core.ChunkListener}
+ *          - beforeChunk : 事前监听
+ *          - afterChunk : 事后监听
+ *          - afterChunkError : 错误监听
+ *     {@link com.ssm.batch.listener.BillStepChunkListener}
  * @author caimeng
  * @date 2025/1/7 16:59
  */

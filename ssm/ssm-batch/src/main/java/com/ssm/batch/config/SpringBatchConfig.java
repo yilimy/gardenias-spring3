@@ -5,6 +5,7 @@ package com.ssm.batch.config;
 import com.ssm.batch.decider.MessageJobExecutionDecider;
 import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.AccountItemWriterListener;
+import com.ssm.batch.listener.BillStepChunkListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
 import com.ssm.batch.listener.MessageStepExecutionListener;
@@ -387,6 +388,10 @@ public class SpringBatchConfig {
         return new MessageJobExecutionListener();
     }
 
+    @Bean
+    public BillStepChunkListener billStepChunkListener() {
+        return new BillStepChunkListener();
+    }
     /**
      * @return 通过使用注解的方式实现的监听器
      */
@@ -499,6 +504,9 @@ public class SpringBatchConfig {
                 .processor(jsItemProcessor())
                 // 数据输出
                 .writer(itemWriter)
+                // 失败处理操作
+                .faultTolerant()
+                .listener(billStepChunkListener())
                 // 构建
                 .build();
     }
