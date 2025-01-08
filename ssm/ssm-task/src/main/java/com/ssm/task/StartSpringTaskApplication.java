@@ -8,6 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @date 2025/1/8 16:32
  */
 @EnableScheduling   // 启用Spring定时调度处理
-@ComponentScan("com.ssm.task")
+@ComponentScan({"com.ssm.task.task", "com.ssm.task.config"})
 public class StartSpringTaskApplication {
 }
