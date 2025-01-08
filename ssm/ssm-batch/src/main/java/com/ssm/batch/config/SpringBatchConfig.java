@@ -6,6 +6,7 @@ import com.ssm.batch.decider.MessageJobExecutionDecider;
 import com.ssm.batch.listener.AbortExecutionListener;
 import com.ssm.batch.listener.AccountItemWriterListener;
 import com.ssm.batch.listener.BillStepChunkListener;
+import com.ssm.batch.listener.BillStepRetryListener;
 import com.ssm.batch.listener.BillStepSkipListener;
 import com.ssm.batch.listener.MessageJobExecutionByAnnotationListener;
 import com.ssm.batch.listener.MessageJobExecutionListener;
@@ -59,9 +60,14 @@ import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.retry.RetryPolicy;
+import org.springframework.retry.backoff.BackOffPolicy;
+import org.springframework.retry.backoff.FixedBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * Spring批处理的配置类
@@ -241,7 +247,7 @@ public class SpringBatchConfig {
      * @param yootkDataSource 数据库连接
      * @return 数据输出对象
      */
-    @Bean
+    @Bean("yootkItemWriter")
     public ItemWriter<Account> itemWriter(
             @Autowired @Qualifier("yootkDataSource") DataSource yootkDataSource) {
         JdbcBatchItemWriter<Account> itemWriter = new JdbcBatchItemWriter<>();
@@ -249,6 +255,8 @@ public class SpringBatchConfig {
         itemWriter.setDataSource(yootkDataSource);
         // 通过冒号的形式表示类型的属性
         String sql = "INSERT INTO account(id, amount) VALUES (:id, :amount)";
+        // 测试错误重试
+//        String sql = "INSERT INTO accountError (id, amount) VALUES (:id, :amount)";
         itemWriter.setSql(sql);
         // SQL参数的配置定义
         itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
@@ -402,6 +410,11 @@ public class SpringBatchConfig {
         return new BillStepSkipListener();
     }
 
+    @Bean
+    public BillStepRetryListener billStepRetryListener() {
+        return new BillStepRetryListener();
+    }
+
     /**
      * @return 通过使用注解的方式实现的监听器
      */
@@ -496,7 +509,7 @@ public class SpringBatchConfig {
     public Step scopeStep(
             // 因为 billMultiScopeReader 的创建是需要有参数的，这里使用自己注入自己的方式
             @Autowired @Qualifier("billMultiScopeReader") ItemReader<Bill> itemReader,
-            @Autowired ItemWriter<Account> itemWriter) {
+            @Autowired @Qualifier("yootkItemWriter") ItemWriter<Account> itemWriter) {
         SimpleStepBuilder<Bill, Account> builder = new SimpleStepBuilder<>(
                 new StepBuilder("billStep", jobRepository));
         return builder
@@ -528,6 +541,14 @@ public class SpringBatchConfig {
                 .listener(billStepChunkListener())
                 // 设置跳过监听
                 .listener(billStepSkipListener())
+                // 重试: SQL异常
+                .retry(SQLException.class)
+                // 重试策略
+                .retryPolicy(retryPolicy())
+                // 回退策略
+                .backOffPolicy(backOffPolicy())
+                // 设置重试监听
+                .listener(billStepRetryListener())
                 // 构建
                 .build();
     }
@@ -634,6 +655,26 @@ public class SpringBatchConfig {
     public SkipPolicy skipPolicy() {
         // 总是跳过
         return new AlwaysSkipItemSkipPolicy();
+    }
+
+    /**
+     * @return 重试策略
+     */
+    @Bean
+    public RetryPolicy retryPolicy() {
+        SimpleRetryPolicy policy = new SimpleRetryPolicy();
+        // 最多重试次数
+        policy.setMaxAttempts(3);
+        return policy;
+    }
+
+    @Bean
+    public BackOffPolicy backOffPolicy() {
+        // 间隔重试策略
+        FixedBackOffPolicy backOffPolicy = new FixedBackOffPolicy();
+        // 每5秒重试一次
+        backOffPolicy.setBackOffPeriod(5000);
+        return backOffPolicy;
     }
 
 }
