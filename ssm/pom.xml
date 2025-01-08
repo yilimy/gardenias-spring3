@@ -18,6 +18,7 @@
         <module>ssm-mybatis</module>
         <module>ssm-mybatis-plus</module>
         <module>ssm-batch</module>
+        <module>ssm-task</module>
     </modules>
 
     <properties>
