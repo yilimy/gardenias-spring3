@@ -145,6 +145,7 @@
         <module>amqp</module>
         <module>ssm</module>
         <module>agent</module>
+        <module>firstboot</module>
     </modules>
 
 </project>
