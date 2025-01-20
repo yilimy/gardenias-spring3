@@ -1,21 +1,14 @@
 package com.gardenia;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author caimeng
  * @date 2025/1/17 16:56
  */
-@RestController     // SpringMVC中的注解
-@EnableAutoConfiguration    // SpringBoot扩展的注解, 自动装配注解
+
+//@EnableAutoConfiguration    // SpringBoot扩展的注解, 自动装配注解
 public class FirstSpringBootApplication {   // 编写的第一个SpringBoot程序
-    @RequestMapping("/")    // 映射目录
-    String home() {
-        return "Hello World!";
-    }   // 响应的数据信息
 
     public static void main(String[] args) {
         /*
