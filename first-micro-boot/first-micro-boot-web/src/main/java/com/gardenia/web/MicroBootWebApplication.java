@@ -3,6 +3,7 @@ package com.gardenia.web;   // 父包，这个包中所有子包的类会被自�
 import com.gardenia.web.banner.GardeniaBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 
@@ -10,8 +11,9 @@ import org.springframework.core.env.Environment;
  * @author caimeng
  * @date 2025/1/20 11:25
  */
+@ImportResource(locations = "classpath:META-INF/spring/spring-*.xml")
 @SpringBootApplication  // 一个注解解决所有的问题
-public class StartSpringBootApplication {
+public class MicroBootWebApplication {
 //    public static void main(String[] args) {
 //        SpringApplication.run(StartSpringBootApplication.class, args);
 //    }
@@ -25,7 +27,7 @@ public class StartSpringBootApplication {
      * @param args 启动方法
      */
     public static void main(String[] args) {
-        SpringApplication application = new SpringApplication(StartSpringBootApplication.class);
+        SpringApplication application = new SpringApplication(MicroBootWebApplication.class);
         application.setBanner(new GardeniaBanner());
         // 关闭 Banner 的输出
 //        application.setBannerMode(Banner.Mode.OFF);

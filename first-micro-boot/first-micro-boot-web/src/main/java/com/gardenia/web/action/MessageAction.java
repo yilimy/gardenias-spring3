@@ -1,6 +1,9 @@
 package com.gardenia.web.action;
 
+import com.gardenia.web.service.IMessageService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,10 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController     // SpringMVC中的注解，基于Rest架构的处理
 @RequestMapping("/message/*")   // 添加父路径
 public class MessageAction {
+    @Autowired
+    @Qualifier("iMessageServiceXmlImpl")
+    private IMessageService iMessageService;
     @RequestMapping("/echo")    // 子路径
     public String echo(String msg) {    // 进行请求参数的接收和请求内容的回应
         log.info("接收msg的请求参数，内容为:{}", msg);
-        return "【ECHO】" + msg;
+        return iMessageService.echo(msg);
     }
     @RequestMapping("/home")    // 映射目录
     public String home() {
