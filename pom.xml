@@ -105,6 +105,7 @@
     </distributionManagement>
     <build>
         <plugins>
+            <!-- 由此插件负责版本号的统一维护 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -115,6 +116,10 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!--
+                将版本编号配置在插件内部，理论上在此处设置后，spring-boot-*-starter-* 就不用额外再设置版本了
+                参考: https://start.spring.io/ 使用spring创建的开始依赖版本
+            -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -146,6 +151,7 @@
         <module>ssm</module>
         <module>agent</module>
         <module>firstboot</module>
+        <module>first-micro-boot</module>
     </modules>
 
 </project>
