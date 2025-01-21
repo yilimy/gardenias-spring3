@@ -19,6 +19,6 @@ import com.gardenia.web.service.IMessageService;
 public class IMessageServiceXmlImpl implements IMessageService {
     @Override
     public String echo(String msg) {
-        return "【echo-xml】" + msg;
+        return msg;
     }
 }

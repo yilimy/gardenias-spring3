@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
 public class IMessageServiceImpl implements IMessageService {
     @Override
     public String echo(String msg) {
-        return "【echo】" + msg;
+        return msg;
     }
 }
