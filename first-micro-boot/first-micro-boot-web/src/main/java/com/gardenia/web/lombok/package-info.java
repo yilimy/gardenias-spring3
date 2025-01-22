@@ -39,7 +39,9 @@
  *         </configuration>
  *     </plugin>
  * ```
- *
+ * <p>
+ *     lombok访问器 accessor
+ *     考虑到涉及模式的不同需要，访问器有三种模式: fluent | chain | prefix
  * @author caimeng
  * @date 2025/1/21 17:52
  */
