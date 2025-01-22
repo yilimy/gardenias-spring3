@@ -42,6 +42,8 @@
  * <p>
  *     lombok访问器 accessor
  *     考虑到涉及模式的不同需要，访问器有三种模式: fluent | chain | prefix
+ * <p>
+ *     异常处理 {@link com.gardenia.web.lombok.MessageHandler#print(String)}
  * @author caimeng
  * @date 2025/1/21 17:52
  */
