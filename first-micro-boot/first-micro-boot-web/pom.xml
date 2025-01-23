@@ -96,5 +96,11 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
         <!-- 12a7ca56d3d5c2a6 -->
+        <!-- 返回pdf, 41a7cb56d145c2a68 -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+        </dependency>
+        <!-- 41a7cb56d145c2a68 -->
     </dependencies>
 </project>

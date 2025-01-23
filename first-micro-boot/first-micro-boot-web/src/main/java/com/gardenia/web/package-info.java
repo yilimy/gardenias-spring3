@@ -20,11 +20,24 @@
  *          {@link com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement}
  *          {@link com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty}
  *     4. 发送请求进行验证
+ *          {@link com.gardenia.web.action.MessageAction#aboutXml(MessageXml)}
+ * <p>
+ *     返回pdf数据
+ *     1. 导入依赖包
+ *          com.itextpdf:itextpdf
+ *     2. 字体库
+ *          a. 在资源文件中创建fonts子目录
+ *          b. 拷贝字体库时，最好使用公版字体，不要使用私版字体
+ *          c. 使用阿里普惠体， AlibabaPuHuiTi-3-45-Light.ttf
+ *     3. 生成pdf
+ *          {@link com.gardenia.web.action.PDFController#createPDFData(HttpServletResponse)}
  * @author caimeng
  * @date 2025/1/20 14:43
  */
 package com.gardenia.web;
 
+import com.gardenia.web.vo.MessageXml;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.WebDataBinder;
 
 import java.util.List;
