@@ -6,8 +6,6 @@ import com.gardenia.web.vo.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,8 +35,8 @@ public class MessageAction extends AbstractBaseAction {     // 继承抽象类�
      * @param message 请求对象
      * @return 修正后的请求对象
      */
-    @PostMapping("/transStrToDate")    // 映射目录
-    public Object transStrToDate(@RequestBody Message message) {
+    @RequestMapping("/transStrToDate")    // 映射目录
+    public Object transStrToDate(Message message) {
         message.setTitle("【ECHO】" + message.getTitle());
         message.setContent("【ECHO】" + message.getContent());
         /*
