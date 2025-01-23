@@ -3,6 +3,7 @@ package com.gardenia.web.action;
 import com.gardenia.common.action.abs.AbstractBaseAction;
 import com.gardenia.web.service.IMessageService;
 import com.gardenia.web.vo.Message;
+import com.gardenia.web.vo.MessageXml;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -46,6 +47,18 @@ public class MessageAction extends AbstractBaseAction {     // 继承抽象类�
          *    "content": "【ECHO】消息内容"
          *  }
          */
+        return message;
+    }
+
+    /**
+     * 尝试返回xml的数据结构
+     * @param message 请求的数据
+     * @return xml的数据对象
+     */
+    @RequestMapping("/aboutXml")
+    public Object aboutXml(MessageXml message) {
+        message.setTitle("【XML】" + message.getTitle());
+        message.setContent("【XML】" + message.getContent());
         return message;
     }
 }

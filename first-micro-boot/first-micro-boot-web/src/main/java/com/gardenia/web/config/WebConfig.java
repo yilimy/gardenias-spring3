@@ -3,6 +3,7 @@ package com.gardenia.web.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2025/1/23 11:23
  */
 @Configuration
+@ConditionalOnProperty(name = "mvc.fastjson.enable", havingValue = "true")
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
