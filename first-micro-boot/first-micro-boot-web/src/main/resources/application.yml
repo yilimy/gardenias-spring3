@@ -1,3 +1,4 @@
+#file: noinspection SpringBootApplicationYaml
 # 特定的文本描述文件，一般会出现在软件项目的配置上
 # 可以使用application.properties实现相同的功能
 source:
@@ -6,3 +7,17 @@ source:
   messages: 沐言科技：www.yootk.com,李兴华的高薪就业编程训练营：www.edu.yootk.com   # 测试list注入
   # noinspection SpringBootApplicationYaml
   infos: "{'gardenia': 'www.gardenia.com', 'teacher': '李兴华'}"    # 使用SpEL表达式描述的map集合
+
+# 以下是映射成配置文件的配置
+muyan:
+  mysql: mysql://localhost:3306/gardenia
+  redis: redis://localhost:6379/gardenia
+  messages: # 在spring中list和数组几乎是对等的关系
+    - 沐言科技：www.yootk.com
+    - 李兴华的高薪就业编程训练营：www.edu.yootk.com
+  books: # 按map进行的配置
+    javaBase: 《java面向对象就业编程实战》
+    javaApplication: 《java应用技术就业编程实战》
+    javaWeb: 《javaWeb就业编程实战》
+    springBoot: 《SpringBoot就业编程实战》
+    springCloud: 《SpringCloud就业编程实战》
