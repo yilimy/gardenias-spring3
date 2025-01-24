@@ -7,7 +7,7 @@
  *     1. 数据绑定和Date类型转换
  *          {@link com.gardenia.common.action.abs.AbstractBaseAction#initBinder(WebDataBinder)}
  *     2. fastjson替换jackson
- *          {@link com.gardenia.web.config.WebConfig#configureMessageConverters(List)}
+ *          {@link com.gardenia.web.config.FastJsonWebConfig#configureMessageConverters(List)}
  *     3. 请求举例: micro_boot.http
  * <p>
  *     返回xml数据

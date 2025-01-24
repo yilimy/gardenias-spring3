@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Configuration
 @ConditionalOnProperty(name = "mvc.fastjson.enable", havingValue = "true")
-public class WebConfig implements WebMvcConfigurer {
+public class FastJsonWebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
