@@ -15,11 +15,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 /**
+ * 返回Excel文件流
+ * <p>
+ *     1. 目标对象中添加excel注解
+ *          {@link MessageExcel}
+ *     2. 调用 ExcelExportService 生成工作对象
+ *          {@link ExcelExportService#createSheet(Workbook, ExportParams, Class, Collection)}
+ *     3. 工作对象写入response
+ *          {@link Workbook#write(OutputStream)}
  * @author caimeng
  * @date 2025/1/23 16:05
  */
