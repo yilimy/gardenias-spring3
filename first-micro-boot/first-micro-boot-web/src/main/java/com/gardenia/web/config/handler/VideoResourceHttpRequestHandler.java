@@ -7,8 +7,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
-import java.io.IOException;
-
 /**
  * 视频请求处理器
  * <p>
