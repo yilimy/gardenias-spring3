@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 // 指定配置文件
 @PropertySource(value = "classpath:muyan.properties", encoding = "UTF-8")
-// 从所有配置中过滤前缀
-@ConfigurationProperties(prefix = "object")
+// 因为指定配置文件后，属性仍会被application.yml覆盖，因此换一个标签
+@ConfigurationProperties(prefix = "object1")
 // 添加到spring扫描才能使 ConfigurationProperties 生效
 @Component
-public class Dept {
+public class DeptByProfile {
     private Long deptNo;
     private String dName;
     // 关联一个对象
