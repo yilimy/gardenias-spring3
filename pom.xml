@@ -15,6 +15,19 @@
         <!-- maven-plugin需要的定义 -->
         <spring-boot.version>3.0.2</spring-boot.version>
         <hutool.version>5.8.25</hutool.version>
+        <logback.version>1.4.12</logback.version>
+        <logback.core.version>1.5.13</logback.core.version>
+        <mysql.version>8.3.0</mysql.version>
+        <tomcat.version>11.0.2</tomcat.version>
+        <snakeyaml.varsion>2.0</snakeyaml.varsion>
+        <!-- 以下版本改动可能会引起不适，酌情使用，2c1cb84ba3d05766 -->
+        <spring.autoconfigure.version>3.0.7</spring.autoconfigure.version>
+        <spring.context.version>6.1.14</spring.context.version>
+        <spring.expression.version>6.0.8</spring.expression.version>
+        <spring.web.version>6.1.12</spring.web.version>
+        <spring.webmvc.version>6.1.14</spring.webmvc.version>
+        <spring-security.version>6.3.5</spring-security.version>
+        <!-- 2c1cb84ba3d05766 -->
     </properties>
 
     <dependencyManagement>
@@ -100,6 +113,16 @@
                 <groupId>cn.afterturn</groupId>
                 <artifactId>easypoi-spring-boot-starter</artifactId>
                 <version>4.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
