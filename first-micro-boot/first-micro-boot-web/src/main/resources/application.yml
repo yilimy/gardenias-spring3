@@ -21,3 +21,33 @@ muyan:
     javaWeb: 《javaWeb就业编程实战》
     springBoot: 《SpringBoot就业编程实战》
     springCloud: 《SpringCloud就业编程实战》
+object:   # com.gardenia.web.vo.Dept类的映射
+  dept_no: 10
+  d_name: 教学研发部
+  company:    # 关联其他类的引用
+    cid: 1009
+    name: 沐言科技
+  # 以list方式注入
+  emps:
+    - emp_no: 7369
+      emp_name: Smith
+      job: 办事员
+    - emp_no: 7366
+      emp_name: Allen
+      job: 部门经理
+    - emp_no: 7839
+      emp_name: King
+      job: 董事长
+  # 以数组方式注入
+  empList[0]:
+    emp_no: 7369
+    emp_name: Smith
+    job: 办事员
+  empList[1]:
+    emp_no: 7366
+    emp_name: Allen
+    job: 部门经理
+  empList[2]:
+    emp_no: 7839
+    emp_name: King
+    job: 董事长
