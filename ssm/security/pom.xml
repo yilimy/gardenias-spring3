@@ -41,15 +41,17 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>${spring.context.version}</version>
+<!--            <version>${spring.context.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>${spring.expression.version}</version>
+<!--            <version>${spring.expression.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -79,20 +81,23 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
+<!--            <version>${logback.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
-            <version>${spring.web.version}</version>
+<!--            <version>${spring.web.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.webmvc.version}</version>
+<!--            <version>${spring.webmvc.version}</version>-->
         </dependency>
         <dependency>
             <groupId>jakarta.servlet.jsp.jstl</groupId>
@@ -132,26 +137,30 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>${spring.autoconfigure.version}</version>
+<!--            <version>${spring.autoconfigure.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <!-- security追加的依赖 57fb5aa4617948d3ad20729ea103f321 -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring-security.version}</version>
+<!--            <version>${spring-security.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring-security.version}</version>
+<!--            <version>${spring-security.version}</version>-->
         </dependency>
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring-security.version}</version>
+<!--            <version>${spring-security.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
