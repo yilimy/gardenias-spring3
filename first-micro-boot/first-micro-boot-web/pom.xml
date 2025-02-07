@@ -151,5 +151,14 @@
                 </dependency>
             </dependencies>
         </profile>
+        <profile>
+            <id>undertow</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-undertow</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
     </profiles>
 </project>
