@@ -51,3 +51,8 @@ object:   # com.gardenia.web.vo.Dept类的映射
     emp_no: 7839
     emp_name: King
     job: 董事长
+server:
+  port: 80
+  servlet:
+    # 虚拟访问路径
+    context-path: /muyan
