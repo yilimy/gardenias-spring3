@@ -116,6 +116,10 @@
             <artifactId>easypoi-spring-boot-starter</artifactId>
         </dependency>
         <!-- 31a6cb16d175c2aw8 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
