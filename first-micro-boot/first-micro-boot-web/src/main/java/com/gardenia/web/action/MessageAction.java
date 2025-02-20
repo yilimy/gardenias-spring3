@@ -61,4 +61,16 @@ public class MessageAction extends AbstractBaseAction {     // 继承抽象类�
         message.setContent("【XML】" + message.getContent());
         return message;
     }
+
+    /**
+     * 计算，测试错误码500
+     * @param x 参数1
+     * @param y 参数2
+     * @return 计算结果值
+     */
+    @RequestMapping("/calc")
+    public Object calc(int x, int y) {
+        log.info("计算，x={}, y={}", x, y);
+        return x / y;
+    }
 }

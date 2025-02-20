@@ -62,9 +62,9 @@ public class HttpsClientRequestFactory extends SimpleClientHttpRequestFactory {
             // https协议，修改协议版本
             if (connection instanceof HttpsURLConnection httpsConnection) {
                 log.info("++++++++++ https ++++++++++++");
-                ((HttpsURLConnection) connection).setHostnameVerifier((cert, s) -> true);
+                httpsConnection.setHostnameVerifier((cert, s) -> true);
                 SSLContext ctx = createIgnoreVerifySSL();
-                ((HttpsURLConnection) connection).setSSLSocketFactory(ctx.getSocketFactory());
+                httpsConnection.setSSLSocketFactory(ctx.getSocketFactory());
                 super.prepareConnection(httpsConnection, httpMethod);
             }
             super.prepareConnection(connection, httpMethod);
