@@ -4,6 +4,7 @@ import com.gardenia.common.action.abs.AbstractBaseAction;
 import com.gardenia.web.config.WebInterceptorConfigure;
 import com.gardenia.web.interceptor.MessageValidatorInterceptor;
 import com.gardenia.web.vo.MessageForJSR303;
+import com.gardenia.web.vo.MessageForJSR303Pro;
 import com.gardenia.web.vo.MessageForValidate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -45,5 +46,15 @@ public class ValidateAction extends AbstractBaseAction {    // 入参中含有�
     public Object get(@NotNull @Size(min = 1, max = 10) String id) {
         System.out.println("【ValidateAction.get】id = " + id);
         return id;
+    }
+
+    /**
+     * 通过配置文件的方式，提示验证信息
+     * @param message 带配置文件验证注解的对象
+     * @return 调用结果
+     */
+    @RequestMapping("jsr303P")
+    public Object jsr303WithProperties(@Valid MessageForJSR303Pro message) {
+        return message;
     }
 }
