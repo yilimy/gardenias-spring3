@@ -5,6 +5,7 @@ import com.gardenia.web.config.WebInterceptorConfigure;
 import com.gardenia.web.interceptor.MessageValidatorInterceptor;
 import com.gardenia.web.vo.MessageForJSR303;
 import com.gardenia.web.vo.MessageForJSR303Pro;
+import com.gardenia.web.vo.MessageForRegex;
 import com.gardenia.web.vo.MessageForValidate;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -55,6 +56,16 @@ public class ValidateAction extends AbstractBaseAction {    // 入参中含有�
      */
     @RequestMapping("jsr303P")
     public Object jsr303WithProperties(@Valid MessageForJSR303Pro message) {
+        return message;
+    }
+
+    /**
+     * 验证正则表达式
+     * @param message 带正则验证注解的对象
+     * @return 调用结果
+     */
+    @RequestMapping("jsr/regex")
+    public Object jsr303ForRegex(@Valid MessageForRegex message) {
         return message;
     }
 }
