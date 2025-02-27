@@ -1,0 +1,92 @@
+### 测试数据绑定和json转换
+POST http://localhost:8080/message/transStrToDate?title=消息标题&pubDate=2025-01-23&content=消息内容
+
+### 测试返回xml数据（请在浏览器中验证）
+GET http://localhost:8080/message/aboutXml?title=消息标题&pubDate=2025-01-23&content=消息内容
+
+### 下载PDF
+GET http://localhost:8080/data/pdf
+
+### 导出excel
+GET http://localhost:8080/data/excel
+
+### 生成图像
+GET http://localhost:8080/data/image
+
+### 获取视频流
+GET http://localhost:8080/data/video
+
+### 文件下载
+GET http://localhost:8080/data/download
+
+### 测试资源注入
+GET http://localhost:8080/source/show
+
+### 测试资源注入2
+GET http://localhost:8080/dept/get
+
+### 测试资源注入3
+GET http://localhost:8080/dept/profile
+
+### 获取jvm内存信息
+GET http://localhost:8080/jvm/memory
+
+### 获取servlet内置对象，其一
+GET http://localhost:8080/object/first
+
+### 获取servlet内置对象，其二
+GET http://localhost:8080/object/second
+
+### 国际化，资源文件获取，其一
+GET http://localhost:8080/i18n/base
+
+### 国际化，资源文件获取，其二
+GET http://localhost:8080/i18n/locale?loc=zh_CN
+
+### 国际化，资源文件获取，其三
+GET http://localhost:8080/i18n/locale?loc=en_US
+
+### filter执行顺序
+GET http://localhost:8080/orders/echo
+
+### 测试https访问
+GET https://localhost:443/message/transStrToDate?title=消息标题&pubDate=2025-01-23&content=消息内容
+
+### 自定义404访问
+GET https://localhost/orders/echo2
+
+### 自定义错误500
+GET https://localhost/message/calc?x=10&y=0
+
+### 全局数据绑定，其一
+GET https://localhost/global/echo?message=李兴华高薪就业编程训练营（edu.yootk.com）
+
+### 全局数据绑定，其二
+GET https://localhost/global/calc?x=10&y=5
+
+### 数据预绑定，其一
+GET https://localhost/preData/add?cid=101&name=沐言科技&did=9090&name=教学研发部
+
+### 数据预绑定，其二
+GET https://localhost/preData/add?cid=101&company.name=沐言科技&did=9090&dept.name=教学研发部
+
+### 数据验证，正常访问
+GET https://localhost/validate/echo?title=【沐言科技】&pubDate=2025-01-23&content=www.yootk.com
+
+### 数据验证，空一
+GET https://localhost/validate/echo?pubDate=2025-01-23&content=www.yootk.com
+
+### 数据验证，jsr303验证，其一
+GET https://localhost/validate/jsr303?pubDate=2025-01-23&content=www.yootk.com
+
+### 数据验证，jsr303验证，其二
+GET https://localhost/validate/jsr303?title=【沐言科技】&pubDate=2025-01-23&content=www.yootk.com&email=yootk.com&level=1
+
+### 数据验证，jsr303验证，其三
+GET https://localhost/validate/get?id=1234567890123
+
+### 数据验证，jsr303验证，使用配置文件
+GET https://localhost/validate/jsr303P?title=【沐言科技】&pubDate=2025-01-23&content=www.yootk.com&email=yootk.com&level=1
+
+### 数据验证，jsr303验证，使用自定义正则验证注解
+GET https://localhost/validate/jsr/regex?title=【沐言科技】&pubDate=2025-01-23&content=www.yootk.com&email=123@yootk.com&level=1&flag=yootk-101

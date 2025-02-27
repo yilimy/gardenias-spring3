@@ -1,0 +1,6 @@
+server:
+  port: 80
+spring:
+  thymeleaf:
+    prefix: classpath:/muyan/
+    suffix: .yootk

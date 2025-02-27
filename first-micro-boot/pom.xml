@@ -14,6 +14,7 @@
     <modules>
         <module>first-micro-boot-common</module>
         <module>first-micro-boot-web</module>
+        <module>first-micro-boot-thymeleaf</module>
     </modules>
 
     <properties>

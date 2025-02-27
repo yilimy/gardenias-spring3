@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<!-- 引入thymeleaf的命名空间 -->
+<html lang="en"
+      xmlsns:th="http://www.thymeleaf.org"
+      xmlns:xmlsns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Thymeleaf模板渲染</title>
+</head>
+<body>
+    <p th:text="'title = ' + ${title}" />
+    <p th:text="'content = ' + ${content}" />
+    <p th:text="${message}" />
+</body>
+</html>

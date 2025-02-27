@@ -1,0 +1,8 @@
+### 使用ModelAndView
+GET http://localhost/thymeleaf/view?message=爆可爱的小李老师
+
+### 使用Model
+GET http://localhost/thymeleaf/view2?message=爆可爱的小李老师
+
+### 访问静态页面
+GET http://localhost/message_index.html
