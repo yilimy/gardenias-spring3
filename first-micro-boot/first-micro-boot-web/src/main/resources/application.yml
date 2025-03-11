@@ -56,3 +56,26 @@ server:
   servlet:
     # 虚拟访问路径
     context-path: /muyan
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        # 开放全部的监控接口
+        include: "*"
+      # 默认值: /actuator
+      base-path: /actuator
+  endpoint:
+    # 开启远程关闭功能
+    shutdown:
+      enabled: true
+    # 健康检查，添加下面两项，日志中才会显示详细的健康检测信息
+    health:
+      # 显示异常信息
+      show-details: always
+      # 显示组件信息
+      show-components: always
+# 不知道为啥，info信息没有出来
+info:
+  apps: 1111

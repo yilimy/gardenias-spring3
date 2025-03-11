@@ -3,7 +3,7 @@ package com.gardenia.web.action;
 import com.gardenia.common.action.abs.AbstractBaseAction;
 import com.gardenia.web.service.IMessageService;
 import com.gardenia.web.vo.Message;
-import com.gardenia.web.vo.MessageXml;
+import com.gardenia.common.vo.MessageXml;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,4 +1,4 @@
-package com.gardenia.web.vo;
+package com.gardenia.common.vo;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

@@ -30,9 +30,9 @@ public class GlobalDataBindAdvice {
      *     这些附加信息就可以通过数据绑定操作处理完成。
      * @return 拦截器返回的数据
      */
-    @ModelAttribute(name = "bindModel")
+    @ModelAttribute(name = BIND_MODEL_KEY)
     public Object bindData() {
-        System.out.println("全局数据绑定拦截器");
+//        System.out.println("全局数据绑定拦截器");
         Map<String, Object> map = new HashMap<>();
         map.put("title", "【YOOTK】" + message.getTitle());   // 所有的响应都需要提供有此类数据
         map.put("content", "【YOOTK】" + message.getTitle());   // 所有的响应都需要提供有此类数据

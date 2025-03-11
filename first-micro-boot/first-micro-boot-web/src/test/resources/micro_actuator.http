@@ -1,0 +1,11 @@
+### 基础访问
+GET http://localhost:9090/actuator
+
+### 查看info信息
+GET http://localhost:9090/actuator/info
+
+### 远程关闭应用
+POST http://localhost:9090/actuator/shutdown
+
+### 自定义endpoint
+GET http://localhost:9090/actuator/muyan-endpoint/lee

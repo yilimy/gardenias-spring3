@@ -19,6 +19,8 @@
  *     3. 数据对象添加注解
  *          {@link com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement}
  *          {@link com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty}
+ *          依赖 com.fasterxml.jackson.dataformat:jackson-dataformat-xml 已经移动到common包，因为该包会全局影响返回结果，
+ *          全部返回结果变更为xml
  *     4. 发送请求进行验证
  *          {@link com.gardenia.web.action.MessageAction#aboutXml(MessageXml)}
  * <p>
@@ -36,7 +38,7 @@
  */
 package com.gardenia.web;
 
-import com.gardenia.web.vo.MessageXml;
+import com.gardenia.common.vo.MessageXml;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.WebDataBinder;
 
