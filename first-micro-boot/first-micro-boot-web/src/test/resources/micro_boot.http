@@ -90,3 +90,6 @@ GET https://localhost/validate/jsr303P?title=【沐言科技】&pubDate=2025-01-
 
 ### 数据验证，jsr303验证，使用自定义正则验证注解
 GET https://localhost/validate/jsr/regex?title=【沐言科技】&pubDate=2025-01-23&content=www.yootk.com&email=123@yootk.com&level=1&flag=yootk-101
+
+### 测试日志级别
+GET http://localhost:8080/log/echo?message=测试日志级别

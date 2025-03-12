@@ -79,3 +79,14 @@ management:
 # 不知道为啥，info信息没有出来
 info:
   apps: 1111
+# Spring简单日志配置
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow} [%thread] %clr(-%5p) %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    path: /mnt/logs/gardenia
+  level:
+    root: info
+    com.gardenia.web.action.LogAction: trace
+
