@@ -26,6 +26,15 @@
  *     2. 【Post】 @WriteOperation, 写入数据
  *     3. 【Delete】 @DeleteOperation, 删除数据
  *     {@link com.gardenia.web.actuator.YootkEndPoint#endpoint(String)}
+ *
+ * <p>
+ *     动态修改日志级别
+ *     使用 post-json 的方式修改
+ *     <code>
+ *         curl -X POST -H "Content-Type: application/json" \
+ *         -d '{"configuredLevel":"trace"}' \
+ *         http://localhost:9090/actuator/loggers/com.gardenia.web.action.LogAction
+ *     </code>
  * @author caimeng
  * @date 2025/3/7 17:36
  */

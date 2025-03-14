@@ -9,3 +9,17 @@ POST http://localhost:9090/actuator/shutdown
 
 ### 自定义endpoint
 GET http://localhost:9090/actuator/muyan-endpoint/lee
+
+### 查询日志级别其一
+GET http://localhost:9090/actuator/loggers
+
+### 查询日志级别其二
+GET http://localhost:9090/actuator/loggers/com.gardenia.web.action.LogAction
+
+### 修改日志级别
+POST http://localhost:9090/actuator/loggers/com.gardenia.web.action.LogAction
+Content-Type: application/json
+
+{
+    "configuredLevel": "DEBUG"
+}
