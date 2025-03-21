@@ -16,7 +16,7 @@ import java.io.InputStream;
 @ComponentScan(value = {"com.example.mybatis.spring", "org.mybatis.spring.factory"})
 @Import(MybatisImportBeanDefinitionRegistrar.class)
 @MapperScan("com.example.mybatis.spring.mapper")
-public class MainApplication3 {
+public class StartWithBeanDefinitionRegistrar {
 
     @Bean
     public SqlSessionFactory sqlSessionFactory() throws Exception{
@@ -27,7 +27,7 @@ public class MainApplication3 {
     public static void main(String[] args) {
 //        SpringApplication.run(SpringMybatisDemoApplication.class, args);
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
-        applicationContext.register(MainApplication3.class);
+        applicationContext.register(StartWithBeanDefinitionRegistrar.class);
         applicationContext.refresh();
 
         // ====== userMapper ======

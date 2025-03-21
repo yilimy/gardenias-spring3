@@ -13,7 +13,7 @@
  *     Oracle提供了下载地址: <a href="http://visualvm.github.io/" />
  * <p>
  *     远程关闭应用（该功能默认是关闭的）
- *     1. 端口分离 management.server.port=9090
+ *     1. 端口分离 management.server.port=9090，应用端口: 8080
  *     2. 开启远程关闭 management.endpoint.shutdown.enabled=true
  *     3. 注意，不能使用 profile-active=https 的配置文件，因为该配置文件的Ssl配置不符合 actuator 的要求
  *          {@link com.gardenia.web.config.HttpConnectorConfig}

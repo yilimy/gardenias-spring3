@@ -82,8 +82,8 @@ info:
 # Spring简单日志配置
 logging:
   pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow} [%thread] %clr(-%5p) %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){yellow} [%thread] %clr(-%5p) %clr([%X{requestId}]) %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %clr([%X{requestId}]) %logger{36} - %msg%n"
   file:
     path: /mnt/logs/gardenia
   level:

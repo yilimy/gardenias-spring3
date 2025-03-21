@@ -1,6 +1,7 @@
 package com.gardenia.web.config;
 
 import com.gardenia.web.interceptor.DefaultHandlerInterceptor;
+import com.gardenia.web.interceptor.MDCInterceptor;
 import com.gardenia.web.interceptor.MessageValidatorInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,8 @@ public class WebInterceptorConfigure implements WebMvcConfigurer {
                 .addPathPatterns("/**");
         registry.addInterceptor(messageValidatorInterceptor())
                 .addPathPatterns("/validate/echo");
+        registry.addInterceptor(mdcInterceptor())
+                .addPathPatterns("/**");
     }
 
     @Bean
@@ -31,5 +34,10 @@ public class WebInterceptorConfigure implements WebMvcConfigurer {
     @Bean
     public MessageValidatorInterceptor messageValidatorInterceptor() {
         return new MessageValidatorInterceptor();
+    }
+
+    @Bean
+    public MDCInterceptor mdcInterceptor() {
+        return new MDCInterceptor();
     }
 }
