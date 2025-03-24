@@ -11,12 +11,12 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import java.util.concurrent.Executors;
 
 /**
+ * 默认SpringTask执行定时任务
  * @author caimeng
  * @date 2025/3/24 11:14
  */
 @Configuration
 @EnableScheduling
-@ConditionalOnProperty(prefix = "yootk.task", name = "enable", havingValue = "true")
 public class YootkScheduleConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(@NonNull ScheduledTaskRegistrar taskRegistrar) {
@@ -24,8 +24,10 @@ public class YootkScheduleConfig implements SchedulingConfigurer {
         taskRegistrar.setScheduler(Executors.newScheduledThreadPool(cpuNum));
     }
 
+    @ConditionalOnProperty(name = "task.type", havingValue = "springTask", matchIfMissing = true)
     @Bean
     public YootkScheduleTask yootkScheduleTask() {
         return new YootkScheduleTask();
     }
+
 }

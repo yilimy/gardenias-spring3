@@ -1,4 +1,27 @@
 #file: noinspection SpringBootApplicationYaml
+server:
+  port: 80
+  servlet:
+    # 虚拟访问路径
+    context-path: /muyan
+spring:
+  data:
+    redis:
+      host: 192.168.200.130
+      password: GmRes_prd10!
+      port: 6379
+      database: 0
+      timeout: 200
+      connect-timeout: 200
+      lettuce:
+        pool:
+          max-active: 100
+          max-idle: 20
+          min-idle: 10
+          max-wait: 1000
+          # 每两秒回收一次空闲的链接
+          time-between-eviction-runs: 2000
+#file: noinspection SpringBootApplicationYaml
 # 特定的文本描述文件，一般会出现在软件项目的配置上
 # 可以使用application.properties实现相同的功能
 source:
@@ -51,11 +74,6 @@ object:   # com.gardenia.web.vo.Dept类的映射
     emp_no: 7839
     emp_name: King
     job: 董事长
-server:
-  port: 80
-  servlet:
-    # 虚拟访问路径
-    context-path: /muyan
 management:
   server:
     port: 9090
