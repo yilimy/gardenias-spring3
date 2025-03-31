@@ -209,6 +209,7 @@
         <module>agent</module>
         <module>firstboot</module>
         <module>first-micro-boot</module>
+        <module>redis</module>
     </modules>
 
 </project>
