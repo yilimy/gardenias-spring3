@@ -15,7 +15,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
  */
 // 2分钟释放分布式锁
 @EnableSchedulerLock(defaultLockAtMostFor = "PT2M")
-@ConditionalOnProperty(name = "task.type", havingValue = "shedlock")
+@ConditionalOnProperty(name = TaskConstant.TASK_TYPE, havingValue = "shedlock")
 @Configuration
 public class ShedlockConfig {
     @Value("${spring.profiles.active:dev}")

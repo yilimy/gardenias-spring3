@@ -24,7 +24,7 @@ public class YootkScheduleConfig implements SchedulingConfigurer {
         taskRegistrar.setScheduler(Executors.newScheduledThreadPool(cpuNum));
     }
 
-    @ConditionalOnProperty(name = "task.type", havingValue = "springTask", matchIfMissing = true)
+    @ConditionalOnProperty(name = TaskConstant.TASK_TYPE, havingValue = "springTask")
     @Bean
     public YootkScheduleTask yootkScheduleTask() {
         return new YootkScheduleTask();

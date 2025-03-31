@@ -93,3 +93,9 @@ GET http://localhost:8080/validate/jsr/regex?title=【沐言科技】&pubDate=20
 
 ### 测试日志级别
 GET http://localhost:8080/log/echo?message=测试日志级别
+
+### 动态修改cron表达式, 每5秒一次
+GET http://localhost:8080/cron/set?cron=*%2F5%20*%20*%20*%20*%20%3F
+
+### 动态修改cron表达式(2), 每5秒一次
+GET http://localhost:8080/cron/set?cron=*/2 * * * * ?
