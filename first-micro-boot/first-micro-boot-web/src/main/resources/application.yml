@@ -107,4 +107,6 @@ logging:
   level:
     root: info
     com.gardenia.web.action.LogAction: trace
-
+context:
+  listener:
+    classes: com.gardenia.web.event.listener.PropertiesListener

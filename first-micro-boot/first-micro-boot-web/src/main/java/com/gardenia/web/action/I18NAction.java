@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 /**
+ * 国际化设置值的控制层
  * @author caimeng
  * @date 2025/2/7 14:59
  */
