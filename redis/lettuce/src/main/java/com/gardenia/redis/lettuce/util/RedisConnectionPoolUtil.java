@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import java.util.function.Consumer;
+
 /**
  * redis连接池工具类
  * @author caimeng
@@ -54,5 +56,16 @@ public final class RedisConnectionPoolUtil {
     @SneakyThrows
     public static StatefulRedisConnection<String, String> getConnection() {
         return pool.borrowObject();
+    }
+
+    /**
+     * 创建一个连接，待打开
+     * @param consumer 打开连接进行的步骤
+     */
+    @SneakyThrows
+    public static void connectAndDo(Consumer<StatefulRedisConnection<String, String>> consumer) {
+        try (StatefulRedisConnection<String, String> connection = getConnection()) {
+            consumer.accept(connection);
+        }
     }
 }
