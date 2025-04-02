@@ -12,6 +12,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>lettuce</module>
+        <module>redis-spring</module>
     </modules>
 
     <properties>
