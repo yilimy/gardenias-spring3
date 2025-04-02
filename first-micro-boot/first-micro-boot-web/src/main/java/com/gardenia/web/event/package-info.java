@@ -18,6 +18,9 @@
  *     其他：
  *          通过注解添加事件监听器
  *          {@link com.gardenia.web.event.listener.AnnotationListener}
+ *          优势：
+ *              1. 可通过条件的触发事件
+ *              2. 数据对象不局限于 {@link org.springframework.context.ApplicationEvent} 的实现，可以是业务数据本身
  * <p>
  *     注意事项:
  *     Spring 事件处理机制在解耦业务逻辑方面非常有用，但在使用时需要注意其潜在的缺陷和限制。
