@@ -6,3 +6,6 @@ GET http://localhost:8080/async/webAsyncTask?msg=沐言科技
 
 ### 测试异步请求，使用 DeferredResult
 GET http://localhost:8080/async/runnable?msg=沐言科技
+
+### 测试异步任务，使用 Async 注解
+GET http://localhost:8080/async/task?msg=沐言科技

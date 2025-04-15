@@ -1,5 +1,6 @@
 package com.gardenia.web.action;
 
+import com.gardenia.web.task.YootkThreadTask;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 public class MessageAsyncAction {
     @Autowired
     private ThreadPoolTaskExecutor executor;    // 使用 Runnable | DeferredResult 时，需要指定线程池
+    @Autowired
+    private YootkThreadTask yootkThreadTask;
 
     /**
      * 测试请求的异步调用
@@ -120,5 +123,19 @@ public class MessageAsyncAction {
             deferredResult.setResult("【ECHO】" + msg);
         });
         return deferredResult;
+    }
+
+    /**
+     * 使用Async Task进行异步处理
+     * @param msg 请求参数
+     * @return 响应数据
+     */
+    @RequestMapping("/task")
+    public Object task(String msg) {
+        // 2025-04-15 17:37:12.047 [http-nio-8080-exec-1] - INFO [] c.g.web.action.MessageAsyncAction - 【外部线程】:http-nio-8080-exec-1
+        log.info("【外部线程】:{}", Thread.currentThread().getName());
+        // 开启异步任务
+        yootkThreadTask.startTaskHandle();
+        return "【ECHO】" + msg;
     }
 }
