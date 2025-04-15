@@ -3,6 +3,7 @@ package com.gardenia.web.config;
 import com.gardenia.web.interceptor.DefaultHandlerInterceptor;
 import com.gardenia.web.interceptor.MDCInterceptor;
 import com.gardenia.web.interceptor.MessageValidatorInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2025/2/8 16:20
  */
 @Configuration
+@ConditionalOnProperty(value = "interceptor.enable", havingValue = "true")
 public class WebInterceptorConfigure implements WebMvcConfigurer {
     @Override
     public void addInterceptors(@NonNull InterceptorRegistry registry) {    // 追加拦截器

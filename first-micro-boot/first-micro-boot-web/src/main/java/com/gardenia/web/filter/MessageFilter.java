@@ -4,7 +4,6 @@ import com.gardenia.web.action.MessageAction;
 import com.gardenia.web.vo.Message;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,10 +12,13 @@ import org.springframework.util.StringUtils;
 import java.io.IOException;
 
 /**
+ * 过滤器
+ * <p>
+ *     因为该过滤器对异步响应测试产生了影响，关闭该过滤器 @date 2025-04-15
  * @author caimeng
  * @date 2025/2/7 17:54
  */
-@WebFilter("/*")    // 过滤路径
+//@WebFilter("/*")    // 过滤路径
 //@Component
 public class MessageFilter extends HttpFilter {
 

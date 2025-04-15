@@ -1,0 +1,2 @@
+### 测试异步请求
+POST http://localhost:8080/async/callable?msg=沐言科技

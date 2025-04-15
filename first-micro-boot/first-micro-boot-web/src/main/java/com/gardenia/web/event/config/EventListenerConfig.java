@@ -3,6 +3,7 @@ package com.gardenia.web.event.config;
 import com.gardenia.web.event.YootkEvent;
 import com.gardenia.web.vo.MessageForEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.lang.NonNull;
@@ -13,6 +14,7 @@ import org.springframework.lang.NonNull;
  */
 @Slf4j
 @Configuration
+@ConditionalOnProperty(value = "event.listener.enable", havingValue = "true")
 public class EventListenerConfig {  // 事件监听配置类
     @EventListener // 事件监听，没有强制性的接口实现
     public void handleAllEvent(Object event) {

@@ -16,6 +16,7 @@ import javax.jws.WebService;
 )
 public interface IMessageService {
 
+    @SuppressWarnings("unused")
     @WebMethod  // 必须写，否则报错: 进行WebService的方法标注
     String echo(@WebParam(name = "msg") String msg);
 }
