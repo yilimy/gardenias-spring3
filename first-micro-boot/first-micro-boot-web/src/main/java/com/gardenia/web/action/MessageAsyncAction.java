@@ -1,8 +1,14 @@
 package com.gardenia.web.action;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.context.request.async.WebAsyncTask;
 
 import java.util.concurrent.Callable;
@@ -17,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/async")
 @RestController
 public class MessageAsyncAction {
+    @Autowired
+    private ThreadPoolTaskExecutor executor;    // 使用 Runnable | DeferredResult 时，需要指定线程池
 
     /**
      * 测试请求的异步调用
@@ -74,5 +82,43 @@ public class MessageAsyncAction {
             return "【超时】" + msg;
         });
         return webAsyncTask;
+    }
+
+    /**
+     * 使用runnable实现异步处理
+     * @param msg 请求参数
+     * @return 异步对象 DeferredResult
+     */
+    @RequestMapping("/runnable")
+    public Object runnable(String msg) {
+        // 2025-04-15 16:57:16.746 [http-nio-8080-exec-3] - INFO [] c.g.web.action.MessageAsyncAction - 【外部线程】:http-nio-8080-exec-3
+        log.info("【外部线程】:{}", Thread.currentThread().getName());
+        ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        assert sra != null;
+        HttpServletRequest request = sra.getRequest();
+        DeferredResult<String> deferredResult = new DeferredResult<>(6000L);
+        // 2025-04-15 16:59:01.399 [http-nio-8080-exec-2] - INFO [] c.g.web.action.MessageAsyncAction - 【超时】:http-nio-8080-exec-2
+//        DeferredResult<String> deferredResult = new DeferredResult<>(1000L);
+        deferredResult.onTimeout(() -> {    // 超时的处理线程
+            log.info("【超时】:{}", Thread.currentThread().getName());
+            deferredResult.setResult("【超时】" + request.getRequestURI() + ":" + msg);
+        });
+        // 完成的线程处理
+        // 2025-04-15 16:57:18.757 [http-nio-8080-exec-4] - INFO [] c.g.web.action.MessageAsyncAction - 【完成】:http-nio-8080-exec-4
+        deferredResult.onCompletion(() -> log.info("【完成】:{}", Thread.currentThread().getName()));
+        // 处理线程的核心任务
+        executor.execute(() -> {
+            // 2025-04-15 16:57:16.746 [async-thread-2] - INFO [] c.g.web.action.MessageAsyncAction - 【内部线程】:async-thread-2
+            log.info("【内部线程】:{}", Thread.currentThread().getName());
+            try {
+                // 模拟延迟
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 执行最终的响应
+            deferredResult.setResult("【ECHO】" + msg);
+        });
+        return deferredResult;
     }
 }
