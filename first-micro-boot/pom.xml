@@ -15,6 +15,9 @@
         <module>first-micro-boot-common</module>
         <module>first-micro-boot-web</module>
         <module>first-micro-boot-thymeleaf</module>
+        <module>first-micro-boot-webservice-common</module>
+        <module>first-micro-boot-webservice-server</module>
+        <module>first-micro-boot-webservice-client</module>
     </modules>
 
     <properties>
