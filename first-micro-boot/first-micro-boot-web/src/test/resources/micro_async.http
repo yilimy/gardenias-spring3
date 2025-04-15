@@ -1,2 +1,5 @@
 ### 测试异步请求
 POST http://localhost:8080/async/callable?msg=沐言科技
+
+### 测试异步请求，使用webAsyncTask
+GET http://localhost:8080/async/webAsyncTask?msg=沐言科技
