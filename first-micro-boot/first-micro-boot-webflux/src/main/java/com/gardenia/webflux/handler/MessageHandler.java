@@ -22,7 +22,7 @@ public class MessageHandler {
      * @param request 请求体
      * @return 单一的数据返回
      */
-    public Mono<ServerResponse> echoHandler(ServerRequest request) {
+    public Mono<ServerResponse> echoHandler(@SuppressWarnings("unused") ServerRequest request) {
         return ServerResponse.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE)
                 .body(BodyInserters.fromValue("沐言科技，www.yootk.com"));

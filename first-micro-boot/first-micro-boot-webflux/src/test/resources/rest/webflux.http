@@ -3,3 +3,9 @@ GET http://localhost:8080/echo
 
 ### 返回对象
 GET http://localhost:8080/message/echo?title=沐言科技&content=www.yootk.com&pubdate=2020-07-01
+
+### 返回list集合对象
+GET http://localhost:8080/message/list?title=沐言科技&content=www.yootk.com&pubdate=2020-07-01
+
+### 返回map集合对象
+GET http://localhost:8080/message/map?title=沐言科技&content=www.yootk.com&pubdate=2020-07-01
