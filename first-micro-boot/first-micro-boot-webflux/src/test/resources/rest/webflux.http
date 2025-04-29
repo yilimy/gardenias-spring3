@@ -1,0 +1,5 @@
+### 第一次测试
+GET http://localhost:8080/echo
+
+### 返回对象
+GET http://localhost:8080/message/echo?title=沐言科技&content=www.yootk.com&pubdate=2020-07-01

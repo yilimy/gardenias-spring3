@@ -24,12 +24,6 @@
             <artifactId>first-micro-boot-webservice-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <!-- 建议使用 provided 范围 -->
-            <scope>provided</scope>
-        </dependency>
         <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

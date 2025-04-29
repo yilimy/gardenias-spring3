@@ -29,11 +29,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <!--
             返回xml数据结构, 12a7ca56d3d5c2a6
             引入该依赖后默认返回xml数据，如果需要改变返回数据结构，可以指定 produces，或者配置全局 HttpMessageConverters
