@@ -18,6 +18,7 @@
         <module>first-micro-boot-webservice-common</module>
         <module>first-micro-boot-webservice-server</module>
         <module>first-micro-boot-webservice-client</module>
+        <module>first-micro-boot-rsocket-base</module>
     </modules>
 
     <properties>
