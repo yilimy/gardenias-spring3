@@ -18,7 +18,11 @@
         <module>first-micro-boot-webservice-common</module>
         <module>first-micro-boot-webservice-server</module>
         <module>first-micro-boot-webservice-client</module>
+        <module>first-micro-boot-webflux</module>
         <module>first-micro-boot-rsocket-base</module>
+        <module>first-micro-boot-rsocket-common</module>
+        <module>first-micro-boot-rsocket-server</module>
+        <module>first-micro-boot-rsocket-client</module>
     </modules>
 
     <properties>

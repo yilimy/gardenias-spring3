@@ -210,7 +210,6 @@
         <module>firstboot</module>
         <module>first-micro-boot</module>
         <module>redis</module>
-        <module>first-micro-boot/first-micro-boot-webflux</module>
     </modules>
 
 </project>
