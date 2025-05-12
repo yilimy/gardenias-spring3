@@ -1,6 +1,5 @@
 package com.gardenia.rsocket.server.config;
 
-import com.gardenia.rsocket.type.UploadStatus;
 import com.gardenia.rsocket.utils.Constants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
