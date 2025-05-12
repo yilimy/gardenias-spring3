@@ -1,0 +1,9 @@
+spring:
+  rsocket:
+    server:
+      # 设置处理的协议
+      transport: websocket
+      # 监听端口
+      port: 6969
+      # 映射路径
+      mapping-path: /websocket

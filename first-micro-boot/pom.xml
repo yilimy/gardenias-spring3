@@ -23,6 +23,7 @@
         <module>first-micro-boot-rsocket-common</module>
         <module>first-micro-boot-rsocket-server</module>
         <module>first-micro-boot-rsocket-client</module>
+        <module>first-micro-boot-rsocket-websocket</module>
     </modules>
 
     <properties>

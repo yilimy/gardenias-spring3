@@ -59,7 +59,7 @@ public class UploadAction {
             fileChannel = AsynchronousFileChannel.open(
                     // 解析文件输出的路径
                     outputPath.resolve(path),
-                    // 文件不存在时创建
+                    // 文件不存在时创建, 但是文件夹不存在时不会自动创建
                     StandardOpenOption.CREATE,
                     // 允许文件写入
                     StandardOpenOption.WRITE

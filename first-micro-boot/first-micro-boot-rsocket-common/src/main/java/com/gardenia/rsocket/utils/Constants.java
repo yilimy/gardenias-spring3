@@ -10,6 +10,7 @@ public final class Constants {
     public static final String URI_ECHO = "message.echo";
     public static final String URI_DELETE = "message.delete";
     public static final String URI_LIST = "message.list";
+    public static final String URI_REPEAT = "message.repeat";
     public static final String URI_GET_LIST = "message.getList";
     // ------------------ 文件上传常量设定 -----------------------
     // 文件类型
