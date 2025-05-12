@@ -1,6 +1,7 @@
 package com.gardenia.rsocket.server.action;
 
 import com.gardenia.rsocket.server.service.MessageService;
+import com.gardenia.rsocket.utils.Constants;
 import com.gardenia.rsocket.vo.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class MessageAction {
      * @param messageMono 请求对象
      * @return 响应
      */
-    @MessageMapping("message.echo")
+    @MessageMapping(Constants.URI_ECHO)
     public Mono<Message> echoMessage(Mono<Message> messageMono) {
         log.info("echoMessage");
         return messageMono
@@ -46,7 +47,7 @@ public class MessageAction {
      * 根据title进行删除
      * @param titleMono 待删除条件
      */
-    @MessageMapping("message.delete")
+    @MessageMapping(Constants.URI_DELETE)
     public void deleteMessage(Mono<String> titleMono) {
         log.info("deleteMessage");
         titleMono
@@ -58,7 +59,7 @@ public class MessageAction {
      * list集合发送
      * @return Flux集合
      */
-    @MessageMapping("message.list")
+    @MessageMapping(Constants.URI_LIST)
     public Flux<Message> listMessage() {
         log.info("listMessage");
         return Flux.fromStream(messageService.list().stream());
@@ -66,9 +67,11 @@ public class MessageAction {
 
     /**
      * list集合发送
+     * <p>
+     *      延迟逐个响应
      * @return Flux集合
      */
-    @MessageMapping("message.getList")
+    @MessageMapping(Constants.URI_GET_LIST)
     public Flux<Message> getListMessage(Flux<String> titleFlux) {
         log.info("getListMessage");
         return titleFlux
