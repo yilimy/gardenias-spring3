@@ -1,0 +1,8 @@
+gardenia:
+  dept:
+    # noinspection SpringBootApplicationYaml
+    deptno: 10
+    # noinspection SpringBootApplicationYaml
+    dname: 研发部（www.yootk.com）
+    # noinspection SpringBootApplicationYaml
+    loc: 上海

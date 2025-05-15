@@ -24,6 +24,7 @@
         <module>first-micro-boot-rsocket-server</module>
         <module>first-micro-boot-rsocket-client</module>
         <module>first-micro-boot-rsocket-websocket</module>
+        <module>first-micro-boot-autoconfig-starter</module>
     </modules>
 
     <properties>
