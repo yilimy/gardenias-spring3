@@ -2,6 +2,9 @@ package com.gardenia.autoconfig;
 
 import com.gardenia.autoconfig.config.YootkConfiguration;
 import com.gardenia.autoconfig.vo.Dept;
+import com.gardenia.autoconfig.vo.DeptWithBeanDefinition;
+import com.gardenia.autoconfig.vo.DeptWithImport;
+import com.gardenia.autoconfig.vo.DeptWithSelector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,15 @@ public class StartAutoConfigApplicationTest {
     // 如果遇见重复的 Bean 类型注入，可以通过该方法指定 Bean
     @Qualifier("gardenia.dept-com.gardenia.autoconfig.vo.Dept")
     private Dept dept1;
+    @Autowired
+//    @Qualifier("gardenia.dept2-com.gardenia.autoconfig.vo.DeptWithImport")
+    private DeptWithImport deptWithImport;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private DeptWithSelector deptWithSelector;
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private DeptWithBeanDefinition deptWithBeanDefinition;
 
     @Test
     public void deptTest() {
@@ -53,5 +65,23 @@ public class StartAutoConfigApplicationTest {
             System.out.println("【" + beanDefinitionName + "】 "
                     + context.getBean(beanDefinitionName).getClass().getSimpleName());
         }
+    }
+
+    @Test
+    public void deptWithImportTest() {
+        // DeptWithImport(deptno=11, dname=后勤部（www.yootk.com）, loc=北京)
+        System.out.println(deptWithImport);
+    }
+
+    @Test
+    public void deptWithSelectorTest() {
+        // DeptWithSelector(deptno=12, dname=组织部（www.yootk.com）, loc=广州)
+        System.out.println(deptWithSelector);
+    }
+
+    @Test
+    public void deptWithBeanDefinitionTest() {
+        // DeptWithBeanDefinition(deptno=13, dname=宣传部（www.yootk.com）, loc=深圳)
+        System.out.println(deptWithBeanDefinition);
     }
 }

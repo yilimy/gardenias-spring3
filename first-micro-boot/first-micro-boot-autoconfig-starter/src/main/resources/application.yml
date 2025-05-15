@@ -6,3 +6,24 @@ gardenia:
     dname: 研发部（www.yootk.com）
     # noinspection SpringBootApplicationYaml
     loc: 上海
+  dept2:
+    # noinspection SpringBootApplicationYaml
+    deptno: 11
+    # noinspection SpringBootApplicationYaml
+    dname: 后勤部（www.yootk.com）
+    # noinspection SpringBootApplicationYaml
+    loc: 北京
+  dept3:
+    # noinspection SpringBootApplicationYaml
+    deptno: 12
+    # noinspection SpringBootApplicationYaml
+    dname: 组织部（www.yootk.com）
+    # noinspection SpringBootApplicationYaml
+    loc: 广州
+  dept4:
+    # noinspection SpringBootApplicationYaml
+    deptno: 13
+    # noinspection SpringBootApplicationYaml
+    dname: 宣传部（www.yootk.com）
+    # noinspection SpringBootApplicationYaml
+    loc: 深圳
