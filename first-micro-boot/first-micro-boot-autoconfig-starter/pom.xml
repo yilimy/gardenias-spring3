@@ -9,7 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.gardenias</groupId>
     <artifactId>first-micro-boot-autoconfig-starter</artifactId>
 
     <properties>
@@ -24,6 +23,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!--suppress VulnerableLibrariesLocal -->
         <dependency>
@@ -52,13 +52,40 @@
                     在 org.apache.maven.plugins:maven-compiler-plugin:3.5 之前的配置与此不同。
                      -->
                     <annotationProcessorPaths>
+                        <!-- 用于生成 spring-autoconfigure-metadata.properties -->
                         <path>
                             <groupId>org.springframework.boot</groupId>
                             <artifactId>spring-boot-configuration-processor</artifactId>
                             <version>3.0.2</version>
                         </path>
+                        <!--
+                        Lombok 注解处理器
+                        如果不指定，compile出来的结果中不会包含 @Data 注解的 getter/setter 方法，
+                        会影响spring-boot-configuration-processor的结果
+                        -->
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.24</version>
+                        </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <!-- 禁用 spring-boot-maven-plugin 以避免寻找 main-class -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

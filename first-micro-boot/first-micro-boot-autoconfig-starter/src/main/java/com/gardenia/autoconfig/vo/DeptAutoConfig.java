@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "gardenia.dept")
-public class Dept {
+public class DeptAutoConfig {
     private Long deptno;
     private String dname;
     private String loc;

@@ -1,7 +1,7 @@
 package com.gardenia.autoconfig;
 
 import com.gardenia.autoconfig.config.YootkConfiguration;
-import com.gardenia.autoconfig.vo.Dept;
+import com.gardenia.autoconfig.vo.DeptAutoConfig;
 import com.gardenia.autoconfig.vo.DeptWithBeanDefinition;
 import com.gardenia.autoconfig.vo.DeptWithImport;
 import com.gardenia.autoconfig.vo.DeptWithSelector;
@@ -23,12 +23,12 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringBootTest(classes = StartAutoConfigApplication.class)
 public class StartAutoConfigApplicationTest {
     @Autowired
-    private Dept dept;
+    private DeptAutoConfig deptAutoConfig;
     @Autowired
     // 通过“前缀 + 横杠 + 类全名”实现唯一的标记，可选
     // 如果遇见重复的 Bean 类型注入，可以通过该方法指定 Bean
-    @Qualifier("gardenia.dept-com.gardenia.autoconfig.vo.Dept")
-    private Dept dept1;
+    @Qualifier("gardenia.dept-com.gardenia.autoconfig.vo.DeptAutoConfig")
+    private DeptAutoConfig deptAutoConfig1;
     @Autowired
 //    @Qualifier("gardenia.dept2-com.gardenia.autoconfig.vo.DeptWithImport")
     private DeptWithImport deptWithImport;
@@ -41,12 +41,12 @@ public class StartAutoConfigApplicationTest {
 
     @Test
     public void deptTest() {
-        System.out.println(dept);
+        System.out.println(deptAutoConfig);
     }
 
     @Test
     public void dept1Test() {
-        System.out.println(dept1);
+        System.out.println(deptAutoConfig1);
     }
 
     @Test

@@ -110,3 +110,10 @@ logging:
 context:
   listener:
     classes: com.gardenia.web.event.listener.PropertiesListener
+
+# 自定义的自动装配配置
+gardenia:
+  dept:
+    deptno: 1
+    dname: 教学研发部
+    loc: Beijing
