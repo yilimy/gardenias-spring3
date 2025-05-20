@@ -1,0 +1,44 @@
+server:
+  port: 80
+management:
+  server:
+    port: 9090
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+spring:
+  datasource:
+    # 使用 Druid 数据库连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.200.130:3306/test_sql?useUnicode=true&allowMultiQuerie=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: Gm02_prd8!
+    # 定义数据库连接池所需要的配置项
+    druid:
+      # 初始化连接池的大小
+      initial-size: 5
+      # 最大可提供的连接数量
+      max-active: 20
+      # 获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      # 最小维持的连接池大小
+      min-idle: 1
+      # 数据库状态检测
+      validation-query: select 1 from dual
+      # 驱逐时间，关闭空闲时间的间隔
+      time-between-eviction-runs-millis: 6000
+      # 连接的最小生存时间，单位：毫秒
+      min-evictable-idle-time-millis: 30000
+      # 检测连接是否有效
+      test-while-idle: true
+      # 在获得连接之前，是否要进行测试
+      test-on-borrow: false
+      # 归还连接前，是否要经过测试
+      test-on-return: false
+      # 不缓存 PSTMT，Oracle可以这么干，其他数据库别这么做
+      pool-prepared-statements: false
+      # 每次连接的换缓存个数，配置 PSTMT 缓存个数
+      max-pool-prepared-statement-per-connection-size: 20
