@@ -45,8 +45,9 @@ spring:
   test-qqq: # 一个自定义配置项，这个名称就是数据库的名称，配合 com.alibaba:druid 单独使用
     # noinspection SpringBootApplicationYaml
     datasource:
-      enabled: true
+      enabled: false
       type: com.alibaba.druid.pool.DruidDataSource
+      # noinspection SpringBootApplicationYaml
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://192.168.200.130:3306/test_qqq
       username: root
