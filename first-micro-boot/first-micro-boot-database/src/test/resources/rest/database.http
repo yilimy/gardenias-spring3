@@ -1,0 +1,2 @@
+### 创建一个访问，用于验证访问监控
+GET http://localhost/message/echo?msg=hello
