@@ -1,2 +1,8 @@
+### 开启一个监控页面
+GET http://localhost/druid
+
 ### 创建一个访问，用于验证访问监控
 GET http://localhost/message/echo?msg=hello
+
+### 执行一个查询，用于验证SQL监控
+GET http://localhost/member/list

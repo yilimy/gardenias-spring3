@@ -42,12 +42,19 @@ spring:
       pool-prepared-statements: false
       # 每次连接的换缓存个数，配置 PSTMT 缓存个数
       max-pool-prepared-statement-per-connection-size: 20
+      # 监控配置，参考: com.alibaba.druid.filter.stat.StatFilter
+      stat:
+        # 统计相同的SQL命令
+        merge-sql: true
+        # 记录慢SQL
+        log-slow-sql: true
+        # 慢SQL执行的标准
+        show-sql-millis: 2000
   test-qqq: # 一个自定义配置项，这个名称就是数据库的名称，配合 com.alibaba:druid 单独使用
     # noinspection SpringBootApplicationYaml
     datasource:
-      enabled: false
+      enabled: true
       type: com.alibaba.druid.pool.DruidDataSource
-      # noinspection SpringBootApplicationYaml
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://192.168.200.130:3306/test_qqq
       username: root

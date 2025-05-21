@@ -18,7 +18,17 @@
  *          6. 10-100 秒内访问量
  *          7. 100-1000 秒内访问量
  *          8. > 1000 秒内访问量
+ * <p>
+ *     添加对SQL的监控
+ *       1. 注入拦截器
+ *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlStatFilter(boolean, boolean, long)}
+ *       2. 将拦截器配置到 DataSource 中
+ *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter)}
  * @author caimeng
  * @date 2025/5/20 13:58
  */
 package com.gardenia.database;
+
+import com.alibaba.druid.filter.stat.StatFilter;
+import com.gardenia.database.config.QqqDatasourceProperties;
+import com.gardenia.database.config.QqqDruidDataSourceWrapper;

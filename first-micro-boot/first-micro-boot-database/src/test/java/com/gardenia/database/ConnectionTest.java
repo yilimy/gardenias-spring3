@@ -1,6 +1,7 @@
 package com.gardenia.database;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.gardenia.database.config.DruidDataSourceConfig;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,7 +30,7 @@ public class ConnectionTest {
     private List<DruidDataSource> druidDataSources;
 
     @Autowired(required = false)    // 自定义的 Druid 连接池，需要 spring.test-qqq.datasource.enabled=true
-    @Qualifier("qqqDruidDataSource")
+    @Qualifier(DruidDataSourceConfig.DATASOURCE_NAME)
     private DruidDataSource qqqDruidDataSource;
 
     @SneakyThrows

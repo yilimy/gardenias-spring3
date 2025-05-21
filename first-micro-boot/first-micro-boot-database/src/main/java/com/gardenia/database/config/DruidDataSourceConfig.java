@@ -1,11 +1,19 @@
 package com.gardenia.database.config;
 
+import com.alibaba.druid.filter.Filter;
+import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 自定义 Druid 数据库连接池配置
@@ -17,6 +25,8 @@ import org.springframework.context.annotation.Primary;
 @EnableConfigurationProperties({QqqDatasourceProperties.class, QqqDruidDataSourceWrapper.class})
 @Configuration
 public class DruidDataSourceConfig {
+    public static final String DATASOURCE_NAME = "qqqDruidDataSource";
+    public static final String JDBC_TEMPLATE_NAME = "qqqJdbcTemplate";
 
     /**
      * 自定义 Druid 数据源
@@ -25,10 +35,14 @@ public class DruidDataSourceConfig {
      * @return 数据源
      */
     @Primary    // 自动装配也注入一个 DruidDataSource，需要设置一个主从数据源
-    @Bean("qqqDruidDataSource")
+    @Bean(initMethod = "init", name = DATASOURCE_NAME)
     public DruidDataSource getDruidDataSource(
+            // 通用数据源配置
             QqqDatasourceProperties datasourceProperties,
-            QqqDruidDataSourceWrapper druidDataSourceWrapper) {
+            // 自定义 Druid 数据源配置
+            QqqDruidDataSourceWrapper druidDataSourceWrapper,
+            // SQL 监控拦截器
+            @Autowired @Qualifier(DruidMonitorConfig.SQL_STAT_FILTER_NAME) StatFilter statFilter) {
         DruidDataSource dataSource = new DruidDataSource();
         // 数据库驱动
         dataSource.setDriverClassName(datasourceProperties.getDriverClassName());
@@ -62,6 +76,16 @@ public class DruidDataSourceConfig {
         dataSource.setPoolPreparedStatements(druidDataSourceWrapper.isPoolPreparedStatements());
         // 每次连接的换缓存个数，配置 PSTMT 缓存个数
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(druidDataSourceWrapper.getMaxPoolPreparedStatementPerConnectionSize());
+        // 定义所有的Filter项
+        List<Filter> filters = Collections.singletonList(statFilter);
+        // SQL监控与DataSource整合
+        dataSource.setProxyFilters(filters);
         return dataSource;
+    }
+
+    @Primary
+    @Bean(JDBC_TEMPLATE_NAME)
+    public JdbcTemplate qqqJdbcTemplate(@Autowired @Qualifier(DATASOURCE_NAME) DruidDataSource druidDataSource) {
+        return new JdbcTemplate(druidDataSource);
     }
 }
