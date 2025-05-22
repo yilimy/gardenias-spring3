@@ -23,12 +23,21 @@
  *       1. 注入拦截器
  *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlStatFilter(boolean, boolean, long)}
  *       2. 将拦截器配置到 DataSource 中
- *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter)}
+ *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter)}
+ * <p>
+ *     SQL 防火墙
+ *       1. 创建防火墙配置
+ *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlWallConfig()}
+ *       2. 创建防火墙拦截器
+ *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlWallFilter()}
+ *       3. 与数据源进行整合
+ *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter)}
  * @author caimeng
  * @date 2025/5/20 13:58
  */
 package com.gardenia.database;
 
 import com.alibaba.druid.filter.stat.StatFilter;
+import com.alibaba.druid.wall.WallFilter;
 import com.gardenia.database.config.QqqDatasourceProperties;
 import com.gardenia.database.config.QqqDruidDataSourceWrapper;

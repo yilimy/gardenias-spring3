@@ -3,6 +3,8 @@ package com.gardenia.database.config;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.support.jakarta.StatViewServlet;
 import com.alibaba.druid.support.jakarta.WebStatFilter;
+import com.alibaba.druid.wall.WallConfig;
+import com.alibaba.druid.wall.WallFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -82,5 +84,29 @@ public class DruidMonitorConfig {
         // 是否开启合并SQL
         statFilter.setMergeSql(mergeSql);
         return statFilter;
+    }
+
+    /**
+     * @return SQL防火墙配置
+     */
+    @Bean
+    public WallConfig sqlWallConfig(){
+        WallConfig wallConfig = new WallConfig();
+        // 允许一次执行多条语句，批处理
+        wallConfig.setMultiStatementAllow(true);
+        // 不允许执行删除
+        wallConfig.setDeleteAllow(false);
+        return wallConfig;
+    }
+
+    /**
+     * 防火墙的实现是基于过滤器实现的
+     * @return 防火墙过滤器
+     */
+    @Bean
+    public WallFilter sqlWallFilter(){
+        WallFilter wallFilter = new WallFilter();
+        wallFilter.setConfig(sqlWallConfig());
+        return wallFilter;
     }
 }

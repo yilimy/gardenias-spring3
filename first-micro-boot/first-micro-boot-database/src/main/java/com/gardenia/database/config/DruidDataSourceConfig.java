@@ -3,6 +3,7 @@ package com.gardenia.database.config;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.wall.WallFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,7 +43,10 @@ public class DruidDataSourceConfig {
             // 自定义 Druid 数据源配置
             QqqDruidDataSourceWrapper druidDataSourceWrapper,
             // SQL 监控拦截器
-            @Autowired @Qualifier(DruidMonitorConfig.SQL_STAT_FILTER_NAME) StatFilter statFilter) {
+            @Autowired @Qualifier(DruidMonitorConfig.SQL_STAT_FILTER_NAME) StatFilter statFilter,
+            // SQL 防火墙拦截器
+            WallFilter wallFilter
+    ) {
         DruidDataSource dataSource = new DruidDataSource();
         // 数据库驱动
         dataSource.setDriverClassName(datasourceProperties.getDriverClassName());
@@ -77,7 +81,8 @@ public class DruidDataSourceConfig {
         // 每次连接的换缓存个数，配置 PSTMT 缓存个数
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(druidDataSourceWrapper.getMaxPoolPreparedStatementPerConnectionSize());
         // 定义所有的Filter项
-        List<Filter> filters = Collections.singletonList(statFilter);
+//        List<Filter> filters = Collections.singletonList(statFilter);
+        List<Filter> filters = Arrays.asList(statFilter, wallFilter);
         // SQL监控与DataSource整合
         dataSource.setProxyFilters(filters);
         return dataSource;

@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public abstract class AbstractBaseAction {
     // 将日期属性转换成字符串，考虑到多线程的并发问题，一定要使用LocalDate
-    public static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd mm:HH:ss");
+    public static final DateTimeFormatter LOCAL_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

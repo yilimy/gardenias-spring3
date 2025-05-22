@@ -6,3 +6,9 @@ GET http://localhost/message/echo?msg=hello
 
 ### 执行一个查询，用于验证SQL监控
 GET http://localhost/member/list
+
+### 执行一个新增
+POST http://localhost/member/add?mid=lixinghua&name=李兴华&age=18&salary=3000&birthday=2005-01-23&content=www.yootk.com&del=0
+
+### 执行一个删除，用于测试SQL防火墙
+POST http://localhost/member/del

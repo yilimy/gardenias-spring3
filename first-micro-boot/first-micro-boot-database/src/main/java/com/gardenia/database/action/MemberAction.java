@@ -33,4 +33,36 @@ public class MemberAction extends AbstractBaseAction {
             return member;
         });
     }
+
+    @RequestMapping("add")
+    public Object add(Member member) {
+        //noinspection SqlResolve
+        String sql = "insert into member3(mid, name, age, salary, birthday, content, del) values(?, ?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql,
+                member.getMid(),
+                member.getName(),
+                member.getAge(),
+                member.getSalary(),
+                member.getBirthday(),
+                member.getContent(),
+                member.getDel()
+        );
+    }
+
+    @RequestMapping("del")
+    public Object del() {
+        // 执行一次危险操作，看看SQL防火墙功能是否触发
+        //noinspection SqlResolve,SqlWithoutWhere
+        String sql = "delete from member3";
+        /*
+         * java.sql.SQLException:
+         *      sql injection violation, dbType mysql, druid-version 1.2.18, delete not allow : delete from member3
+         *
+         * 触发了监控：
+         *      SQL防御统计 - 黑名单
+         *      1  delete from member3  delete not allow  1
+         */
+        return jdbcTemplate.update(sql);
+    }
+
 }
