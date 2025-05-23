@@ -32,6 +32,17 @@
  *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlWallFilter()}
  *       3. 与数据源进行整合
  *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter)}
+ * <p>
+ *     Spring集成 Druid 的监控，需要靠 AOP 来实现
+ *       1. 添加依赖
+ *          org.springframework.boot:spring-boot-starter-aop
+ *       2. 新增切面配置
+ *              a. 拦截器
+ *                  {@link com.gardenia.database.config.DruidSpringConfig#druidStatInterceptor()}
+ *              b. 正则匹配切面
+ *                  {@link com.gardenia.database.config.DruidSpringConfig#druidStatPointcut()}
+ *              c. Advisor
+ *                  {@link com.gardenia.database.config.DruidSpringConfig#druidStatAdvisor()}
  * @author caimeng
  * @date 2025/5/20 13:58
  */

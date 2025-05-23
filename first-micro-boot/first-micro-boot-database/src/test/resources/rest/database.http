@@ -12,3 +12,6 @@ POST http://localhost/member/add?mid=lixinghua&name=李兴华&age=18&salary=3000
 
 ### 执行一个删除，用于测试SQL防火墙
 POST http://localhost/member/del
+
+### 测试 Druid-Spring 监控
+POST http://localhost/message/monitor?msg=hello
