@@ -53,7 +53,7 @@ spring:
   test-qqq: # 一个自定义配置项，这个名称就是数据库的名称，配合 com.alibaba:druid 单独使用
     # noinspection SpringBootApplicationYaml
     datasource:
-      enabled: true
+      enabled: false
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://192.168.200.130:3306/test_qqq
@@ -72,3 +72,10 @@ spring:
         test-on-return: false
         pool-prepared-statements: false
         max-pool-prepared-statement-per-connection-size: 21
+mybatis:
+  #  mybatis 配置文件所在的目录
+  config-location: classpath:META-INF/mybatis/mybatis.cfg.xml
+  #  定义所有操作类的别名所在的包
+  type-aliases-package: com.gardenia.database.vo
+  #  定义所有 mapper 映射文件的位置
+  mapper-locations: classpath:META-INF/mybatis/mapper/*.xml

@@ -50,6 +50,22 @@
  *     2. DataSource中配置过滤器
  *          {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter, Slf4jLogFilter)}
  *     3. 创建 logback-spring.xml 文件
+ * <p>
+ *     整合 mybatis-spring
+ *     1. 导入依赖
+ *          org.mybatis:mybatis
+ *          org.mybatis.spring.boot:mybatis-spring-boot-starter
+ *     2. 创建 mybatis.cfg.xml 文件
+ *          META-INF/mybatis/mybatis.cfg.xml
+ *     3. application.yml 中配置 mybatis
+ *     4. 创建 mybatis-mapper.xml 文件
+ *          META-INF/mybatis/mapper/MemberMapper.xml
+ *     5. 创建 DAO 接口
+ *          {@link com.gardenia.database.dao.IMemberDAO}
+ *     注意：
+ *      如果你使用的是 Spring Boot 3.x，请使用 3.0.x，
+ *          3.0.x 中，DruidDataSource 的 init 方法被删除了，请使用 initMethod="init"；
+ *      如果是 Spring Boot 2.x，请使用 2.3.x。
  * @author caimeng
  * @date 2025/5/20 13:58
  */

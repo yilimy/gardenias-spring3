@@ -2,7 +2,7 @@
 <configuration scan="false">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d %-5level %logger{35} -%kvp- %msg %n</pattern>
+            <pattern>%d %-5level %logger{35} L:%line -%kvp- %msg %n</pattern>
         </encoder>
     </appender>
     <appender name="druidSqlFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -23,13 +23,15 @@
         </encoder>
     </appender>
 
-    <logger name="com.gardenia.database" level="error">
+    <logger name="com.gardenia.database.service" level="error">
         <appender-ref ref="STDOUT"/>
     </logger>
     <!-- 可以通过修改 spring.datasource.druid.stat.show-sql-millis=1 来触发该日志 -->
     <logger name="com.alibaba.druid.filter.stat.StatFilter" level="error">
         <appender-ref ref="druidSqlFile"/>
     </logger>
+
+    <logger name="com.gardenia.database.dao" level="debug" />
 
     <root level="info">
         <appender-ref ref="STDOUT"/>
