@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level %logger{35} -%kvp- %msg %n</pattern>
+        </encoder>
+    </appender>
+    <appender name="druidSqlFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <Pruduction>true</Pruduction>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 设置日志保存的路径，本次按月份创建日志目录，每天的文件归档到一组 -->
+            <FileNamePattern>druid-logs/%d{yyyy-MM}/druid_slow_sql_%d{yyyy-MM-dd}.log</FileNamePattern>
+            <!-- 删除超过365天的文件 -->
+            <MaxHistory>365</MaxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- 保存Error级别以上的日志 -->
+            <level>error</level>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger Line:%line-3L - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="com.gardenia.database" level="error">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <!-- 可以通过修改 spring.datasource.druid.stat.show-sql-millis=1 来触发该日志 -->
+    <logger name="com.alibaba.druid.filter.stat.StatFilter" level="error">
+        <appender-ref ref="druidSqlFile"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

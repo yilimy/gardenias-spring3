@@ -23,7 +23,7 @@
  *       1. 注入拦截器
  *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlStatFilter(boolean, boolean, long)}
  *       2. 将拦截器配置到 DataSource 中
- *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter)}
+ *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter, Slf4jLogFilter)}
  * <p>
  *     SQL 防火墙
  *       1. 创建防火墙配置
@@ -31,7 +31,7 @@
  *       2. 创建防火墙拦截器
  *              {@link com.gardenia.database.config.DruidMonitorConfig#sqlWallFilter()}
  *       3. 与数据源进行整合
- *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter)}
+ *              {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter, Slf4jLogFilter)}
  * <p>
  *     Spring集成 Druid 的监控，需要靠 AOP 来实现
  *       1. 添加依赖
@@ -43,11 +43,19 @@
  *                  {@link com.gardenia.database.config.DruidSpringConfig#druidStatPointcut()}
  *              c. Advisor
  *                  {@link com.gardenia.database.config.DruidSpringConfig#druidStatAdvisor()}
+ * <p>
+ *     开启Druid的日志
+ *     1. 新增过滤器
+ *          {@link com.gardenia.database.config.DruidLogConfig#slf4jLogFilter()}
+ *     2. DataSource中配置过滤器
+ *          {@link com.gardenia.database.config.DruidDataSourceConfig#getDruidDataSource(QqqDatasourceProperties, QqqDruidDataSourceWrapper, StatFilter, WallFilter, Slf4jLogFilter)}
+ *     3. 创建 logback-spring.xml 文件
  * @author caimeng
  * @date 2025/5/20 13:58
  */
 package com.gardenia.database;
 
+import com.alibaba.druid.filter.logging.Slf4jLogFilter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
 import com.gardenia.database.config.QqqDatasourceProperties;

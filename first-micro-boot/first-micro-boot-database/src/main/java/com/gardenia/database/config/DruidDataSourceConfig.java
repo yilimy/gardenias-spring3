@@ -1,6 +1,7 @@
 package com.gardenia.database.config;
 
 import com.alibaba.druid.filter.Filter;
+import com.alibaba.druid.filter.logging.Slf4jLogFilter;
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.wall.WallFilter;
@@ -42,10 +43,12 @@ public class DruidDataSourceConfig {
             QqqDatasourceProperties datasourceProperties,
             // 自定义 Druid 数据源配置
             QqqDruidDataSourceWrapper druidDataSourceWrapper,
-            // SQL 监控拦截器
+            // SQL 监控过滤器
             @Autowired @Qualifier(DruidMonitorConfig.SQL_STAT_FILTER_NAME) StatFilter statFilter,
-            // SQL 防火墙拦截器
-            WallFilter wallFilter
+            // SQL 防火墙过滤器
+            WallFilter wallFilter,
+            // 日志过滤器
+            Slf4jLogFilter logFilter
     ) {
         DruidDataSource dataSource = new DruidDataSource();
         // 数据库驱动
@@ -82,7 +85,7 @@ public class DruidDataSourceConfig {
         dataSource.setMaxPoolPreparedStatementPerConnectionSize(druidDataSourceWrapper.getMaxPoolPreparedStatementPerConnectionSize());
         // 定义所有的Filter项
 //        List<Filter> filters = Collections.singletonList(statFilter);
-        List<Filter> filters = Arrays.asList(statFilter, wallFilter);
+        List<Filter> filters = Arrays.asList(statFilter, wallFilter, logFilter);
         // SQL监控与DataSource整合
         dataSource.setProxyFilters(filters);
         return dataSource;
