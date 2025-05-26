@@ -1,11 +1,14 @@
 package com.gardenia.database.action;
 
 import com.gardenia.common.action.abs.AbstractBaseAction;
+import com.gardenia.database.service.IMemberService;
 import com.gardenia.database.vo.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 /**
  * @author caimeng
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberAction extends AbstractBaseAction {
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private IMemberService memberService;
 
     @RequestMapping("list")
     public Object echo() {
@@ -65,4 +70,23 @@ public class MemberAction extends AbstractBaseAction {
         return jdbcTemplate.update(sql);
     }
 
+    @RequestMapping("mp/get")
+    public Object echoMP(String mid) {
+        return memberService.get(mid);
+    }
+
+    @RequestMapping("mp/add")
+    public Object addMP(Member member) {
+        return memberService.add(member);
+    }
+
+    @RequestMapping("mp/del")
+    public Object delMP(String... ids) {
+        return memberService.del(Set.of(ids));
+    }
+
+    @RequestMapping("mp/split")
+    public Object delMP(int pageNum, int pageSize, String column, String keyword) {
+        return memberService.listSplit(pageNum, pageSize, column, keyword);
+    }
 }

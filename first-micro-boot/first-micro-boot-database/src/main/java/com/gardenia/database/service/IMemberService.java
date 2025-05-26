@@ -1,8 +1,10 @@
 package com.gardenia.database.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.gardenia.database.vo.Member;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author caimeng
@@ -10,4 +12,14 @@ import java.util.List;
  */
 public interface IMemberService {
     List<Member> fillAll();
+
+    /**
+     * 根据Id查询
+     * @param mid 主键
+     * @return member
+     */
+    Member get(String mid);
+    boolean add(Member member);
+    boolean del(Set<String> mids);
+    IPage<Member> listSplit(int pageNum, int pageSize, String column, String keyword);
 }

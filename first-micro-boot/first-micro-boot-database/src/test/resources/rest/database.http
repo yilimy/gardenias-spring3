@@ -15,3 +15,15 @@ POST http://localhost/member/del
 
 ### 测试 Druid-Spring 监控
 POST http://localhost/message/monitor?msg=hello
+
+### mybatis-plus测试 查询
+GET http://localhost/member/mp/get?mid=m0001
+
+### mybatis-plus测试 新增
+POST http://localhost/member/mp/add?mid=m000889&name=李兴华&age=18&salary=3000&birthday=2005-01-23&content=www.yootk.com
+
+### mybatis-plus测试 删除
+POST http://localhost/member/mp/del?ids=m000889&ids=m000816
+
+### mybatis-plus测试 分页查询
+GET http://localhost/member/mp/split?pageNum=1&pageSize=10&column=mid&keyword=m00

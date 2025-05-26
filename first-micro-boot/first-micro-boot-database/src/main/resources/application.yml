@@ -72,10 +72,23 @@ spring:
         test-on-return: false
         pool-prepared-statements: false
         max-pool-prepared-statement-per-connection-size: 21
-mybatis:
-  #  mybatis 配置文件所在的目录
+#mybatis:
+#  #  mybatis 配置文件所在的目录
+#  config-location: classpath:META-INF/mybatis/mybatis.cfg.xml
+#  #  定义所有操作类的别名所在的包
+#  type-aliases-package: com.gardenia.database.vo
+#  #  定义所有 mapper 映射文件的位置
+#  mapper-locations: classpath:META-INF/mybatis/mapper/*.xml
+
+# 使用 MyBatis Plus 配置替换 Mybatis 配置
+mybatis-plus:
   config-location: classpath:META-INF/mybatis/mybatis.cfg.xml
-  #  定义所有操作类的别名所在的包
   type-aliases-package: com.gardenia.database.vo
-  #  定义所有 mapper 映射文件的位置
   mapper-locations: classpath:META-INF/mybatis/mapper/*.xml
+  # Mybatis-Plus全局配置
+  global-config:
+    db-config:
+      # 逻辑删除后的值
+      logic-delete-value: 1
+      # 逻辑删除前的值
+      logic-not-delete-value: 0
