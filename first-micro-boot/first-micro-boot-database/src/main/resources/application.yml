@@ -81,7 +81,9 @@ spring:
 #  mapper-locations: classpath:META-INF/mybatis/mapper/*.xml
 
 # 使用 MyBatis Plus 配置替换 Mybatis 配置
+# noinspection SpringBootApplicationYaml
 mybatis-plus:
+  auto: false
   config-location: classpath:META-INF/mybatis/mybatis.cfg.xml
   type-aliases-package: com.gardenia.database.vo
   mapper-locations: classpath:META-INF/mybatis/mapper/*.xml
