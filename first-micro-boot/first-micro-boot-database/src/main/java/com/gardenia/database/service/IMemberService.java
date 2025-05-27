@@ -22,4 +22,12 @@ public interface IMemberService {
     boolean add(Member member);
     boolean del(Set<String> mids);
     IPage<Member> listSplit(int pageNum, int pageSize, String column, String keyword);
+
+    /**
+     * 测试切面事务
+     * {@link com.gardenia.database.config.TransactionConfig}
+     * @param mids 参数
+     * @return 结果
+     */
+    boolean addBatch(String... mids);
 }

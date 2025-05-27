@@ -64,4 +64,17 @@ public class IMemberServiceTest {
         System.out.println("总记录：" + memberIPage.getTotal());
         System.out.println("响应内容：" + memberIPage.getRecords());
     }
+
+    /**
+     * 测试：批量添加相同主键的数据，触发事务回滚
+     */
+    @Test
+    public void addBatchTest() {
+        try {
+            boolean b = memberService.addBatch("m000m", "m000m", "m000m");
+            System.out.println("b = " + b);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
