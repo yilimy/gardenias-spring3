@@ -27,3 +27,15 @@ POST http://localhost/member/mp/del?ids=m000889&ids=m000816
 
 ### mybatis-plus测试 分页查询
 GET http://localhost/member/mp/split?pageNum=1&pageSize=10&column=mid&keyword=m00
+
+### 多数据源测试其一
+GET http://localhost/qqq/dept/datasource
+
+### 多数据源测试其二
+GET http://localhost/sql/emp/datasource
+
+### 多数据源测试其三
+GET http://localhost/qqq/dept/company/list
+
+### 多数据源测试其四
+GET http://localhost/sql/emp/company/list

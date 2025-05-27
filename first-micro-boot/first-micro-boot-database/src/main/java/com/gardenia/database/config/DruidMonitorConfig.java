@@ -6,6 +6,7 @@ import com.alibaba.druid.support.jakarta.WebStatFilter;
 import com.alibaba.druid.wall.WallConfig;
 import com.alibaba.druid.wall.WallFilter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import java.util.List;
  * @date 2025/5/20 16:15
  */
 @Configuration
+@ConditionalOnProperty(value = "spring.test-qqq.datasource.enabled", havingValue = "true")
 public class DruidMonitorConfig {
     public static final String DRUID_STAT_VIEW_SERVLET_NAME = "druidStatViewServlet";
     public static final String WEB_STAT_FILTER_NAME = "webStatFilter";

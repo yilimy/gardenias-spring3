@@ -1,6 +1,7 @@
 package com.gardenia.database.config;
 
 import com.alibaba.druid.filter.logging.Slf4jLogFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2025/5/23 16:22
  */
 @Configuration
+@ConditionalOnProperty(value = "spring.test-qqq.datasource.enabled", havingValue = "true")
 public class DruidLogConfig {
 
     @Bean

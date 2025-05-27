@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.gardenia.database.config.mp.FlagMetaObjectHandler;
 import lombok.SneakyThrows;
 import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,8 @@ public class MybatisPlusConfig {
         globalConfig.setDbConfig(new GlobalConfig.DbConfig());
         globalConfig.getDbConfig().setLogicDeleteValue(logicDeleteValue);
         globalConfig.getDbConfig().setLogicNotDeleteValue(logicNotDeleteValue);
+        // 设置自动填充项
+        globalConfig.setMetaObjectHandler(new FlagMetaObjectHandler());
         factoryBean.setGlobalConfig(globalConfig);
         return factoryBean;
     }

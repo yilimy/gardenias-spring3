@@ -3,6 +3,7 @@ package com.gardenia.database.config;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Scope;
  * @date 2025/5/22 11:20
  */
 @Configuration
+@ConditionalOnProperty(value = "spring.test-qqq.datasource.enabled", havingValue = "true")
 public class DruidSpringConfig {
 
     /**

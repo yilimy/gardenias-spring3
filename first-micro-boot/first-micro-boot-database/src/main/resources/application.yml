@@ -16,40 +16,102 @@ spring:
     url: jdbc:mysql://192.168.200.130:3306/test_sql?useUnicode=true&allowMultiQuerie=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
     password: Gm02_prd8!
-    # 定义数据库连接池所需要的配置项
+    # noinspection SpringBootApplicationYaml
+    test-sql: # 多数据源的配置
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.200.130:3306/test_sql
+      username: root
+      password: Gm02_prd8!
+    # noinspection SpringBootApplicationYaml
+    test-qqq: # 多数据源的配置
+      enabled: false
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.200.130:3306/test_qqq
+      username: root
+      password: Gm02_prd8!
+    # 作为druid的全局配置
+    # 对应 com.gardenia.database.config.DruidDataSourceConfig.getDruidDataSource
+    # noinspection SpringBootApplicationYaml
     druid:
-      # 初始化连接池的大小
+      # 初始化连接池大小
       initial-size: 5
+      # 最小维持连接池大小
+      min-idle: 2
       # 最大可提供的连接数量
       max-active: 20
       # 获取连接时最大等待时间，单位毫秒
       max-wait: 60000
-      # 最小维持的连接池大小
-      min-idle: 1
+      # 关闭空闲时间间隔，单位：毫秒
+      time-between-eviction-runs-millis: 6000
+      # 连接的最小生存时间
+      min-evictable-idle-time-millis: 30000
       # 数据库状态检测
       validation-query: select 1 from dual
-      # 驱逐时间，关闭空闲时间的间隔
-      time-between-eviction-runs-millis: 6000
-      # 连接的最小生存时间，单位：毫秒
-      min-evictable-idle-time-millis: 30000
-      # 检测连接是否有效
+      # 申请连接时检测连接是否有效
       test-while-idle: true
       # 在获得连接之前，是否要进行测试
       test-on-borrow: false
-      # 归还连接前，是否要经过测试
+      # 归还连接时，是否要经过测试
       test-on-return: false
-      # 不缓存 PSTMT，Oracle可以这么干，其他数据库别这么做
+      # 不缓存PSTMT，Oracle可以这么干，其他数据库别这么做
       pool-prepared-statements: false
-      # 每次连接的换缓存个数，配置 PSTMT 缓存个数
+      # 缓存PSTMT的配置
       max-pool-prepared-statement-per-connection-size: 20
-      # 监控配置，参考: com.alibaba.druid.filter.stat.StatFilter
-      stat:
-        # 统计相同的SQL命令
-        merge-sql: true
-        # 记录慢SQL
-        log-slow-sql: true
-        # 慢SQL执行的标准
-        show-sql-millis: 2000
+      # 开启过滤
+      filters:
+        - stat
+        - wall
+        - log4j
+      stat-view-servlet:
+        # 启用Druid监控界面
+        enabled: true
+        # 设置访问白名单
+        allow: 127.0.0.1
+        login-username: admin
+        login-password: 123456
+        rest-enabled: true
+        # 访问路径
+        url-pattern: /druid/*
+      web-stat-filter:
+        # 启用URI监控
+        enabled: true
+        # 监控所有路径
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+      # Druid过滤
+      filter:
+        # sql监控，对应 com.gardenia.database.config.DruidMonitorConfig#sqlStatFilter
+        stat:
+          # 统计时，合并相同的sql
+          merge-sql: true
+          # 当SQL执行缓慢时是否要记录
+          log-slow-sql: true
+          # 慢SQL执行的标准，单位毫秒
+          show-sql-millis: 2000
+        # sql防火墙，对应 com.gardenia.database.config.DruidMonitorConfig#sqlWallConfig
+        wall:
+          # 启用 sql 防火墙
+          enabled: true
+          # 配置防火墙规则
+          config:
+            # 允许执行批量 sql
+            multi-statement-allow: true
+            # 禁止执行删除语句
+            delete-allow: false
+        # 日志配置，对应 com.gardenia.database.config.DruidLogConfig
+        slf4j:
+          # 启用日志
+          enabled: true
+          # 启用数据源日志
+          data-source-log-enabled: true
+          # 执行日志
+          statement-executable-statement-log-enabled: true
+          # ResultSet日志启用
+          result-set-log-enabled: true
+      # 配置AOP，对应 com.gardenia.database.config.DruidSpringConfig
+      aop-patterns: "com.gardenia.database.action.*,com.gardenia.database.service.*,com.gardenia.database.dao.*"
   test-qqq: # 一个自定义配置项，这个名称就是数据库的名称，配合 com.alibaba:druid 单独使用
     # noinspection SpringBootApplicationYaml
     datasource:
@@ -59,6 +121,7 @@ spring:
       url: jdbc:mysql://192.168.200.130:3306/test_qqq
       username: root
       password: Gm02_prd8!
+      # 自定义 bean 注入时使用的配置读取项， com.gardenia.database.config.QqqDruidDataSourceWrapper
       druid:
         initial-size: 6
         max-active: 21
